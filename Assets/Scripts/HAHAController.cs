@@ -16,6 +16,8 @@ public class HAHAController : MonoBehaviour
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
             Vector2 movement = Input.GetTouch(0).deltaPosition;
+			Debug.Log ("Touched");
+			Debug.Log (movement);
             if (movement.x < 0)
             {
                 if (transform.position.x > -1.0f)
