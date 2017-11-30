@@ -4,27 +4,102 @@ using UnityEngine;
 
 public class HAHAController : MonoBehaviour
 {
-    private Rigidbody player;
+    private bool isUp;                        // 判断正在向上
+    private bool isMove;                      // 判断正在左右移动
+    private Rigidbody hahaRB;                 // haha实体
+    private Vector3 lastPosition;             // 记录上一个位置
+    private Vector3 moveHorizontalVec;        // 横向移动的速度
+    public static HAHAController playerHaha;  // 玩家实例
 
-    void Start()
+    static public HAHAController getHaHaInstance()
     {
-        //player = GetComponent<Rigidbody>();
+        return playerHaha;
     }
 
+    /*
+     * 初始化
+     */
+    void Start()
+    {
+        isUp              = false;
+        isMove            = false;
+        hahaRB            = GetComponent<Rigidbody>();
+        lastPosition      = transform.position;
+        moveHorizontalVec = new Vector3(0, 0, 0);
+        playerHaha        = this;
+    }
+
+    void moveForward()
+    {
+        Vector3 LocalPos = transform.position;                                  // 物体所处的世界坐标向量
+        Vector3 LocalForward = transform.TransformPoint(Vector3.forward * 1f);    // 物体前方距离为speed的位置的世界坐标向量
+        Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
+        moveHorizontalVec = new Vector3(moveHorizontalVec.x, 0, VecSpeed.z);
+        hahaRB.velocity = moveHorizontalVec;
+    }
+
+    /*
+     * 更新函数
+     */
     void FixedUpdate()
     {
-        //if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+        moveForward();
+        // 左右判断函数
+        if ((System.Math.Abs(hahaRB.position.x - 1.6f) < 0.15f ||
+            System.Math.Abs(hahaRB.position.x + 4.5f) < 0.15f ||
+            System.Math.Abs(hahaRB.position.x - 4.5f) < 0.15f ||
+            System.Math.Abs(hahaRB.position.x + 1.6f) < 0.15f) &&
+            System.Math.Abs(hahaRB.position.x - lastPosition.x) > 2 && isMove)
+        {
+            moveHorizontalVec -= moveHorizontalVec;
+            isMove = false;
+        }
+
+        // 上下判断函数
+        //if (isUp)
         //{
-        //    Vector2 movement = Input.GetTouch(0).deltaPosition;
-        //    if (movement.x < 0)
+        //    transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        //    hahaRB.velocity = new Vector3(hahaRB.velocity.x, 0, hahaRB.velocity.z);
+        //    hahaRB.useGravity = false;
+        //}
+    }
+
+    /*
+     * 移动函数
+     */
+    public void Move(string direction)
+    {
+        Debug.Log(direction + transform.position.x + hahaRB.position.x + isMove);
+        if (direction.Equals("Left"))
+        {
+            if (transform.position.x > -4.0f && !isMove)
+            {
+                isMove = true;
+                lastPosition = transform.position;                                      // 更新我当前位置的坐标
+                Vector3 LocalPos = transform.position;                                  // 物体所处的世界坐标向量
+                Vector3 LocalForward = transform.TransformPoint(Vector3.left * 7f);     // 物体前方距离为speed的位置的世界坐标向量
+                Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
+                moveHorizontalVec = new Vector3(VecSpeed.x, VecSpeed.y, VecSpeed.z);
+            }
+        }
+        else if (direction.Equals("Right"))
+        {
+            if (transform.position.x < 4.0f && !isMove)
+            {
+                Debug.Log("Right");
+                isMove = true;
+                lastPosition = transform.position;                                      // 更新我当前位置的坐标
+                Vector3 LocalPos = transform.position;                                  // 物体所处的世界坐标向量
+                Vector3 LocalForward = transform.TransformPoint(Vector3.right * 7f);    // 物体前方距离为speed的位置的世界坐标向量
+                Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
+                moveHorizontalVec = new Vector3(VecSpeed.x, VecSpeed.y, VecSpeed.z);
+            }
+        }
+        //else if (direction.Equals("Up"))
+        //{
+        //    if (transform.position.y == 0 && !isUp && !isMove)
         //    {
-        //        if (transform.position.x > -1.0f)
-        //            transform.position = new Vector3(transform.position.x - 0.7f, transform.position.y, transform.position.z);
-        //    }
-        //    else if (movement.x > 0)
-        //    {
-        //        if (transform.position.x < 1.0f)
-        //            transform.position = new Vector3(transform.position.x + 0.7f, transform.position.y, transform.position.z);
+        //        isUp = true;
         //    }
         //}
     }
