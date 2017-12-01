@@ -6,11 +6,17 @@ public class HAHAController : MonoBehaviour
 {
     private bool isMove;                      // 判断正在左右移动
     private bool isGround;                    // 判断在地面
-    private Rigidbody hahaRB;                 // haha实体
+	private bool isPausing = false;           // 判断是否被暂停
+	private float pauseTimer;                 // pause计时器
+	private Rigidbody hahaRB;                 // haha实体
     private Vector3 lastPosition;             // 记录上一个位置
     private Vector3 moveVerticalVec;          // 纵向移动的速度
     private Vector3 moveHorizontalVec;        // 横向移动的速度
+
     public static HAHAController playerHaha;  // 玩家实例
+
+	public float accelerateSpeed = 20f;        // 加速度
+	public float forwardSpeed = 30f;           // 前进速度
 
     static public HAHAController getHaHaInstance()
     {
@@ -33,11 +39,19 @@ public class HAHAController : MonoBehaviour
 
     void moveForward()
     {
-        Vector3 LocalPos = transform.position;                                  // 物体所处的世界坐标向量
-        Vector3 LocalForward = transform.TransformPoint(Vector3.forward * 5f);    // 物体前方距离为speed的位置的世界坐标向量
-        Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
-        moveHorizontalVec = new Vector3(moveHorizontalVec.x, hahaRB.velocity.y, VecSpeed.z);
-        hahaRB.velocity = moveHorizontalVec;
+        //Vector3 LocalPos = transform.position;                                  // 物体所处的世界坐标向量
+        //Vector3 LocalForward = transform.TransformPoint(Vector3.forward * 5f);    // 物体前方距离为speed的位置的世界坐标向量
+        //Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
+        //moveHorizontalVec = new Vector3(moveHorizontalVec.x, hahaRB.velocity.y, VecSpeed.z);
+		Vector3 tempVelocity = hahaRB.velocity;
+		tempVelocity.x = moveHorizontalVec.x;
+		// 如果没有暂停，且速度不足，加速
+		if (!isPausing && Mathf.Abs (hahaRB.velocity.z - forwardSpeed) > accelerateSpeed * Time.deltaTime) {
+			tempVelocity.z += accelerateSpeed * Time.deltaTime;
+			Debug.Log (accelerateSpeed);
+		}
+		hahaRB.velocity = tempVelocity;
+		Debug.Log (hahaRB.velocity);
     }
 
     /*
@@ -56,6 +70,13 @@ public class HAHAController : MonoBehaviour
             moveHorizontalVec -= moveHorizontalVec;
             isMove = false;
         }
+
+		// Pause计时
+		if (isPausing) {
+			pauseTimer -= Time.deltaTime;
+			if (pauseTimer < 0)
+				isPausing = false;
+		}
 
         // 上下判断函数
         //if ()
@@ -115,4 +136,12 @@ public class HAHAController : MonoBehaviour
             }
         }
     }
+
+	public void pauseForMilliSeconds(float seconds) {
+		Vector3 tempVelocity = hahaRB.velocity;
+		tempVelocity.z = 0;
+		hahaRB.velocity = tempVelocity;
+		isPausing = true;
+		pauseTimer = seconds;
+	}
 }
