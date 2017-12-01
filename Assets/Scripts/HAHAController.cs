@@ -32,7 +32,7 @@ public class HAHAController : MonoBehaviour
     void moveForward()
     {
         Vector3 LocalPos = transform.position;                                  // 物体所处的世界坐标向量
-        Vector3 LocalForward = transform.TransformPoint(Vector3.forward * 1f);    // 物体前方距离为speed的位置的世界坐标向量
+        Vector3 LocalForward = transform.TransformPoint(Vector3.forward * 5f);    // 物体前方距离为speed的位置的世界坐标向量
         Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
         moveHorizontalVec = new Vector3(moveHorizontalVec.x, 0, VecSpeed.z);
         hahaRB.velocity = moveHorizontalVec;
