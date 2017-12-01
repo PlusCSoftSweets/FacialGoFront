@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HAHAController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class HAHAController : MonoBehaviour
     private Vector3 lastPosition;             // 记录上一个位置
     private Vector3 moveHorizontalVec;        // 横向移动的速度
     public static HAHAController playerHaha;  // 玩家实例
+    public Text  goldNum;
+    private int count;
 
     static public HAHAController getHaHaInstance()
     {
@@ -27,6 +30,8 @@ public class HAHAController : MonoBehaviour
         lastPosition      = transform.position;
         moveHorizontalVec = new Vector3(0, 0, 0);
         playerHaha        = this;
+        count = 0;
+        SetCountText();
     }
 
     void moveForward()
@@ -102,5 +107,19 @@ public class HAHAController : MonoBehaviour
         //        isUp = true;
         //    }
         //}
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Gold"))
+        {
+            other.gameObject.SetActive(false);
+            count = count + 1;
+            SetCountText();
+        }
+    }
+
+    void SetCountText()
+    {
+        goldNum.text = count.ToString();
     }
 }
