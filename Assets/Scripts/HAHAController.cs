@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class HAHAController : MonoBehaviour
 {
-    private bool isUp;                        // 判断正在向上
     private bool isMove;                      // 判断正在左右移动
+    private bool isGround;                    // 判断在地面
     private Rigidbody hahaRB;                 // haha实体
     private Vector3 lastPosition;             // 记录上一个位置
+    private Vector3 moveVerticalVec;          // 纵向移动的速度
     private Vector3 moveHorizontalVec;        // 横向移动的速度
     public static HAHAController playerHaha;  // 玩家实例
     public Text  goldNum;
@@ -24,10 +25,11 @@ public class HAHAController : MonoBehaviour
      */
     void Start()
     {
-        isUp              = false;
+        isGround          = true;
         isMove            = false;
         hahaRB            = GetComponent<Rigidbody>();
         lastPosition      = transform.position;
+        moveVerticalVec   = new Vector3(0, 0, 0);
         moveHorizontalVec = new Vector3(0, 0, 0);
         playerHaha        = this;
         count = 0;
@@ -39,7 +41,7 @@ public class HAHAController : MonoBehaviour
         Vector3 LocalPos = transform.position;                                  // 物体所处的世界坐标向量
         Vector3 LocalForward = transform.TransformPoint(Vector3.forward * 5f);    // 物体前方距离为speed的位置的世界坐标向量
         Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
-        moveHorizontalVec = new Vector3(moveHorizontalVec.x, 0, VecSpeed.z);
+        moveHorizontalVec = new Vector3(moveHorizontalVec.x, hahaRB.velocity.y, VecSpeed.z);
         hahaRB.velocity = moveHorizontalVec;
     }
 
@@ -61,12 +63,18 @@ public class HAHAController : MonoBehaviour
         }
 
         // 上下判断函数
-        //if (isUp)
+        //if ()
         //{
         //    transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         //    hahaRB.velocity = new Vector3(hahaRB.velocity.x, 0, hahaRB.velocity.z);
         //    hahaRB.useGravity = false;
         //}
+    }
+
+    void OnCollisionEnter(Collision collider)
+    {
+        isGround = true;
+        Debug.Log(isGround);
     }
 
     /*
@@ -100,13 +108,17 @@ public class HAHAController : MonoBehaviour
                 moveHorizontalVec = new Vector3(VecSpeed.x, VecSpeed.y, VecSpeed.z);
             }
         }
-        //else if (direction.Equals("Up"))
-        //{
-        //    if (transform.position.y == 0 && !isUp && !isMove)
-        //    {
-        //        isUp = true;
-        //    }
-        //}
+        else if (direction.Equals("Up"))
+        {
+            if (isGround && !isMove)
+            {
+                Debug.Log("Up");
+                isGround = false;
+                moveVerticalVec = new Vector3(0, 5f, 0);
+                hahaRB.velocity += moveVerticalVec;
+                hahaRB.AddForce(Vector3.up * 20);
+            }
+        }
     }
     void OnTriggerEnter(Collider other)
     {
