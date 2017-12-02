@@ -1057,6 +1057,10 @@ GameObject:
   - component: {fileID: 1063411237}
   - component: {fileID: 1063411236}
   - component: {fileID: 1063411235}
+  - component: {fileID: 1063411241}
+  - component: {fileID: 1063411240}
+  - component: {fileID: 1063411239}
+  - component: {fileID: 1063411238}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1087,7 +1091,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1063411234}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfa2e0e1f6f4a5e4396ec1b337f96af8, type: 3}
+  m_Script: {fileID: 11500000, guid: 218ed6da1f3ffcb4abebfe8003d8aff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   generateInterval: 5
@@ -1108,6 +1112,68 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1063411238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1063411234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1255cbe99a031224da69e1ec80de69bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1715228028256764, guid: 96584d32f9a6bbd4692cdfcb1794bf36, type: 2}
+  initialPoolSize: 8
+  maxPoolSize: -1
+  poolName: Magnet
+--- !u!114 &1063411239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1063411234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 218ed6da1f3ffcb4abebfe8003d8aff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  generateInterval: 7
+  rangeMinVec3: {x: -6, y: 0, z: -200}
+  rangeMaxVec3: {x: 5.5, y: 0, z: 150}
+  generatorName: Magnet
+  poolName: Magnet
+--- !u!114 &1063411240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1063411234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1255cbe99a031224da69e1ec80de69bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1984138065032770, guid: 13d64eb4eb1cc254bb2956a30fcbcd7f, type: 2}
+  initialPoolSize: 20
+  maxPoolSize: -1
+  poolName: Coin
+--- !u!114 &1063411241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1063411234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 218ed6da1f3ffcb4abebfe8003d8aff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  generateInterval: 1.5
+  rangeMinVec3: {x: -6, y: 0, z: -200}
+  rangeMaxVec3: {x: 5.5, y: 0, z: 150}
+  generatorName: Coin
+  poolName: Coin
 --- !u!1 &1070986885
 GameObject:
   m_ObjectHideFlags: 0
@@ -1133,7 +1199,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1070986885}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 259, y: 204, z: 200}
+  m_LocalPosition: {x: 540, y: 952, z: 200}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1486446371}
@@ -1708,7 +1774,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1486446368}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 325.3, y: 153.1, z: 0}
+  m_LocalPosition: {x: 606.3, y: 901.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1070986886}
@@ -1957,7 +2023,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1706889212}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29f99608603cd0e4591ac73cb941baa0, type: 3}
   m_Name: 
@@ -1969,7 +2035,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1706889212}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 096fdb090ae02014b8091a0041c70781, type: 3}
   m_Name: 

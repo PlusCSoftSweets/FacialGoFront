@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameObjectGenerator : MonoBehaviour {
+public class GameObjectIntervalGenerator : MonoBehaviour {
 
 	static Hashtable _GameObjectGenerators = new Hashtable();
 
@@ -52,7 +52,7 @@ public class GameObjectGenerator : MonoBehaviour {
 		GenerateOne (new Vector3 (x, y, z));
 	}
 
-	public static GameObjectGenerator FindGenerator(string name) {
-		return (GameObjectGenerator)_GameObjectGenerators [name];
+	public static GameObjectIntervalGenerator FindGenerator(string name) {
+		return (GameObjectIntervalGenerator)_GameObjectGenerators [name];
 	}
 }

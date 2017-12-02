@@ -73,7 +73,7 @@ public class HAHAController : MonoBehaviour
                 if (item.tag.Equals("Gold"))
                 {
                     //让金币的开始移动
-                    item.GetComponent<CoinMoveController>().isCanMove = true;
+                    item.GetComponent<CoinController>().isCanMove = true;
                 }
             }
             MagnetTime -= Time.deltaTime;
@@ -187,7 +187,7 @@ public class HAHAController : MonoBehaviour
             //设置玩家可以吸取周围的金币
             isMagnet = true;
             //销毁吸铁石
-            Destroy(other.gameObject);
+            //Destroy(other.gameObject);
         }
     }
 

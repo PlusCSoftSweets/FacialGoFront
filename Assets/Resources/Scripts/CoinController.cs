@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoinMoveController : MonoBehaviour
+public class CoinController : MonoBehaviour
 {
+	GameObjectPool pool;
+
     //金币移动的的目标
     GameObject target;
     //金币是否可以移动
@@ -13,6 +15,7 @@ public class CoinMoveController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		pool = GameObjectPool.FindPool ("Coin");
         //获取玩家
         target = GameObject.FindGameObjectWithTag("Player");
     }
@@ -33,7 +36,8 @@ public class CoinMoveController : MonoBehaviour
         if (other.tag.Equals("Player"))
         {
             //金币碰到玩家后就会销毁金币
-            Destroy(gameObject);
+            //Destroy(gameObject);
+			pool.FreeObject(gameObject);
         }
     }
 }

@@ -7,6 +7,7 @@ public class ObstacleController : MonoBehaviour {
 	private Animator animator;
 	private AnimationEvent evt;
 	private GameObjectPool pool;
+	AnimationClip clip;
 
 	// Use this for initialization
 	void Start () {
@@ -17,6 +18,8 @@ public class ObstacleController : MonoBehaviour {
 		evt.functionName = "FlyEnd";
 		evt.objectReferenceParameter = gameObject;
 		evt.time = 1;
+		clip = animator.runtimeAnimatorController.animationClips [0];
+		clip.AddEvent (evt);
 	}
 	
 	// Update is called once per frame
@@ -28,13 +31,11 @@ public class ObstacleController : MonoBehaviour {
 		if (collider.tag == "Player") {
 			collider.transform.GetComponent<HAHAController> ().pauseForMilliSeconds(1);
 			animator.SetBool ("Fly", true);
-			AnimationClip clip = animator.runtimeAnimatorController.animationClips [0];
-			clip.AddEvent (evt);
 		}
 	}
 
 	public void FlyEnd(GameObject obj) {
 		if (obj == gameObject)
-			pool.FreeObject (gameObject);
+			pool.FreeObject (gameObject.transform.parent.gameObject);
 	}
 }
