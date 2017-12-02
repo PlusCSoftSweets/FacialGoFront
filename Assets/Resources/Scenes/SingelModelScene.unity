@@ -1215,17 +1215,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inits:
-  - count: 3
+  - count: 50
     rangeMinVec3: {x: -4.5, y: 1.35, z: -180}
-    rangeMaxVec3: {x: 4.5, y: 1.35, z: 10}
+    rangeMaxVec3: {x: 4.5, y: 1.35, z: 20000}
     poolName: Obstacle
-  - count: 40
-    rangeMinVec3: {x: -6, y: 0, z: -200}
-    rangeMaxVec3: {x: 5.5, y: 0, z: 150}
+  - count: 500
+    rangeMinVec3: {x: -6, y: 0, z: -180}
+    rangeMaxVec3: {x: 5.5, y: 0, z: 20000}
     poolName: Coin
-  - count: 5
-    rangeMinVec3: {x: -6, y: 0, z: -200}
-    rangeMaxVec3: {x: 5.5, y: 0, z: 150}
+  - count: 50
+    rangeMinVec3: {x: -6, y: 0, z: -180}
+    rangeMaxVec3: {x: 5.5, y: 0, z: 20000}
     poolName: Magnet
 --- !u!1 &1070986885
 GameObject:
