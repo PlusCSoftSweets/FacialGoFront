@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HAHAController : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class HAHAController : MonoBehaviour
     private Vector3 moveHorizontalVec;        // 横向移动的速度
 
     public static HAHAController playerHaha;  // 玩家实例
+    public Text  goldNum;
+    private int count;
 
 	public float accelerateSpeed = 20f;        // 加速度
 	public float forwardSpeed = 30f;           // 前进速度
@@ -35,6 +38,8 @@ public class HAHAController : MonoBehaviour
         moveVerticalVec   = new Vector3(0, 0, 0);
         moveHorizontalVec = new Vector3(0, 0, 0);
         playerHaha        = this;
+        count = 0;
+        SetCountText();
     }
 
     void moveForward()
@@ -144,4 +149,18 @@ public class HAHAController : MonoBehaviour
 		isPausing = true;
 		pauseTimer = seconds;
 	}
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Gold"))
+        {
+            other.gameObject.SetActive(false);
+            count = count + 1;
+            SetCountText();
+        }
+    }
+
+    void SetCountText()
+    {
+        goldNum.text = count.ToString();
+    }
 }
