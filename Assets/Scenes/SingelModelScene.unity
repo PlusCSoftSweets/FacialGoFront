@@ -285,7 +285,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 351025542}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.7, y: 7.97, z: 15.55}
+  m_LocalPosition: {x: 1.81, y: 7.97, z: 15.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1177824149}
@@ -1133,7 +1133,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1070986885}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 540, y: 952, z: 200}
+  m_LocalPosition: {x: 259, y: 204, z: 200}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1486446371}
@@ -1708,7 +1708,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1486446368}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 636.8, y: 908.93, z: 0}
+  m_LocalPosition: {x: 325.3, y: 153.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1070986886}
@@ -1716,7 +1716,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 96.8, y: -51.07}
+  m_AnchoredPosition: {x: 66.3, y: -58.9}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 1, y: 1}
 --- !u!1001 &1492789064
@@ -1859,6 +1859,7 @@ GameObject:
   - component: {fileID: 1706889215}
   - component: {fileID: 1706889216}
   - component: {fileID: 1706889217}
+  - component: {fileID: 1706889218}
   m_Layer: 8
   m_Name: Forest-Race
   m_TagString: Untagged
@@ -1961,6 +1962,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f99608603cd0e4591ac73cb941baa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  haha: {fileID: 0}
+--- !u!114 &1706889218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1706889212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 096fdb090ae02014b8091a0041c70781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  haha: {fileID: 0}
 --- !u!1 &1725330346 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55,

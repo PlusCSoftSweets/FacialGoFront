@@ -8,6 +8,8 @@ TagManager:
   - Wall
   - BackGroundCamera
   - HidenTree
+  - Magnet
+  - Gold
   layers:
   - Default
   - TransparentFX

@@ -15,10 +15,12 @@ public class HAHAController : MonoBehaviour
     private Vector3 moveHorizontalVec;        // 横向移动的速度
 
     public static HAHAController playerHaha;  // 玩家实例
-    public Text  goldNum;
-    private int count;
+    public Text  goldNum;//显示金币数量的文本框
+    private int count;//金币数量
+    private bool isMagnet = false;//是否碰到磁铁
+    float MagnetTime = 10f;//磁铁生效时间
 
-	public float accelerateSpeed = 20f;        // 加速度
+    public float accelerateSpeed = 20f;        // 加速度
 	public float forwardSpeed = 30f;           // 前进速度
 
     static public HAHAController getHaHaInstance()
@@ -59,6 +61,29 @@ public class HAHAController : MonoBehaviour
 		Debug.Log (hahaRB.velocity);
     }
 
+    void Update()
+    {
+        if (isMagnet)
+        {
+            //检测以玩家为球心半径是10的范围内的所有的带有碰撞器的游戏对象
+            Collider[] colliders = Physics.OverlapSphere(this.transform.position, 10);
+            foreach (var item in colliders)
+            {
+                //如果是金币
+                if (item.tag.Equals("Gold"))
+                {
+                    //让金币的开始移动
+                    item.GetComponent<CoinMoveController>().isCanMove = true;
+                }
+            }
+            MagnetTime -= Time.deltaTime;
+            if(MagnetTime <= 0)
+            {
+                isMagnet = false;
+                MagnetTime = 10f;
+            }
+        }
+    }
     /*
      * 更新函数
      */
@@ -156,6 +181,13 @@ public class HAHAController : MonoBehaviour
             other.gameObject.SetActive(false);
             count = count + 1;
             SetCountText();
+        }
+        if (other.tag.Equals("Magnet"))
+        {
+            //设置玩家可以吸取周围的金币
+            isMagnet = true;
+            //销毁吸铁石
+            Destroy(other.gameObject);
         }
     }
 
