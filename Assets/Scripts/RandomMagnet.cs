@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RandomMagnet : MonoBehaviour {
-    float CreatTime = 4f;
+    float CreatTime = 2f;
     GameObject magnet;
     public GameObject haha;
 
@@ -21,7 +21,7 @@ public class RandomMagnet : MonoBehaviour {
             GameObject obj = (GameObject)Resources.Load("Prefabs/Magnet");    //加载预制体到内存
             magnet = Instantiate<GameObject>(obj);    //实例化金币
             magnet.transform.position = new Vector3(Random.Range(-6.0f, 5.5f), 0f, 
-                Random.Range(haha.transform.localPosition.z + 20, 150f));
+                Random.Range(-200, 150f));
         }
 
     }
