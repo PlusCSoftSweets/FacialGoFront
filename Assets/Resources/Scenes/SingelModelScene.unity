@@ -1055,12 +1055,13 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1063411237}
-  - component: {fileID: 1063411236}
   - component: {fileID: 1063411235}
-  - component: {fileID: 1063411241}
   - component: {fileID: 1063411240}
-  - component: {fileID: 1063411239}
   - component: {fileID: 1063411238}
+  - component: {fileID: 1063411236}
+  - component: {fileID: 1063411241}
+  - component: {fileID: 1063411239}
+  - component: {fileID: 1063411242}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1089,7 +1090,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1063411234}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 218ed6da1f3ffcb4abebfe8003d8aff8, type: 3}
   m_Name: 
@@ -1133,7 +1134,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1063411234}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 218ed6da1f3ffcb4abebfe8003d8aff8, type: 3}
   m_Name: 
@@ -1164,16 +1165,40 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1063411234}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 218ed6da1f3ffcb4abebfe8003d8aff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   generateInterval: 1.5
   rangeMinVec3: {x: -6, y: 0, z: -200}
-  rangeMaxVec3: {x: 5.5, y: 0, z: 150}
+  rangeMaxVec3: {x: -6, y: 0, z: 150}
   generatorName: Coin
   poolName: Coin
+--- !u!114 &1063411242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1063411234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f9f3a239a33a5643917fd9c1a8a5c61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inits:
+  - count: 3
+    rangeMinVec3: {x: -4.5, y: 1.35, z: -180}
+    rangeMaxVec3: {x: 4.5, y: 1.35, z: 10}
+    poolName: Obstacle
+  - count: 40
+    rangeMinVec3: {x: -6, y: 0, z: -200}
+    rangeMaxVec3: {x: 5.5, y: 0, z: 150}
+    poolName: Coin
+  - count: 5
+    rangeMinVec3: {x: -6, y: 0, z: -200}
+    rangeMaxVec3: {x: 5.5, y: 0, z: 150}
+    poolName: Magnet
 --- !u!1 &1070986885
 GameObject:
   m_ObjectHideFlags: 0

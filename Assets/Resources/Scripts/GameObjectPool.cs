@@ -30,7 +30,7 @@ public class GameObjectPool : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		_GameObjectPools.Add (poolName, this);
 		if (prefab == null) {
 			Debug.LogError ("No prefab error! Will DESTROY myself.");

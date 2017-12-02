@@ -18,14 +18,12 @@ public class GameObjectIntervalGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_GameObjectGenerators.Add (generatorName, this);
+		pool = GameObjectPool.FindPool (poolName);
 		Init ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		// Sequence of Start is uncertain, get pool in Update
-		if (pool == null)
-			pool = GameObjectPool.FindPool (poolName);
 
 		curTimer += Time.deltaTime;
 		if (curTimer >= generateInterval) {
