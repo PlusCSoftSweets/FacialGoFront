@@ -6,5 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SingelModelScene.unity
+    path: Assets/Resources/Scenes/SingelModelScene.unity
     guid: a04ee7d63e883f54794f0473555a92fc
+  - enabled: 1
+    path: Assets/Resources/Scenes/MirrorScene.unity
+    guid: cb0739a812c2e0147bd36fe8a7f8b2a4
