@@ -7,7 +7,7 @@ public class HAHAController : MonoBehaviour
 {
     private bool isMove;                      // 判断正在左右移动
     private bool isGround;                    // 判断在地面
-	private bool isPausing = false;           // 判断是否被暂停
+	public bool isPausing = false;           // 判断是否被暂停
 	private float pauseTimer;                 // pause计时器
 	private Rigidbody hahaRB;                 // haha实体
     private Vector3 lastPosition;             // 记录上一个位置
@@ -50,13 +50,32 @@ public class HAHAController : MonoBehaviour
         //Vector3 LocalForward = transform.TransformPoint(Vector3.forward * 5f);    // 物体前方距离为speed的位置的世界坐标向量
         //Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
         //moveHorizontalVec = new Vector3(moveHorizontalVec.x, hahaRB.velocity.y, VecSpeed.z);
-		Vector3 tempVelocity = hahaRB.velocity;
+        Debug.Log("haha" + isPausing);
+        Vector3 tempVelocity = hahaRB.velocity;
 		tempVelocity.x = moveHorizontalVec.x;
 		// 如果没有暂停，且速度不足，加速
-		if (!isPausing && Mathf.Abs (hahaRB.velocity.z - forwardSpeed) > accelerateSpeed * Time.deltaTime) {
-			tempVelocity.z += accelerateSpeed * Time.deltaTime;
-			Debug.Log (accelerateSpeed);
-		}
+		if (!isPausing) {
+            if (hahaRB.velocity.z - forwardSpeed > accelerateSpeed * Time.deltaTime)
+            {
+                tempVelocity.z -= accelerateSpeed * Time.deltaTime;
+                Debug.Log(accelerateSpeed);
+                Debug.Log(Time.deltaTime);
+                Debug.Log(tempVelocity.z);
+            }
+            else if (hahaRB.velocity.z - forwardSpeed < accelerateSpeed * Time.deltaTime)
+            {
+                tempVelocity.z += accelerateSpeed * Time.deltaTime;
+            }
+            else
+            {
+            }
+        }
+        else if (isPausing)
+        {
+            forwardSpeed = 30f;
+            accelerateSpeed = 20f;
+            tempVelocity.z = 0f;
+        }
 		hahaRB.velocity = tempVelocity;
 		Debug.Log (hahaRB.velocity);
     }

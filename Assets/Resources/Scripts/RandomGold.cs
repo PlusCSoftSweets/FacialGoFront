@@ -6,7 +6,6 @@ public class RandomGold : MonoBehaviour
 {
     float CreatTime = 1f;
     GameObject gold;
-    public GameObject haha;
 
 
     void Update()
