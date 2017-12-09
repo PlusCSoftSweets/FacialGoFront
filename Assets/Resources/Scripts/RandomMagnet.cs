@@ -5,7 +5,6 @@ using UnityEngine;
 public class RandomMagnet : MonoBehaviour {
     float CreatTime = 2f;
     GameObject magnet;
-    public GameObject haha;
 
     // Use this for initialization
     void Start () {
@@ -19,7 +18,7 @@ public class RandomMagnet : MonoBehaviour {
         {
             CreatTime = Random.Range(5f, 7f);    
             GameObject obj = (GameObject)Resources.Load("Prefabs/Magnet");    //加载预制体到内存
-            magnet = Instantiate<GameObject>(obj);    //实例化金币
+            magnet = Instantiate<GameObject>(obj);    //实例化磁铁
             magnet.transform.position = new Vector3(Random.Range(-6.0f, 5.5f), 0f, 
                 Random.Range(-200, 150f));
         }
