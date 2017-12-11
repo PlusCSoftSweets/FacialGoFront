@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PhoneCameraController : MonoBehaviour {
+public class WebCamController : MonoBehaviour {
 
 	private bool cameraAvailable;
 	private WebCamTexture frontCamera;
@@ -39,7 +39,7 @@ public class PhoneCameraController : MonoBehaviour {
 		background.texture = frontCamera;
 		cameraAvailable = true;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if (!cameraAvailable)
@@ -53,5 +53,15 @@ public class PhoneCameraController : MonoBehaviour {
 
 		int orient = -frontCamera.videoRotationAngle;
 		background.rectTransform.localEulerAngles = new Vector3 (0, 180f, orient);
+	}
+
+	public byte[] Snapshot() {
+		Texture2D snap = new Texture2D (frontCamera.width, frontCamera.height);
+
+		Color[] colors = frontCamera.GetPixels();
+		snap.SetPixels (colors);
+		snap.Apply ();
+		//return snap.EncodeToPNG ();
+		return null;
 	}
 }
