@@ -1,0 +1,91 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class MirrorSceneManager : MonoBehaviour {
+
+	public GameObject FacialGameObject;
+	public GameObject MirrorMidGameObject;
+	public GameObject WitchGameObject;
+	public GameObject PercentGameObject;
+	public WebCamController WebcamCtl;
+
+	public float FacialMoveSpeed = 500.0f;
+	public float SampleInterval = 1.0f;
+
+	private GUIStyle buttonStyle;
+	private Vector3 FacialGameObjectOriginPos;
+	private float SampleTime;
+
+	enum FacialState {
+		Stopped,
+		Moving,
+		Passed,
+		Failed
+	};
+
+	FacialState facialState = FacialState.Stopped;
+
+	void Awake() {
+		buttonStyle = new GUIStyle ("button");
+		buttonStyle.fontSize = 70;
+		FacialGameObjectOriginPos = FacialGameObject.transform.position;
+		FacialGameObject.SetActive (false);
+	}
+
+	// Use this for initialization
+	void Start () {
+		SampleTime = Time.fixedTime;
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		switch (facialState) {
+		case FacialState.Moving:
+			// Move Facial
+			Vector3 curPos = FacialGameObject.transform.position;
+			if (Vector3.Distance (curPos, MirrorMidGameObject.transform.position) < float.Epsilon) {
+				facialState = FacialState.Stopped;
+			}
+			FacialGameObject.transform.position =
+				Vector3.MoveTowards (curPos, MirrorMidGameObject.transform.position, Time.deltaTime * FacialMoveSpeed);
+
+			// Check Match
+			if (Time.fixedTime - SampleTime >= SampleInterval) {
+				SampleTime = Time.fixedTime;
+				StartCoroutine (CheckMatch ());
+			}
+			Debug.Log ("Moving");
+			break;
+		}
+	}
+
+	void OnGUI() {
+		if (GUILayout.Button ("Facial", buttonStyle)) {
+			Debug.Log ("Pressed");
+			// Facial fly out
+			if (facialState != FacialState.Moving) {
+				FacialGameObject.transform.position = FacialGameObjectOriginPos;
+				FacialGameObject.SetActive (true);
+				facialState = FacialState.Moving;
+			}
+		}
+	}
+
+	IEnumerator CheckMatch() {
+		yield return null;
+		byte[] imageBytes = WebcamCtl.Snapshot ();
+		yield return null;
+		// TODO: Use the interface to cal percent
+		float percent = Random.Range(0.0f, 80.0f);
+		PercentGameObject.GetComponent<Text> ().text = ((int)(percent)).ToString () + "%";
+	}
+}
+
+[System.Serializable]
+public class Messages {
+	enum MsgType {
+		
+	};
+};
