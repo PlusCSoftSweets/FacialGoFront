@@ -21,6 +21,6 @@ public class FollowPlayer : MonoBehaviour {
     {
         //摄像机的位置
         transform.position = new Vector3(transform.position.x, transform.position.y, m_Player.transform.position.z - Dir);
-        Debug.Log("距离" + (m_Player.transform.position.z - transform.position.z));
+        // Debug.Log("距离" + (m_Player.transform.position.z - transform.position.z));
     }
 }

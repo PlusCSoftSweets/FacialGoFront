@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,10 +13,14 @@ public class GameManager : MonoBehaviour {
 			GameObjectPool pool = GameObjectPool.FindPool (initObj.poolName);
 
 			for (int i = 0; i < initObj.count; ++i) {
-				float x = Random.Range (initObj.rangeMinVec3.x, initObj.rangeMaxVec3.x),
-				y = Random.Range (initObj.rangeMinVec3.y, initObj.rangeMaxVec3.y),
-				z = Random.Range (initObj.rangeMinVec3.z, initObj.rangeMaxVec3.z);
-				Vector3 pos = new Vector3 (x, y, z);
+				// float x = UnityEngine.Random.Range (initObj.rangeMinVec3.x, initObj.rangeMaxVec3.x),
+				float y = UnityEngine.Random.Range (initObj.rangeMinVec3.y, initObj.rangeMaxVec3.y),
+				z = UnityEngine.Random.Range (initObj.rangeMinVec3.z, initObj.rangeMaxVec3.z);
+
+                float []arr = { -4.5f, -1.6f, 1.6f, 4.5f };
+                float x = GetRandom(arr);
+
+                Vector3 pos = new Vector3 (x, y, z);
 
 				GameObject obj = pool.GetOne ();
 				obj.transform.position = pos;
@@ -23,8 +28,14 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	// Use this for initialization
-	void Start () {
+    public float GetRandom(float[] arr) {
+        System.Random ran = new System.Random();
+        int n = ran.Next(arr.Length);
+        return arr[n];
+    }
+
+    // Use this for initialization
+    void Start () {
 		Init ();
 	}
 	

@@ -11,13 +11,12 @@ public class BackgroundCollision : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("Trigger: " + collider.name + "进入！");
         if (collider.name.Equals("Tree (9)"))
         {
             //player     = GameObject.FindGameObjectWithTag("Player");
             //mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             //UICamera   = GameObject.FindGameObjectWithTag("BackGroundCamera");
-            hidenTree  = GameObject.FindGameObjectsWithTag("Tree");
+            hidenTree = GameObject.FindGameObjectsWithTag("Tree");
             //player.transform.SetPositionAndRotation(
             //    new Vector3(player.transform.position.x, player.transform.position.y, -182f),
             //    player.transform.rotation);
@@ -31,9 +30,19 @@ public class BackgroundCollision : MonoBehaviour {
                 tree.transform.SetPositionAndRotation(
                     new Vector3(tree.transform.position.x, tree.transform.position.y, tree.transform.position.z + 50),
                     tree.transform.rotation);
+            Debug.Log("Trigger: " + collider.name + "进入！");
         }
-        else if (collider.tag.Equals("HidenTree"))
+        else if (collider.tag.Equals("HidenTree")) {
             collider.gameObject.layer = 0;
-        
-    }
+        }
+        else if (collider.tag.Equals("Obstacle")) {
+            collider.gameObject.layer = 0;
+        }
+        else if (collider.tag.Equals("Gold")) {
+            collider.gameObject.layer = 0;
+        }
+        else if (collider.tag.Equals("Magnet")) {
+            collider.gameObject.layer = 0;
+        }
+     }
 }

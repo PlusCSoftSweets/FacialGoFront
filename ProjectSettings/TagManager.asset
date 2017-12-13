@@ -10,6 +10,7 @@ TagManager:
   - HidenTree
   - Magnet
   - Gold
+  - Obstacle
   layers:
   - Default
   - TransparentFX

@@ -32,16 +32,27 @@ public class DoorClick : MonoBehaviour {
     {
         float dis = Random.Range(-300f, 300f);//前进或者后退300以内
         Vector3 target = Vector3.zero;
+        // 获取所有的树和相机
+        GameObject[] trees = GameObject.FindGameObjectsWithTag("Tree");
+        GameObject camera = GameObject.FindGameObjectWithTag("BackGroundCamera");
+
         if (haha.transform.position.z + dis < -200)
         {
-            target = new Vector3(haha.transform.position.x, haha.transform.position.y, -200);
-            dis = -200f - haha.transform.position.z;
+            // target = new Vector3(haha.transform.position.x, haha.transform.position.y, -200);
+            // dis = -200f - haha.transform.position.z;
+            dis = -200 - haha.transform.position.z;
+            target = new Vector3(0, 0, dis);
         }
         else
         {
-            target = new Vector3(haha.transform.position.x, haha.transform.position.y, haha.transform.position.z + dis);
+            // target = new Vector3(haha.transform.position.x, haha.transform.position.y, haha.transform.position.z + dis);
+            target = new Vector3(0, 0, dis);
         }
-        haha.transform.position = target;
+        haha.transform.position += target;
+        foreach (GameObject tree in trees) {
+            tree.transform.position += target;
+        }
+
         if (dis > 0){
             moveText.text = "你前进了" + (int)dis + "米！";
         }
@@ -49,5 +60,8 @@ public class DoorClick : MonoBehaviour {
             moveText.text = "你后退了" + (int)(-dis) + "米！";
         }
         isClick = true;
+
+        
+
     }
 }

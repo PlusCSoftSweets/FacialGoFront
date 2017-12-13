@@ -32,10 +32,17 @@ public class ForwardDoorClick : MonoBehaviour {
     }
     public void ButtonClick()
     {
-        float dis = Random.Range(0f, 300f);//前进或者后退300以内
-        Vector3 target = new Vector3(haha.transform.position.x, haha.transform.position.y, haha.transform.position.z + dis);
-        haha.transform.position = target;
+        // 获取所有的树和相机
+        GameObject[] trees = GameObject.FindGameObjectsWithTag("Tree");
+        GameObject camera = GameObject.FindGameObjectWithTag("BackGroundCamera");
+
+        //前进或者后退300以内
+        float dis = Random.Range(0f, 300f);
+        Vector3 target = new Vector3(0, 0, dis);
+        haha.transform.position += target;
         moveText.text = "你前进了" + (int)dis + "米！";
         isClick = true;
+        foreach (GameObject tree in trees)
+            tree.transform.position += target;
     }
 }
