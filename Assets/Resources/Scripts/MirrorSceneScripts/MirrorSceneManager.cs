@@ -78,14 +78,15 @@ public class MirrorSceneManager : MonoBehaviour {
 		byte[] imageBytes = WebcamCtl.Snapshot ();
 		yield return null;
 		// TODO: Use the interface to cal percent
+		// Here is just a simple test to UnityThreadHelper
+		var thread = UnityThreadHelper.CreateThread(()=>{
+			System.Threading.Thread.Sleep(1000);
+			UnityThreadHelper.Dispatcher.Dispatch(()=>{
+				Vector3 scale = FacialGameObject.transform.localScale;
+				FacialGameObject.transform.localScale = scale * 2;
+			});
+		});
 		float percent = Random.Range(0.0f, 80.0f);
 		PercentGameObject.GetComponent<Text> ().text = ((int)(percent)).ToString () + "%";
 	}
 }
-
-[System.Serializable]
-public class Messages {
-	enum MsgType {
-		
-	};
-};
