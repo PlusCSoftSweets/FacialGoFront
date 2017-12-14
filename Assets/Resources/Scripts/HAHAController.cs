@@ -8,7 +8,8 @@ public class HAHAController : MonoBehaviour
     private bool isMove;                      // 判断正在左右移动
     private bool isGround;                    // 判断在地面
 	public bool isPausing = false;            // 判断是否被暂停
-	private float pauseTimer;                 // pause计时器
+    public bool isReverse = false;            // 判断是否转置
+    private float pauseTimer;                 // pause计时器
 	private Rigidbody hahaRB;                 // haha实体
     private Vector3 lastPosition;             // 记录上一个位置
     private Vector3 moveVerticalVec;          // 纵向移动的速度
@@ -35,6 +36,7 @@ public class HAHAController : MonoBehaviour
     {
         isGround          = true;
         isMove            = false;
+        isReverse         = false;
         hahaRB            = GetComponent<Rigidbody>();
         lastPosition      = transform.position;
         moveVerticalVec   = new Vector3(0, 0, 0);
@@ -145,44 +147,54 @@ public class HAHAController : MonoBehaviour
     /*
      * 移动函数
      */
-    public void Move(string direction)
-    {
-        // Debug.Log(direction + transform.position.x + hahaRB.position.x + isMove);
-        if (direction.Equals("Left"))
-        {
-            if (transform.position.x > -4.0f && !isMove)
-            {
-                isMove = true;
-                lastPosition = transform.position;                                      // 更新我当前位置的坐标
-                Vector3 LocalPos = transform.position;                                  // 物体所处的世界坐标向量
-                Vector3 LocalForward = transform.TransformPoint(Vector3.left * 7f);     // 物体前方距离为speed的位置的世界坐标向量
-                Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
-                moveHorizontalVec = new Vector3(VecSpeed.x, VecSpeed.y, VecSpeed.z);
-            }
+    public void Move(string direction) {
+        if (direction.Equals("Left")) {
+            if (!isReverse)
+                leftMoving();
+            else
+                rightMoving();
+            
         }
-        else if (direction.Equals("Right"))
-        {
-            if (transform.position.x < 4.0f && !isMove)
-            {
-                // Debug.Log("Right");
-                isMove = true;
-                lastPosition = transform.position;                                      // 更新我当前位置的坐标
-                Vector3 LocalPos = transform.position;                                  // 物体所处的世界坐标向量
-                Vector3 LocalForward = transform.TransformPoint(Vector3.right * 7f);    // 物体前方距离为speed的位置的世界坐标向量
-                Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
-                moveHorizontalVec = new Vector3(VecSpeed.x, VecSpeed.y, VecSpeed.z);
-            }
+        else if (direction.Equals("Right")) {
+            if (!isReverse)
+                rightMoving();
+            else
+                leftMoving();
         }
-        else if (direction.Equals("Up"))
-        {
-            if (isGround && !isMove)
-            {
-                // Debug.Log("Up");
-                isGround = false;
-                moveVerticalVec = new Vector3(0, 10f, 0);
-                hahaRB.velocity += moveVerticalVec;
-                hahaRB.AddForce(Vector3.up * 100);
-            }
+        else if (direction.Equals("Up")) {
+            jump();
+        }
+    }
+
+    private void leftMoving() {
+        if (transform.position.x > -4.0f && !isMove) {
+            isMove = true;
+            lastPosition = transform.position;                                      // 更新我当前位置的坐标
+            Vector3 LocalPos = transform.position;                                  // 物体所处的世界坐标向量
+            Vector3 LocalForward = transform.TransformPoint(Vector3.left * 7f);     // 物体前方距离为speed的位置的世界坐标向量
+            Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
+            moveHorizontalVec = new Vector3(VecSpeed.x, VecSpeed.y, VecSpeed.z);
+        }
+    }
+
+    private void rightMoving() {
+        if (transform.position.x < 4.0f && !isMove) {
+            isMove = true;
+            lastPosition = transform.position;                                      // 更新我当前位置的坐标
+            Vector3 LocalPos = transform.position;                                  // 物体所处的世界坐标向量
+            Vector3 LocalForward = transform.TransformPoint(Vector3.right * 7f);    // 物体前方距离为speed的位置的世界坐标向量
+            Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
+            moveHorizontalVec = new Vector3(VecSpeed.x, VecSpeed.y, VecSpeed.z);
+        }
+        
+    }
+
+    private void jump() {
+        if (isGround && !isMove) {
+            isGround = false;
+            moveVerticalVec = new Vector3(0, 10f, 0);
+            hahaRB.velocity += moveVerticalVec;
+            hahaRB.AddForce(Vector3.up * 100);
         }
     }
 
@@ -193,16 +205,14 @@ public class HAHAController : MonoBehaviour
 		isPausing = true;
 		pauseTimer = seconds;
 	}
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Gold"))
-        {
+
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("Gold")) {
             other.gameObject.SetActive(false);
             count = count + 1;
             SetCountText();
         }
-        if (other.tag.Equals("Magnet"))
-        {
+        if (other.tag.Equals("Magnet")) {
             //设置玩家可以吸取周围的金币
             isMagnet = true;
             //销毁吸铁石
@@ -210,8 +220,7 @@ public class HAHAController : MonoBehaviour
         }
     }
 
-    void SetCountText()
-    {
+    void SetCountText() {
         goldNum.text = count.ToString();
     }
 }

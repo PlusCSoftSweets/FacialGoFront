@@ -30,7 +30,7 @@ public class BackgroundCollision : MonoBehaviour {
                 tree.transform.SetPositionAndRotation(
                     new Vector3(tree.transform.position.x, tree.transform.position.y, tree.transform.position.z + 50),
                     tree.transform.rotation);
-            Debug.Log("Trigger: " + collider.name + "进入！");
+            // Debug.Log("Trigger: " + collider.name + "进入！");
         }
         else if (collider.tag.Equals("HidenTree")) {
             collider.gameObject.layer = 0;
