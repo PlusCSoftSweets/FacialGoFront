@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class AcceletatorClick : MonoBehaviour {
@@ -9,37 +10,74 @@ public class AcceletatorClick : MonoBehaviour {
     public float forwardSpeed = 30f;           // 前进速度
     public float targetSpeed = 200f;//加速器能够到达的最大速度
     float CreatTime = 15f;
-    private bool isSpeed = false;
+    private int isSpeed = 2;
     bool isClick = false;
+    float DispearTime = 3f;
+    Rigidbody rb;
+
+    // Loading Bar
+    public GameObject LoadingBar;
+    [SerializeField] private float currentAmount;
+    [SerializeField] private float timeSpeed;
 
     // Use this for initialization
     void Start () {
+        rb = haha.GetComponent<Rigidbody>();
+
+        // Loading Bar Init
+        timeSpeed = 1 / CreatTime;
+        currentAmount = 1;
 	}
 	
 	
-	void FixedUpdate () {
+	void Update () {
         if (isClick)
         {
-            CreatTime = 15f;
             GameObject obj = (GameObject)Resources.Load("Prefabs/Accelerator");    //加载预制体到内存
             accelerator = Instantiate<GameObject>(obj);    //实例化加速器
-            accelerator.transform.position = new Vector3(0, 10f, haha.transform.position.z);//动画效果
+           
+            Vector3 start = new Vector3(0, haha.transform.position.y, haha.transform.position.z);
+            accelerator.transform.position = start;
+            Rigidbody rb = accelerator.GetComponent<Rigidbody>();
+            Vector3 temp = rb.velocity;
+            temp.z = 200f;
+            temp.y = 20f;
+            rb.velocity = temp;
+            DispearTime -= Time.deltaTime;
+            Debug.Log("加速器");
             haha.GetComponent<HAHAController>().forwardSpeed = targetSpeed;
-            isSpeed = true;
+            isSpeed = 1;
             isClick = false;
         }
-        if (isSpeed)
+        if (isSpeed == 1)
         {
-            CreatTime -= Time.deltaTime;//加速5秒
+            // Loading Bar
+            currentAmount -= timeSpeed * Time.deltaTime;
+            LoadingBar.GetComponent<Image>().fillAmount = currentAmount;
+
+            CreatTime -= Time.deltaTime;//加速时间
+            if(CreatTime <= 12)
+            {
+                if(accelerator != null)
+                {
+                    Destroy(accelerator);
+                }
+            }
             if (CreatTime <= 0)
             {
                 haha.GetComponent<HAHAController>().forwardSpeed = forwardSpeed;
-                isSpeed = false;
+                isSpeed = 0;
+                CreatTime = 15f;
+                currentAmount = 1;
+                LoadingBar.GetComponent<Image>().fillAmount = 0;
             }
         }
     }
+
      public void ButtonClick() {
-        isClick = true;
-     }
+        if ((isSpeed == 0 || isSpeed == 2) && CreatTime == 15f) {
+            isClick = true;
+        }
+    }
 
 }
