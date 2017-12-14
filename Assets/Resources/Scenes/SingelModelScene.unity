@@ -1715,6 +1715,7 @@ GameObject:
   - component: {fileID: 1177824147}
   - component: {fileID: 1177824146}
   - component: {fileID: 1177824150}
+  - component: {fileID: 1177824151}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1798,6 +1799,53 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Player: {fileID: 0}
+--- !u!114 &1177824151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1177824145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -923714165, guid: 19b0cf21764734b05961b2e048d1c7c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _blurMode: 0
+  _reuseDepth: 0
+  _rerenderResolution: 1
+  _highPrecsion: 0
+  settings:
+    downsampleSteps: 2
+    baseResolution: 4
+    downsampleResolution: 4
+    iterations: 3
+    blurSpread: 0.6
+    innerStrength: 1
+    outerStrength: 1
+    boostStrength: 1
+    blendMode: 0
+    downsampleBlendMode: 100
+    falloff:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    falloffScale: 1
+    radius: 4
+    normalize: 1
 --- !u!4 &1203480489 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4153978622396154, guid: 803c7db6a11cd484aa66080565911c55,
@@ -2687,6 +2735,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7ccf0fee980141478d6a7d7f663f2ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  localPosition: {x: 0, y: 0, z: 0}
+  localRotation: {x: 0, y: 0, z: 0, w: 0}
+  localScale: {x: 0, y: 0, z: 0}
+  parent: {fileID: 0}
 --- !u!1001 &2021479740
 Prefab:
   m_ObjectHideFlags: 0
@@ -2766,6 +2818,7 @@ GameObject:
   - component: {fileID: 2074301699}
   - component: {fileID: 2074301700}
   - component: {fileID: 2074301701}
+  - component: {fileID: 2074301702}
   m_Layer: 0
   m_Name: HAHA
   m_TagString: Player
@@ -2804,7 +2857,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f9d5abcedb2a1594b93ce6abf7305066, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2917,6 +2970,28 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2074301702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2074301694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cca0a3ae195e6549816e9fbca6a28e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sample: 0.858
+  spread: 0.897
+  iteration: 1
+  intensity: 9.54
+  outlineColor:
+    r: 1
+    g: 1
+    b: 0.072
+    a: 1
+  cullingMask:
+    m_Bits: 4294967295
 --- !u!1 &2125380027
 GameObject:
   m_ObjectHideFlags: 0
