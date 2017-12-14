@@ -2735,10 +2735,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7ccf0fee980141478d6a7d7f663f2ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   localPosition: {x: 0, y: 0, z: 0}
   localRotation: {x: 0, y: 0, z: 0, w: 0}
   localScale: {x: 0, y: 0, z: 0}
   parent: {fileID: 0}
+=======
+>>>>>>> master
 --- !u!1001 &2021479740
 Prefab:
   m_ObjectHideFlags: 0
