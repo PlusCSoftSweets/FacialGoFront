@@ -23,6 +23,7 @@ public class HAHAController : MonoBehaviour
 
     public float accelerateSpeed = 20f;       // 加速度
 	public float forwardSpeed = 30f;          // 前进速度
+    SpriteRenderer renderer;
 
     static public HAHAController getHaHaInstance()
     {
@@ -44,6 +45,7 @@ public class HAHAController : MonoBehaviour
         playerHaha        = this;
         count = 0;
         SetCountText();
+        renderer = GetComponent<SpriteRenderer>();
     }
 
     void moveForward()
@@ -102,6 +104,7 @@ public class HAHAController : MonoBehaviour
             {
                 isMagnet = false;
                 MagnetTime = 10f;
+                renderer.material = (Material)Resources.Load("Materials/init_haha");
             }
         }
     }
@@ -217,6 +220,7 @@ public class HAHAController : MonoBehaviour
             isMagnet = true;
             //销毁吸铁石
             //Destroy(other.gameObject);
+            renderer.material = (Material)Resources.Load("Materials/haha");
         }
     }
 
