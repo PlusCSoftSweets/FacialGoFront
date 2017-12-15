@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class AcceletatorClick : MonoBehaviour {
@@ -14,9 +15,18 @@ public class AcceletatorClick : MonoBehaviour {
     float DispearTime = 3f;
     Rigidbody rb;
 
+    // Loading Bar
+    public GameObject LoadingBar;
+    [SerializeField] private float currentAmount;
+    [SerializeField] private float timeSpeed;
+
     // Use this for initialization
     void Start () {
         rb = haha.GetComponent<Rigidbody>();
+
+        // Loading Bar Init
+        timeSpeed = 1 / CreatTime;
+        currentAmount = 1;
 	}
 	
 	
@@ -41,6 +51,10 @@ public class AcceletatorClick : MonoBehaviour {
         }
         if (isSpeed == 1)
         {
+            // Loading Bar
+            currentAmount -= timeSpeed * Time.deltaTime;
+            LoadingBar.GetComponent<Image>().fillAmount = currentAmount;
+
             CreatTime -= Time.deltaTime;//加速时间
             if(CreatTime <= 12)
             {
@@ -54,15 +68,16 @@ public class AcceletatorClick : MonoBehaviour {
                 haha.GetComponent<HAHAController>().forwardSpeed = forwardSpeed;
                 isSpeed = 0;
                 CreatTime = 15f;
+                currentAmount = 1;
+                LoadingBar.GetComponent<Image>().fillAmount = 0;
             }
         }
     }
+
      public void ButtonClick() {
-        if ((isSpeed == 0 || isSpeed == 2) && CreatTime == 15f)
-        {
+        if ((isSpeed == 0 || isSpeed == 2) && CreatTime == 15f) {
             isClick = true;
         }
-        
-     }
+    }
 
 }
