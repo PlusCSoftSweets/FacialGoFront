@@ -68,6 +68,7 @@ fixed4 _Color;
 v2f vert( appdata_color v )
 {
     v2f o;
+    UNITY_INITIALIZE_OUTPUT(v2f, o);
     o.pos = UnityObjectToClipPos(v.vertex);
     
     #if GLOW11_GLOW_MAINTEX || ALPHA
