@@ -28,6 +28,8 @@ public class MirroController : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player")) {
+            Global.instance.coinNumber = HAHAController.getHaHaInstance().count;
+            Global.instance.currentScene++;
             SceneManager.LoadScene("MirrorScene");
         }
     }
