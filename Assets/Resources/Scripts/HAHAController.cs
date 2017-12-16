@@ -15,10 +15,10 @@ public class HAHAController : MonoBehaviour
     private Vector3 lastPosition;             // 记录上一个位置
     private Vector3 moveVerticalVec;          // 纵向移动的速度
     private Vector3 moveHorizontalVec;        // 横向移动的速度
+    public int count;                        // 金币数量
 
     public static HAHAController playerHaha;  // 玩家实例
-    public Text  goldNum;                     // 显示金币数量的文本框
-    private int count;                        // 金币数量
+    public Text goldNum;                     // 显示金币数量的文本框
     private bool isMagnet = false;            // 是否碰到磁铁
     float MagnetTime = 10f;                   // 磁铁生效时间
 
@@ -43,7 +43,7 @@ public class HAHAController : MonoBehaviour
         moveVerticalVec   = new Vector3(0, 0, 0);
         moveHorizontalVec = new Vector3(0, 0, 0);
         playerHaha        = this;
-        count = 0;
+        count = Global.instance.coinNumber;
         SetCountText();
         renderer = GetComponent<SpriteRenderer>();
         m_MyAudioSource = GetComponents<AudioSource>();
