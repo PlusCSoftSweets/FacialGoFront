@@ -24,6 +24,7 @@ public class HAHAController : MonoBehaviour
     public float accelerateSpeed = 20f;       // 加速度
 	public float forwardSpeed = 30f;          // 前进速度
     SpriteRenderer renderer;
+    AudioSource[] m_MyAudioSource = new AudioSource[3];
 
     static public HAHAController getHaHaInstance()
     {
@@ -46,6 +47,7 @@ public class HAHAController : MonoBehaviour
         count = 0;
         SetCountText();
         renderer = GetComponent<SpriteRenderer>();
+        m_MyAudioSource = GetComponents<AudioSource>();
     }
 
     void moveForward()
@@ -214,6 +216,7 @@ public class HAHAController : MonoBehaviour
             other.gameObject.SetActive(false);
             count = count + 1;
             SetCountText();
+            m_MyAudioSource[0].Play();
         }
         if (other.tag.Equals("Magnet")) {
             //设置玩家可以吸取周围的金币
@@ -221,6 +224,7 @@ public class HAHAController : MonoBehaviour
             //销毁吸铁石
             //Destroy(other.gameObject);
             renderer.material = (Material)Resources.Load("Materials/haha");
+            m_MyAudioSource[1].Play();
         }
     }
 
