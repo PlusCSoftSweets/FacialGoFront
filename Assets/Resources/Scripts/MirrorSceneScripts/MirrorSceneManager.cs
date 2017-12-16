@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MirrorSceneManager : MonoBehaviour {
 
@@ -60,6 +61,8 @@ public class MirrorSceneManager : MonoBehaviour {
 					facialState = FacialState.Failed;
 				if (CurFaceIndex < Faces.Length)
 					StartCoroutine (WaitAndNextFace ());
+				else
+					SceneManager.LoadScene("SingelModelScene");
 			}
 			FacialGameObject.transform.position =
 				Vector3.MoveTowards (curPos, MirrorMidGameObject.transform.position, Time.deltaTime * FacialMoveSpeed);
@@ -124,7 +127,6 @@ public class MirrorSceneManager : MonoBehaviour {
 	void StartFaceMove() {
 		if (CurFaceIndex >= Faces.Length) {
 			Debug.Log ("No next face");
-			// TODO: Add go back (to the race scene) logic here
 			return;
 		}
 		FacialGameObject.GetComponent<RawImage> ().texture = Faces [CurFaceIndex];
