@@ -27,7 +27,7 @@ public class MirrorSceneManager : MonoBehaviour {
 
 	FacialState facialState = FacialState.Stopped;
 
-	void Awake() {
+	public void Awake() {
 		buttonStyle = new GUIStyle ("button");
 		buttonStyle.fontSize = 70;
 		FacialGameObjectOriginPos = FacialGameObject.transform.position;
@@ -76,9 +76,11 @@ public class MirrorSceneManager : MonoBehaviour {
 	IEnumerator CheckMatch() {
 		yield return null;
 		byte[] imageBytes = WebcamCtl.Snapshot ();
+        int face_number = 0;
 		yield return null;
 		// TODO: Use the interface to cal percent
 		// Here is just a simple test to UnityThreadHelper
+
 		var thread = UnityThreadHelper.CreateThread(()=>{
 			System.Threading.Thread.Sleep(1000);
 			UnityThreadHelper.Dispatcher.Dispatch(()=>{
@@ -86,7 +88,7 @@ public class MirrorSceneManager : MonoBehaviour {
 				FacialGameObject.transform.localScale = scale * 2;
 			});
 		});
-		float percent = Random.Range(0.0f, 80.0f);
+		double percent = FaceDiscr.uniqueInstance.Discriminent(imageBytes,face_number);
 		PercentGameObject.GetComponent<Text> ().text = ((int)(percent)).ToString () + "%";
 	}
 }
