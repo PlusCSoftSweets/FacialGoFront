@@ -9,10 +9,12 @@ public class TransButtonClick : MonoBehaviour {
     GameObject rotator;
     public GameObject m_Player;  //要跟随的物体
     int rotatingSpeed = 15;
+    AudioSource[] m_MyAudioSource = new AudioSource[1];
 
     void Start()
     {
         m_Player = GameObject.FindGameObjectWithTag("Player");
+        m_MyAudioSource = GetComponents<AudioSource>();
     }
 
     // Update is called once per frame
@@ -34,6 +36,7 @@ public class TransButtonClick : MonoBehaviour {
             player.isReverse = true;
             time = 10;
             isClick = true;
+            m_MyAudioSource[0].Play();
             GameObject obj = (GameObject)Resources.Load("Prefabs/Rotator");    //加载预制体到内存
             rotator = Instantiate<GameObject>(obj);    //实例化加速器
         }

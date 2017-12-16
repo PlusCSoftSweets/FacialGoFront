@@ -19,6 +19,7 @@ public class AcceletatorClick : MonoBehaviour {
     public GameObject LoadingBar;
     [SerializeField] private float currentAmount;
     [SerializeField] private float timeSpeed;
+    AudioSource[] m_MyAudioSource = new AudioSource[1];
 
     // Use this for initialization
     void Start () {
@@ -27,7 +28,8 @@ public class AcceletatorClick : MonoBehaviour {
         // Loading Bar Init
         timeSpeed = 1 / CreatTime;
         currentAmount = 1;
-	}
+        m_MyAudioSource = GetComponents<AudioSource>();
+    }
 	
 	
 	void Update () {
@@ -77,6 +79,7 @@ public class AcceletatorClick : MonoBehaviour {
      public void ButtonClick() {
         if ((isSpeed == 0 || isSpeed == 2) && CreatTime == 15f) {
             isClick = true;
+            m_MyAudioSource[0].Play();
         }
     }
 
