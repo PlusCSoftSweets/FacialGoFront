@@ -21,10 +21,13 @@ public class FaceDiscr : MonoBehaviour
 
     public void Awake()
     {
-        if (uniqueInstance == null)
-            uniqueInstance = this;
-        else
-            Debug.LogError("Multiple instance is not allowed");
+		if (uniqueInstance == null) {
+			uniqueInstance = this;
+			DontDestroyOnLoad (uniqueInstance);
+		} else {
+			Debug.LogError ("Multiple instance is not allowed");
+			Destroy (this);
+		}
     }
 
     private int maxPointNum;

@@ -55,13 +55,12 @@ public class WebCamController : MonoBehaviour {
 		background.rectTransform.localEulerAngles = new Vector3 (0, 180f, orient);
 	}
 
-	public byte[] Snapshot() {
+	public Texture2D Snapshot() {
 		Texture2D snap = new Texture2D (frontCamera.width, frontCamera.height);
 
 		Color[] colors = frontCamera.GetPixels();
 		snap.SetPixels (colors);
 		snap.Apply ();
-		//return snap.EncodeToPNG ();
-		return null;
+		return snap;
 	}
 }

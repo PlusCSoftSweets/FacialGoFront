@@ -10,6 +10,10 @@ public class MirrorSceneManager : MonoBehaviour {
 	public GameObject WitchGameObject;
 	public GameObject PercentGameObject;
 	public WebCamController WebcamCtl;
+	public GameObject PassedOrFailedLabel;
+	public Texture[] Faces;
+
+	private int CurFaceIndex = 0;
 
 	public float FacialMoveSpeed = 500.0f;
 	public float SampleInterval = 1.0f;
@@ -17,6 +21,8 @@ public class MirrorSceneManager : MonoBehaviour {
 	private GUIStyle buttonStyle;
 	private Vector3 FacialGameObjectOriginPos;
 	private float SampleTime;
+
+	double percent = 0.0;
 
 	enum FacialState {
 		Stopped,
@@ -37,6 +43,7 @@ public class MirrorSceneManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		SampleTime = Time.fixedTime;
+		StartFaceMove ();
 	}
 	
 	// Update is called once per frame
@@ -46,7 +53,13 @@ public class MirrorSceneManager : MonoBehaviour {
 			// Move Facial
 			Vector3 curPos = FacialGameObject.transform.position;
 			if (Vector3.Distance (curPos, MirrorMidGameObject.transform.position) < float.Epsilon) {
-				facialState = FacialState.Stopped;
+				//facialState = FacialState.Stopped;
+				if (percent > 75.0)
+					facialState = FacialState.Passed;
+				else
+					facialState = FacialState.Failed;
+				if (CurFaceIndex < Faces.Length)
+					StartCoroutine (WaitAndNextFace ());
 			}
 			FacialGameObject.transform.position =
 				Vector3.MoveTowards (curPos, MirrorMidGameObject.transform.position, Time.deltaTime * FacialMoveSpeed);
@@ -56,39 +69,71 @@ public class MirrorSceneManager : MonoBehaviour {
 				SampleTime = Time.fixedTime;
 				StartCoroutine (CheckMatch ());
 			}
-			Debug.Log ("Moving");
 			break;
+		}
+
+		// GUI
+		Debug.Log (facialState);
+		if (facialState == FacialState.Passed) {
+			if (PassedOrFailedLabel.activeSelf == false) {
+				PassedOrFailedLabel.GetComponent<Text> ().text = "PASSED!";
+				PassedOrFailedLabel.SetActive (true);
+			}
+		} else if (facialState == FacialState.Failed) {
+			if (PassedOrFailedLabel.activeSelf == false) {
+				PassedOrFailedLabel.GetComponent<Text> ().text = "FAILED!";
+				PassedOrFailedLabel.SetActive (true);
+			}
+		} else if (PassedOrFailedLabel.activeSelf == true) {
+			PassedOrFailedLabel.SetActive (false);
 		}
 	}
 
 	void OnGUI() {
-		if (GUILayout.Button ("Facial", buttonStyle)) {
-			Debug.Log ("Pressed");
-			// Facial fly out
-			if (facialState != FacialState.Moving) {
-				FacialGameObject.transform.position = FacialGameObjectOriginPos;
-				FacialGameObject.SetActive (true);
-				facialState = FacialState.Moving;
-			}
-		}
 	}
 
 	IEnumerator CheckMatch() {
 		yield return null;
-		byte[] imageBytes = WebcamCtl.Snapshot ();
+		Texture2D texture = WebcamCtl.Snapshot ();
         int face_number = 0;
 		yield return null;
-		// TODO: Use the interface to cal percent
-		// Here is just a simple test to UnityThreadHelper
+
+		double rand = Random.Range (50f, 90f);
+
+		// TODO: EncodeTo can be only called in main thread, consider a way to make it in other thread
+		//byte[] imageBytes = texture.EncodeToPNG();
 
 		var thread = UnityThreadHelper.CreateThread(()=>{
-			System.Threading.Thread.Sleep(1000);
+			// TODO: Use the real interface to cal percent
+			percent = rand;
+
+			//percent = FaceDiscr.uniqueInstance.Discriminent(imageBytes,face_number);
+			//Debug.Log(percent);
 			UnityThreadHelper.Dispatcher.Dispatch(()=>{
-				Vector3 scale = FacialGameObject.transform.localScale;
-				FacialGameObject.transform.localScale = scale * 2;
+				PercentGameObject.GetComponent<Text> ().text = ((int)(percent)).ToString () + "%";
 			});
 		});
-		double percent = FaceDiscr.uniqueInstance.Discriminent(imageBytes,face_number);
-		PercentGameObject.GetComponent<Text> ().text = ((int)(percent)).ToString () + "%";
+		//thread.Start ();
+	}
+
+	IEnumerator WaitAndNextFace() {
+		yield return new WaitForSeconds (1);
+		StartFaceMove ();
+	}
+
+	void StartFaceMove() {
+		if (CurFaceIndex >= Faces.Length) {
+			Debug.Log ("No next face");
+			// TODO: Add go back (to the race scene) logic here
+			return;
+		}
+		FacialGameObject.GetComponent<RawImage> ().texture = Faces [CurFaceIndex];
+		CurFaceIndex++;
+		// Facial fly out
+		if (facialState != FacialState.Moving) {
+			FacialGameObject.transform.position = FacialGameObjectOriginPos;
+			FacialGameObject.SetActive (true);
+			facialState = FacialState.Moving;
+		}
 	}
 }

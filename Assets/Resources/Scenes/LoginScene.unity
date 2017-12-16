@@ -733,6 +733,7 @@ GameObject:
   m_Component:
   - component: {fileID: 881232501}
   - component: {fileID: 881232502}
+  - component: {fileID: 881232503}
   m_Layer: 0
   m_Name: LoginSceneManager
   m_TagString: Untagged
@@ -762,6 +763,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: efb86f2f4a3d0fb45b4a8cca3f474db5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &881232503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 881232500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccb6ecddedd783c43bf1f5e480d6b8ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &932434000
