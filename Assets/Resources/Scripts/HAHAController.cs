@@ -24,11 +24,8 @@ public class HAHAController : MonoBehaviour
     public float accelerateSpeed = 20f;       // 加速度
 	public float forwardSpeed = 30f;          // 前进速度
     SpriteRenderer renderer;
-<<<<<<< HEAD
     AudioSource[] m_MyAudioSource = new AudioSource[2];
-=======
-    AudioSource[] m_MyAudioSource = new AudioSource[3];
->>>>>>> master
+
 
     static public HAHAController getHaHaInstance()
     {
