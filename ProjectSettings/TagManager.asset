@@ -11,6 +11,7 @@ TagManager:
   - Magnet
   - Gold
   - Obstacle
+  - Mirror
   layers:
   - Default
   - TransparentFX

@@ -44,5 +44,8 @@ public class BackgroundCollision : MonoBehaviour {
         else if (collider.tag.Equals("Magnet")) {
             collider.gameObject.layer = 0;
         }
+        else if (collider.tag.Equals("Mirror")) {
+            collider.gameObject.layer = 0;
+        }
      }
 }
