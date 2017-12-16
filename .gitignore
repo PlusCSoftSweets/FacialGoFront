@@ -31,3 +31,4 @@ ehthumbs.db
 Thumbs.db
 
 *.apk
+.vs/FacialGoFront/v15/sqlite3/db.lock
