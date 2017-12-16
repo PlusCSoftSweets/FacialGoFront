@@ -8,9 +8,10 @@ public class ObstacleController : MonoBehaviour {
 	private AnimationEvent evt;
 	private GameObjectPool pool;
 	AnimationClip clip;
+    AudioSource[] m_MyAudioSource = new AudioSource[1];
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		animator = GetComponent<Animator> ();
 		pool = GameObjectPool.FindPool ("Obstacle");
 
@@ -20,7 +21,8 @@ public class ObstacleController : MonoBehaviour {
 		evt.time = 1;
 		clip = animator.runtimeAnimatorController.animationClips [0];
 		clip.AddEvent (evt);
-	}
+        m_MyAudioSource = GetComponents<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -31,7 +33,8 @@ public class ObstacleController : MonoBehaviour {
 		if (collider.tag == "Player") {
 			collider.transform.GetComponent<HAHAController> ().pauseForMilliSeconds(1);
 			animator.SetBool ("Fly", true);
-		}
+            m_MyAudioSource[0].Play();
+        }
 	}
 
 	public void FlyEnd(GameObject obj) {
