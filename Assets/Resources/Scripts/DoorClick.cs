@@ -9,11 +9,12 @@ public class DoorClick : MonoBehaviour {
     public Text moveText;
     bool isClick = false;
     float CreatTime = 3f;
+    AudioSource[] m_MyAudioSource = new AudioSource[1];
 
     // Use this for initialization
     void Start () {
-
-	}
+        m_MyAudioSource = GetComponents<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -60,8 +61,8 @@ public class DoorClick : MonoBehaviour {
             moveText.text = "你后退了" + (int)(-dis) + "米！";
         }
         isClick = true;
+        m_MyAudioSource[0].Play();
 
-        
 
     }
 }
