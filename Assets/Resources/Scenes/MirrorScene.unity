@@ -180,11 +180,9 @@ MonoBehaviour:
   PassedOrFailedLabel: {fileID: 843487597}
   Faces:
   - {fileID: 2800000, guid: c3e26e6b26fc5b54186319a3c658c929, type: 3}
-  - {fileID: 2800000, guid: 4414465afce065140af6be6b8212d0ab, type: 3}
-  - {fileID: 2800000, guid: 8b2c9b2d879d31d44abbebb51bc0ab4f, type: 3}
-  - {fileID: 2800000, guid: 3f87277551c1a054d9574ec4c4185c1d, type: 3}
   FacialMoveSpeed: 500
   SampleInterval: 1
+  PassPercent: 0.8
 --- !u!4 &159947488
 Transform:
   m_ObjectHideFlags: 0
