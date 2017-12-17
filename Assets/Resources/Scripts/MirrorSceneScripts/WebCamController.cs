@@ -38,6 +38,12 @@ public class WebCamController : MonoBehaviour {
 		frontCamera.Play ();
 		background.texture = frontCamera;
 		cameraAvailable = true;
+
+
+	}
+
+	void OnDestroy() {
+		frontCamera.Stop ();
 	}
 
 	// Update is called once per frame

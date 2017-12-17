@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameObjectPool : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class GameObjectPool : MonoBehaviour {
 
 	int curPosToGet = 0;
 
+	Scene curScene;
 
 	public GameObject prefab;
 	public int initialPoolSize = 8;
@@ -29,9 +31,20 @@ public class GameObjectPool : MonoBehaviour {
 		return true;
 	}
 
+	void DestroySelfInUnload(Scene arg0) {
+		Debug.Log ("Unloaded, going to destroy self");
+		if (arg0 == curScene) {
+			_GameObjectPools.Remove(poolName);
+		}
+		Destroy (this);
+		SceneManager.sceneUnloaded -= DestroySelfInUnload;
+	}
+
 	// Use this for initialization
 	void Awake () {
 		_GameObjectPools.Add (poolName, this);
+		curScene = SceneManager.GetActiveScene ();
+		SceneManager.sceneUnloaded += DestroySelfInUnload;
 		if (prefab == null) {
 			Debug.LogError ("No prefab error! Will DESTROY myself.");
 			Destroy (this);
