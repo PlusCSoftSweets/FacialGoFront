@@ -30,8 +30,8 @@ public class MirroController : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player")) {
-            AudioCallBack callbackTest = new AudioCallBack(changeScene);
-            PlayClipData(callbackTest);
+           AudioCallBack callbackTest = new AudioCallBack(changeScene);
+           PlayClipData(callbackTest);
         }
     }
     public void PlayClipData(AudioCallBack callback)
