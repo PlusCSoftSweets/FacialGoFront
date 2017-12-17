@@ -18,6 +18,8 @@ public class MirrorSceneManager : MonoBehaviour {
 
 	public float FacialMoveSpeed = 500.0f;
 	public float SampleInterval = 1.0f;
+	[Range(0.0f, 1.0f)]
+	public float PassPercent = 0.8f;
 
 	private GUIStyle buttonStyle;
 	private Vector3 FacialGameObjectOriginPos;
@@ -55,10 +57,11 @@ public class MirrorSceneManager : MonoBehaviour {
 			Vector3 curPos = FacialGameObject.transform.position;
 			if (Vector3.Distance (curPos, MirrorMidGameObject.transform.position) < float.Epsilon) {
 				//facialState = FacialState.Stopped;
-				if (percent > 75.0)
+				if (percent > PassPercent)
 					facialState = FacialState.Passed;
 				else
 					facialState = FacialState.Failed;
+				
 				if (CurFaceIndex < Faces.Length)
 					StartCoroutine (WaitAndNextFace ());
 				else
@@ -113,6 +116,13 @@ public class MirrorSceneManager : MonoBehaviour {
 			Debug.Log(percent);
 			UnityThreadHelper.Dispatcher.Dispatch(()=>{
 				PercentGameObject.GetComponent<Text> ().text = ((int)(percent * 100)).ToString () + "%";
+				if (percent > PassPercent) {
+					facialState = FacialState.Passed;
+					if (CurFaceIndex < Faces.Length)
+						StartCoroutine (WaitAndNextFace ());
+					else
+						SceneManager.LoadScene("SingelModelScene");
+				}
 			});
 		});
 		//thread.Start ();
