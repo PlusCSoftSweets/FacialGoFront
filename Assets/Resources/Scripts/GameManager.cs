@@ -52,6 +52,19 @@ public class GameManager : MonoBehaviour {
                      "Sprites/Backgound/雪地/雪地-树木",
                      0.424f, 0.596f, 0.749f);
         }
+        else if (Global.instance.currentScene == 3)
+        {
+            setScene("Sprites/Backgound/村庄/村庄-背景",
+                     "Sprites/Backgound/村庄/村庄-跑道",
+                     "Sprites/Backgound/村庄/村庄-树木",
+                     0.651f, 0.424f, 0.388f);
+        }
+        else {
+            setScene("Sprites/Backgound/森林/森林-背景",
+                     "Sprites/Backgound/森林/森林-跑道",
+                     "Sprites/Backgound/森林/森林-树木",
+                     0.196f, 0.608f, 0.749f);
+        }
     }
 
     private void setScene(String bg, String ra, String tr, float r, float g, float b) {

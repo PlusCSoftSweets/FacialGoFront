@@ -31,6 +31,7 @@ public class MirroController : MonoBehaviour {
             Global.instance.coinNumber = HAHAController.getHaHaInstance().count;
             Global.instance.currentScene++;
             SceneManager.LoadScene("MirrorScene");
+            // SceneManager.LoadScene("SingelModelScene");
         }
     }
 
