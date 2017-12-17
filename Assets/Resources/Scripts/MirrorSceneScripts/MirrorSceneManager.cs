@@ -76,7 +76,6 @@ public class MirrorSceneManager : MonoBehaviour {
 		}
 
 		// GUI
-		Debug.Log (facialState);
 		if (facialState == FacialState.Passed) {
 			if (PassedOrFailedLabel.activeSelf == false) {
 				PassedOrFailedLabel.GetComponent<Text> ().text = "PASSED!";
@@ -101,7 +100,7 @@ public class MirrorSceneManager : MonoBehaviour {
         int face_number = 0;
 		yield return null;
 
-		double rand = Random.Range (50f, 90f);
+		double rand = Random.Range (0.5f, 0.9f);
 
 		// TODO: EncodeTo can be only called in main thread, consider a way to make it in other thread
 		//byte[] imageBytes = texture.EncodeToPNG();
@@ -111,9 +110,9 @@ public class MirrorSceneManager : MonoBehaviour {
 			percent = rand;
 
 			//percent = FaceDiscr.uniqueInstance.Discriminent(imageBytes,face_number);
-			//Debug.Log(percent);
+			Debug.Log(percent);
 			UnityThreadHelper.Dispatcher.Dispatch(()=>{
-				PercentGameObject.GetComponent<Text> ().text = ((int)(percent)).ToString () + "%";
+				PercentGameObject.GetComponent<Text> ().text = ((int)(percent * 100)).ToString () + "%";
 			});
 		});
 		//thread.Start ();

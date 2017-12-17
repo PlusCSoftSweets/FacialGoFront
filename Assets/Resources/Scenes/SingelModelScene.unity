@@ -1616,7 +1616,6 @@ MonoBehaviour:
     poolName: Magnet
   background: {fileID: 1112457886}
   race: {fileID: 1706889213}
-  tree: {fileID: 212333791889907992, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
   raceCamera: {fileID: 2143248719}
 --- !u!1 &1070986885
 GameObject:
