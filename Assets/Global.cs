@@ -8,7 +8,11 @@ public class Global : MonoBehaviour {
     public int coinNumber = 0;
     public int currentScene = 0;
 
-
+    static Global() {
+        GameObject go = new GameObject("Global");
+        DontDestroyOnLoad(go);
+        instance = go.AddComponent<Global>();
+    }
 
     public void DoSomeThings()
     {
@@ -18,7 +22,7 @@ public class Global : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        instance = this;
+        
         Debug.Log("Global Start");
     }
 }
