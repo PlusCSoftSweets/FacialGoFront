@@ -28,8 +28,9 @@ public class MirrorSceneManager : MonoBehaviour {
 	private float TryTime;
 
 	double percent = 0.0;
+    AudioSource[] m_MyAudioSource = new AudioSource[3];
 
-	enum FacialState {
+    enum FacialState {
 		Stopped,
 		Moving,
 		Passed,
@@ -50,7 +51,8 @@ public class MirrorSceneManager : MonoBehaviour {
 	void Start () {
 		SampleTime = Time.fixedTime;
 		StartFaceMove ();
-	}
+        m_MyAudioSource = GetComponents<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -90,12 +92,14 @@ public class MirrorSceneManager : MonoBehaviour {
 			if (PassedOrFailedLabel.activeSelf == false) {
 				PassedOrFailedLabel.GetComponent<Text> ().text = "PASSED!";
 				PassedOrFailedLabel.SetActive (true);
-			}
+                m_MyAudioSource[1].Play();
+            }
 		} else if (facialState == FacialState.Failed) {
 			if (PassedOrFailedLabel.activeSelf == false) {
 				PassedOrFailedLabel.GetComponent<Text> ().text = "FAILED!";
 				PassedOrFailedLabel.SetActive (true);
-			}
+                m_MyAudioSource[2].Play();
+            }
 		} else if (PassedOrFailedLabel.activeSelf == true) {
 			PassedOrFailedLabel.SetActive (false);
 		}
