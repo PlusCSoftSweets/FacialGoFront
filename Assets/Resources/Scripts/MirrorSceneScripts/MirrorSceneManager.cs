@@ -18,20 +18,24 @@ public class MirrorSceneManager : MonoBehaviour {
 
 	public float FacialMoveSpeed = 500.0f;
 	public float SampleInterval = 1.0f;
+	public float TryInterval = 5.0f;
 	[Range(0.0f, 1.0f)]
 	public float PassPercent = 0.8f;
 
 	private GUIStyle buttonStyle;
 	private Vector3 FacialGameObjectOriginPos;
 	private float SampleTime;
+	private float TryTime;
 
 	double percent = 0.0;
+    AudioSource[] m_MyAudioSource = new AudioSource[3];
 
-	enum FacialState {
+    enum FacialState {
 		Stopped,
 		Moving,
 		Passed,
-		Failed
+		Failed,
+		Trying
 	};
 
 	FacialState facialState = FacialState.Stopped;
@@ -47,7 +51,8 @@ public class MirrorSceneManager : MonoBehaviour {
 	void Start () {
 		SampleTime = Time.fixedTime;
 		StartFaceMove ();
-	}
+        m_MyAudioSource = GetComponents<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -57,25 +62,29 @@ public class MirrorSceneManager : MonoBehaviour {
 			Vector3 curPos = FacialGameObject.transform.position;
 			if (Vector3.Distance (curPos, MirrorMidGameObject.transform.position) < float.Epsilon) {
 				//facialState = FacialState.Stopped;
-				if (percent > PassPercent)
+				if (percent > PassPercent) {
 					facialState = FacialState.Passed;
-				else
-					facialState = FacialState.Failed;
-				
-				if (CurFaceIndex < Faces.Length)
 					StartCoroutine (WaitAndNextFace ());
-				else
-					SceneManager.LoadScene("SingelModelScene");
+				} else {
+					facialState = FacialState.Trying;
+					TryTime = Time.fixedTime;
+				}
 			}
 			FacialGameObject.transform.position =
 				Vector3.MoveTowards (curPos, MirrorMidGameObject.transform.position, Time.deltaTime * FacialMoveSpeed);
-
-			// Check Match
-			if (Time.fixedTime - SampleTime >= SampleInterval) {
-				SampleTime = Time.fixedTime;
-				StartCoroutine (CheckMatch ());
-			}
 			break;
+		}
+
+		if (facialState == FacialState.Moving || facialState == FacialState.Trying) {
+			if (Time.fixedTime - SampleTime > SampleInterval) {
+				StartCoroutine (CheckMatch ());
+				SampleTime = Time.fixedTime;
+			}
+			if (facialState == FacialState.Trying && Time.fixedTime - TryTime > TryInterval) {
+				// Stop trying
+				facialState = FacialState.Failed;
+				StartCoroutine (WaitAndNextFace ());
+			}
 		}
 
 		// GUI
@@ -83,12 +92,14 @@ public class MirrorSceneManager : MonoBehaviour {
 			if (PassedOrFailedLabel.activeSelf == false) {
 				PassedOrFailedLabel.GetComponent<Text> ().text = "PASSED!";
 				PassedOrFailedLabel.SetActive (true);
-			}
+                m_MyAudioSource[1].Play();
+            }
 		} else if (facialState == FacialState.Failed) {
 			if (PassedOrFailedLabel.activeSelf == false) {
 				PassedOrFailedLabel.GetComponent<Text> ().text = "FAILED!";
 				PassedOrFailedLabel.SetActive (true);
-			}
+                m_MyAudioSource[2].Play();
+            }
 		} else if (PassedOrFailedLabel.activeSelf == true) {
 			PassedOrFailedLabel.SetActive (false);
 		}
@@ -118,10 +129,7 @@ public class MirrorSceneManager : MonoBehaviour {
 				PercentGameObject.GetComponent<Text> ().text = ((int)(percent * 100)).ToString () + "%";
 				if (percent > PassPercent) {
 					facialState = FacialState.Passed;
-					if (CurFaceIndex < Faces.Length)
-						StartCoroutine (WaitAndNextFace ());
-					else
-						SceneManager.LoadScene("SingelModelScene");
+					StartCoroutine (WaitAndNextFace ());
 				}
 			});
 		});
@@ -136,6 +144,7 @@ public class MirrorSceneManager : MonoBehaviour {
 	void StartFaceMove() {
 		if (CurFaceIndex >= Faces.Length) {
 			Debug.Log ("No next face");
+			SceneManager.LoadScene("SingelModelScene");
 			return;
 		}
 		FacialGameObject.GetComponent<RawImage> ().texture = Faces [CurFaceIndex];
