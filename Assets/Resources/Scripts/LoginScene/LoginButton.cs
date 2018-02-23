@@ -23,6 +23,6 @@ public class LoginButton : MonoBehaviour {
     IEnumerator FadeScene() {
         float time = GameObject.Find("Fade").GetComponent<FadeScene>().BeginFade(1);
         yield return new WaitForSeconds(time);
-        SceneManager.LoadScene("SingelModelScene");
+        SceneManager.LoadScene("MainScene");
     }
 }
