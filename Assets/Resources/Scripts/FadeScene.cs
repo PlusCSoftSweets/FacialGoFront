@@ -16,7 +16,6 @@ public class FadeScene : MonoBehaviour
     void OnGUI()
     {
         alpha += fadeDir * fadeSpeed * Time.deltaTime;
-        Debug.Log(alpha);
         GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, alpha);
         GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackTexture); 
     }

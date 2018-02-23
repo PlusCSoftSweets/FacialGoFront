@@ -851,7 +851,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: efb86f2f4a3d0fb45b4a8cca3f474db5, type: 3}
+      - m_Target: {fileID: 881232500}
         m_MethodName: OnChangeAccountClick
         m_Mode: 1
         m_Arguments:
