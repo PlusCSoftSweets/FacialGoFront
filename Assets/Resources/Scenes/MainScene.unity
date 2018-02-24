@@ -423,7 +423,7 @@ GameObject:
   - component: {fileID: 132090940}
   - component: {fileID: 132090939}
   m_Layer: 5
-  m_Name: FriendListButton
+  m_Name: Friend List Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2479,7 +2479,11 @@ GameObject:
   - component: {fileID: 1506799718}
   - component: {fileID: 1506799717}
   m_Layer: 5
+<<<<<<< HEAD
   m_Name: DoorButton
+=======
+  m_Name: Prop List Button
+>>>>>>> 91c729edfdd9d6d89e8bf993303f62c9fda76831
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2807,7 +2811,11 @@ GameObject:
   - component: {fileID: 2106541906}
   - component: {fileID: 2106541905}
   m_Layer: 5
+<<<<<<< HEAD
   m_Name: TransButton
+=======
+  m_Name: Achievements List Button
+>>>>>>> 91c729edfdd9d6d89e8bf993303f62c9fda76831
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
