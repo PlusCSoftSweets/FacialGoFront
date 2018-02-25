@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Resources/Scenes/MainScene.unity
     guid: f1c9f18fd7e3c7247b0afd952fa6d431
   - enabled: 1
+    path: Assets/Resources/Scenes/OpenRoomScene.unity
+    guid: 7856cf7b00c0f7b4c9d11c3703acb9e0
+  - enabled: 1
     path: Assets/Resources/Scenes/SingelModelScene.unity
     guid: a04ee7d63e883f54794f0473555a92fc
   - enabled: 1
