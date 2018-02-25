@@ -12,6 +12,7 @@ TagManager:
   - Gold
   - Obstacle
   - Mirror
+  - LogoutText
   layers:
   - Default
   - TransparentFX
