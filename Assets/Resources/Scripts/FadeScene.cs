@@ -9,8 +9,7 @@ public class FadeScene : MonoBehaviour
 
     private float alpha = 1.0f;
 
-    public float fadeSpeed = 0.5f;
-
+    public float fadeSpeed = 1.5f;
     private int fadeDir = -1;
 
     void OnGUI()
