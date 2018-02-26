@@ -29,3 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Resources/Scenes/MirrorScene.unity
     guid: cb0739a812c2e0147bd36fe8a7f8b2a4
+  - enabled: 1
+    path: Assets/Resources/Scenes/ResultScene/FailScene.unity
+    guid: a35016d825f27f1439cd94e5f28d473c
+  - enabled: 1
+    path: Assets/Resources/Scenes/ResultScene/SuccessScene.unity
+    guid: d21a37d33817211439acad0c21b4f82b

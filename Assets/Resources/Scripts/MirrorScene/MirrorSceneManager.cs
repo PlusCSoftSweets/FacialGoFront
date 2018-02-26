@@ -64,11 +64,15 @@ public class MirrorSceneManager : MonoBehaviour {
 				//facialState = FacialState.Stopped;
 				if (percent > PassPercent) {
 					facialState = FacialState.Passed;
-					StartCoroutine (WaitAndNextFace ());
+                    
+                    // for testing
+					// StartCoroutine (WaitAndNextFace ());
+                    SceneManager.LoadScene("SuccessScene");
 				} else {
 					facialState = FacialState.Trying;
 					TryTime = Time.fixedTime;
-				}
+                    SceneManager.LoadScene("FailScene");
+                }
 			}
 			FacialGameObject.transform.position =
 				Vector3.MoveTowards (curPos, MirrorMidGameObject.transform.position, Time.deltaTime * FacialMoveSpeed);

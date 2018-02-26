@@ -9,14 +9,25 @@ public class OpenRoomSceneMangerController : MonoBehaviour {
         // 邀请好友
     }
 
-    public void OnStartButtonClick() {
-        Debug.Log("Start Button Click");
-        StartCoroutine(FadeScene());
+    public void OnBackButtonClick() {
+        Debug.Log("Back Button Click");
+        StartCoroutine(LoadLastScene());
     }
 
-    IEnumerator FadeScene() {
+    public void OnStartButtonClick() {
+        Debug.Log("Start Button Click");
+        StartCoroutine(LoadSingelModelScene());
+    }
+
+    IEnumerator LoadSingelModelScene() {
         float time = GameObject.Find("Fade").GetComponent<FadeScene>().BeginFade(1);
         yield return new WaitForSeconds(time);
         SceneManager.LoadScene("SingelModelScene");
+    }
+
+    IEnumerator LoadLastScene() {
+        float time = GameObject.Find("Fade").GetComponent<FadeScene>().BeginFade(1);
+        yield return new WaitForSeconds(time);
+        SceneManager.LoadScene("MainScene");
     }
 }
