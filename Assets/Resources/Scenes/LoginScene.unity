@@ -764,8 +764,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efb86f2f4a3d0fb45b4a8cca3f474db5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  phone_input: {fileID: 1190521004}
-  check_input: {fileID: 773339179}
+  phoneInputField: {fileID: 236640792}
+  checkInputField: {fileID: 1693497567}
 --- !u!1 &912863457
 GameObject:
   m_ObjectHideFlags: 0

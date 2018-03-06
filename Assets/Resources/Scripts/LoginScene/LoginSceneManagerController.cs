@@ -1,14 +1,43 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
 
 public class LoginSceneManagerController : MonoBehaviour {
 
-    public GameObject phone_input;
-    public GameObject check_input;
+    public InputField phoneInputField;
+    public InputField checkInputField;
+
+    [System.Serializable]
+    public class CheckItem {
+        public int status { get; set; }
+        public string msg { get; set; }
+        public string data { get; set; }
+    }
+
+    [System.Serializable]
+    public class LoginItem {
+        public int status { get; set; }
+        public string msg { get; set; }
+        public string data { get; set; }
+    }
+
+    [System.Serializable]
+    public class TokenItem {
+        public string userData { get; set; }
+        public string token { get; set; }
+    }
+
+    [System.Serializable]
+    public class UserItem {
+        public string user_id { get; set; }
+        public string nickname { get; set; }
+        public string avatar { get; set; }
+        public int exp { get; set; }
+        public int diamand { get; set; }
+    }
 
     private bool ifChangeScene = false;
 
@@ -27,6 +56,20 @@ public class LoginSceneManagerController : MonoBehaviour {
      */
     public void OnCheckClick() {
         Debug.Log("Check Button Click");
+        string phone = phoneInputField.text;
+
+        if (phone.Length == 0) {
+            Debug.Log("please input your phone number!");
+            return;
+        }
+        else {
+            if (phone.Length != 11) {
+                Debug.Log("please input the correct phone number!");
+                return;
+            }
+            StartCoroutine(PostCheck(phone));
+        }
+
     }
 
     /*
@@ -34,8 +77,8 @@ public class LoginSceneManagerController : MonoBehaviour {
      */
     public void OnLoginClick() {
         Debug.Log("Login Button Click");
-        string phone = phone_input.GetComponent<Text>().text;
-        string check = check_input.GetComponent<Text>().text;
+        string phone = phoneInputField.text;
+        string check = checkInputField.text;
 
         if (phone.Length == 0) {
             Debug.Log("please input your phone number!");
@@ -50,9 +93,8 @@ public class LoginSceneManagerController : MonoBehaviour {
                 Debug.Log("please input the correct phone number!");
                 return;
             }
-            ifChangeScene = true;  // For Test
-            StartCoroutine(SleepForSeconds());  // For Test
-            // StartCoroutine(PostLoginInfo(phone, check));
+            ifChangeScene = true;
+            StartCoroutine(PostLoginInfo(phone, check));
             GameObject.Find("WaittingObject").transform.localPosition = new Vector3(0, 0, 0);
             GameObject.Find("LoginObject").transform.localPosition = new Vector3(0, 0, -1001);
         }
@@ -63,10 +105,47 @@ public class LoginSceneManagerController : MonoBehaviour {
      */
     IEnumerator PostLoginInfo(string phone, string check) {
         WWWForm userInfo = new WWWForm();
-        userInfo.AddField("phoneNumber", phone);
-        userInfo.AddField("checkNumber", check);
+        userInfo.AddField("phone_number", phone);
+        userInfo.AddField("password", check);
 
-        UnityWebRequest www = UnityWebRequest.Post("http://www.my-server.com/myform", userInfo);
+        UnityWebRequest www = UnityWebRequest.Post("http://123.207.93.25:9001/user/login", userInfo);
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError) {
+            Debug.Log(www.error);
+            Debug.Log("error");
+            // 弹窗提示错误
+            GameObject.Find("WaittingObject").transform.localPosition = new Vector3(0, 0, -1001);
+            GameObject.Find("LoginObject").transform.localPosition = new Vector3(0, 0, 0);
+        }
+        else {
+            Debug.Log("Form upload complete!");
+            var loginJson = JsonConvert.DeserializeObject<LoginItem>(www.downloadHandler.text);
+            if (loginJson.status == 0) {
+                var tokenJson = JsonConvert.DeserializeObject<TokenItem>(loginJson.data);
+                var userJson = JsonConvert.DeserializeObject<UserItem>(tokenJson.userData);
+                GlobalUserInfo.userInfo = userJson;
+                Debug.Log(GlobalUserInfo.userInfo.nickname);
+                if (ifChangeScene) {
+                    StartCoroutine(FadeScene());
+                }
+            }
+            else {
+                Debug.Log(loginJson.msg);
+                // 弹窗显示错误信息
+                GameObject.Find("WaittingObject").transform.localPosition = new Vector3(0, 0, -1001);
+                GameObject.Find("LoginObject").transform.localPosition = new Vector3(0, 0, 0);
+            }
+        }
+    }
+
+    /*
+     * 获取验证码
+     */
+    IEnumerator PostCheck(string phone) {
+        WWWForm userInfo = new WWWForm();
+        userInfo.AddField("phone_number", phone);
+        UnityWebRequest www = UnityWebRequest.Post("http://123.207.93.25:9001/user", userInfo);
         yield return www.SendWebRequest();
 
         if (www.isNetworkError || www.isHttpError) {
@@ -75,9 +154,15 @@ public class LoginSceneManagerController : MonoBehaviour {
         }
         else {
             Debug.Log("Form upload complete!");
-            if (ifChangeScene) {
-                StartCoroutine(FadeScene());
+            var checkJson = JsonConvert.DeserializeObject<CheckItem>(www.downloadHandler.text);
+            if (checkJson.status == 0) {
+                checkInputField.text = checkJson.data;
             }
+            else {
+                // 弹窗显示错误
+                Debug.Log(checkJson.msg);
+            }
+            
         }
     }
 

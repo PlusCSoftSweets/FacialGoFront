@@ -22,7 +22,6 @@ public class Global : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        
         Debug.Log("Global Start");
     }
 }
