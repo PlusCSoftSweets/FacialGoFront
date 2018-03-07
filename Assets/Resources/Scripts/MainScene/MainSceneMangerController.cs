@@ -27,6 +27,9 @@ public class MainSceneMangerController : MonoBehaviour {
         Debug.Log("Open Room Button Click");
         StartCoroutine(FadeScene());
     }
+    public void onClick(){
+        Debug.Log("canvas用不了");
+    }
 
     /*
      * 网络通信
