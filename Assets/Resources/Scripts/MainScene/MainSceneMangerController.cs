@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,15 +13,10 @@ public class MainSceneMangerController : MonoBehaviour {
     public GameObject diamondGO;
 
     void Start() {
-        string usernameStr = usernameGO.GetComponent<Text>().text;
-        string levelStr = levelGO.GetComponent<Text>().text;
-        string diamondStr = diamondGO.GetComponent<Text>().text;
-
         // 通过Http从数据库拿到三个条目再赋值
-
-        usernameGO.GetComponent<Text>().text = usernameStr;
-        levelGO.GetComponent<Text>().text = levelStr;
-        diamondGO.GetComponent<Text>().text = diamondStr;
+        usernameGO.GetComponent<Text>().text = GlobalUserInfo.userInfo.nickname;
+        diamondGO.GetComponent<Text>().text = GlobalUserInfo.userInfo.diamand.ToString();
+        levelGO.GetComponent<Text>().text = Assets.Resources.Scripts.LevelCalculation.ExpToLevel(GlobalUserInfo.userInfo.exp).ToString();
     }
 
     public void OnOpenRoomButtonClick() {

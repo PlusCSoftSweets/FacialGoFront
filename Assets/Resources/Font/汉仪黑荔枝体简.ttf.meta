@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 6cb2314007b5ff9439711d2c290781a6
+timeCreated: 1520178974
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: HYHeiLiZhiTiJ
+  fontNames:
+  - HYHeiLiZhiTiJ
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
