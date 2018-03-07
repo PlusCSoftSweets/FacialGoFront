@@ -21,12 +21,12 @@ public class LoginSceneManagerController : MonoBehaviour {
     public class LoginItem {
         public int status { get; set; }
         public string msg { get; set; }
-        public string data { get; set; }
+        public TokenItem data { get; set; }
     }
 
     [System.Serializable]
     public class TokenItem {
-        public string userData { get; set; }
+        public UserItem user { get; set; }
         public string token { get; set; }
     }
 
@@ -120,12 +120,14 @@ public class LoginSceneManagerController : MonoBehaviour {
         }
         else {
             Debug.Log("Form upload complete!");
+            Debug.Log(www.downloadHandler.text);
             var loginJson = JsonConvert.DeserializeObject<LoginItem>(www.downloadHandler.text);
             if (loginJson.status == 0) {
-                var tokenJson = JsonConvert.DeserializeObject<TokenItem>(loginJson.data);
-                var userJson = JsonConvert.DeserializeObject<UserItem>(tokenJson.userData);
-                GlobalUserInfo.userInfo = userJson;
-                Debug.Log(GlobalUserInfo.userInfo.nickname);
+                // 输出登陆成功信息
+                Debug.Log(loginJson.msg);
+                var tokenJson = loginJson.data;
+                var userJson = tokenJson.user;
+                GlobalUserInfo.setInstance(userJson);
                 if (ifChangeScene) {
                     StartCoroutine(FadeScene());
                 }

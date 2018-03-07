@@ -4134,9 +4134,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3298fd7f8910be49bdc32cdc0cd560f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usernameGO: {fileID: 0}
-  levelGO: {fileID: 0}
-  diamondGO: {fileID: 0}
+  usernameGO: {fileID: 37336172}
+  levelGO: {fileID: 1192304343}
+  diamondGO: {fileID: 342829012}
 --- !u!1 &1750899432
 GameObject:
   m_ObjectHideFlags: 0
