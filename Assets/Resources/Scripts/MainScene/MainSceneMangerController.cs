@@ -5,36 +5,78 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
 
 public class MainSceneMangerController : MonoBehaviour {
 
     public GameObject usernameGO;
     public GameObject levelGO;
     public GameObject diamondGO;
+    public GameObject userFace;
+    public GameObject accountDetail;
+    public GameObject detailManager;
+
+    public bool isNameChange;
+    public bool isAvatorChange;
+
+    [System.Serializable]
+    public class ResponseItem
+    {
+        public int status { get; set; }
+        public string msg { get; set; }
+        public DataItem data { get; set; }
+    }
+
+    [System.Serializable]
+    public class DataItem
+    {
+        public UserItem user { get; set; }
+    }
+
+    [System.Serializable]
+    public class UserItem
+    {
+        public string user_id { get; set; }
+        public string nickname { get; set; }
+        public string avatar { get; set; }
+        public int exp { get; set; }
+        public int diamand { get; set; }
+    }
 
     void Start() {
+        isNameChange = false;
+        isAvatorChange = false;
+
         // 通过Http从数据库拿到三个条目再赋值
         usernameGO.GetComponent<Text>().text = GlobalUserInfo.userInfo.nickname;
         diamondGO.GetComponent<Text>().text = GlobalUserInfo.userInfo.diamand.ToString();
-        levelGO.GetComponent<Text>().text = Assets.Resources.Scripts.LevelCalculation.ExpToLevel(GlobalUserInfo.userInfo.exp).ToString();
+        levelGO.GetComponent<Text>().text = "Lv." + Assets.Resources.Scripts.LevelCalculation.ExpToLevel(GlobalUserInfo.userInfo.exp).ToString();
+        string url = "http://123.207.93.25:9001/user/";
+        url += GlobalUserInfo.userInfo.user_id;
+        url += "/avatar";
+        StartCoroutine(_GetUserFace(url, 100, 100));
     }
 
+    void Update() {
+        if (isNameChange) {
+            UpdateUserInfo();
+        }
+    }
+
+    // 开房间场景
     public void OnOpenRoomButtonClick() {
         Debug.Log("Open Room Button Click");
         StartCoroutine(FadeScene());
     }
-    public void onClick(){
-        Debug.Log("canvas用不了");
+
+    // 账号详情
+    public void OnAvatorClick(){
+        accountDetail.SetActive(true);
     }
 
-    /*
-     * 网络通信
-     */
-    IEnumerator GetUserInfo(string phone, string check) {
-        WWWForm userInfo = new WWWForm();
-        userInfo.AddField("phoneNumber", phone);
-
-        UnityWebRequest request = UnityWebRequest.Post("http://www.my-server.com/myform", userInfo);
+    // 获取人脸
+    IEnumerator _GetUserFace(string url, int width, int height) {
+        UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();
 
         if (request.isNetworkError || request.isHttpError) {
@@ -43,8 +85,61 @@ public class MainSceneMangerController : MonoBehaviour {
         }
         else {
             Debug.Log("Form upload complete!");
-            Debug.Log(request.downloadHandler.text);
-            // ulong results = request.downloadedBytes;
+            userFace.GetComponent<CircleImage>().sprite = GetSpriteFromBytes(request.downloadHandler.data, width, height);
+        }
+    }
+
+    // 图像从二进制流到精灵
+    private Sprite GetSpriteFromBytes(byte[] data, int width, int height) {
+        Texture2D tex = new Texture2D(width, height);
+        try
+        {
+            tex.LoadImage(data);
+        }
+        catch (Exception)
+        {
+
+        }
+        return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0));
+    }
+
+    // 更新用户姓名
+    public void UpdateUserInfo() {
+        string url = "http://123.207.93.25:9001/user/";
+        url += GlobalUserInfo.userInfo.user_id;
+        StartCoroutine(GetUserInfo(url));
+        usernameGO.GetComponent<Text>().text = GlobalUserInfo.userInfo.nickname;
+        isNameChange = false;
+        detailManager.GetComponent<DetailManagerController>().isNicknameChange = false;
+    }
+
+    // 更改改名状态信息
+    public void UpdateIsChangeName(DetailManagerController detail) {
+        isNameChange = detail.isNicknameChange;
+        Debug.Log(isNameChange);
+    }
+
+    // 获取用户信息
+    IEnumerator GetUserInfo(string url) {
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        yield return request.SendWebRequest();
+
+        if (request.isNetworkError || request.isHttpError) {
+            Debug.Log(request.error);
+        }
+        else {
+            Debug.Log("Get complete!");
+            var responseJson = JsonConvert.DeserializeObject<ResponseItem>(request.downloadHandler.text);
+            if (responseJson.status == 0) {
+                // 输出登陆成功信息
+                Debug.Log(responseJson.msg);
+                var userJson = responseJson.data.user;
+                GlobalUserInfo.userInfo.nickname = userJson.nickname;
+            }
+            else {
+                Debug.Log(responseJson.msg);
+                // 弹窗显示错误信息
+            }
         }
     }
 

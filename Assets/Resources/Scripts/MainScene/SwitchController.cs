@@ -7,19 +7,11 @@ public class SwitchController : MonoBehaviour {
 
     public Text linkText;  
   
-    //void Awake()  
-    //{  
-        //linkText = transform.Find("SwitchAccoutButton").GetComponent<Text>();  
-  
-   // }  
-    void Start ()  
-    {  
-		Debug.Log("haha");
+    void Start () {  
         CreateLink(linkText, onButtonClick);  
     }  
   
-    public void CreateLink(Text text,UnityEngine.Events.UnityAction onClickBtn)  
-    {  
+    public void CreateLink(Text text,UnityEngine.Events.UnityAction onClickBtn) {  
         if (text == null)  
             return;  
   
@@ -39,24 +31,19 @@ public class SwitchController : MonoBehaviour {
   
         underline.text = "_";  
         float perlineWidth = underline.preferredWidth;      //单个下划线宽度  
-        Debug.Log(perlineWidth);  
   
         float width = text.preferredWidth;  
-        Debug.Log(width);  
         int lineCount = (int)Mathf.Round(width / perlineWidth);  
-        Debug.Log(lineCount);  
-        for(int i = 1;i < lineCount;i++)  
-        {  
+        for(int i = 1;i < lineCount;i++) {  
             underline.text += "_";  
-        }  
-  
-        var btn = text.gameObject.AddComponent<Button>();  
-        btn.onClick.AddListener(onClickBtn);         
+        }
+
+        //var btn = text.gameObject.AddComponent<Button>();
+        //btn.onClick.AddListener(onClickBtn);
     }  
   
     //点击响应  
-    void onButtonClick()  
-    {  
+    void onButtonClick() {  
         Debug.Log("onClick");  
     }  
 }
