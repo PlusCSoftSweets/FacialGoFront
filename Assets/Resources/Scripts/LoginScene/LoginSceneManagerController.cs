@@ -127,7 +127,8 @@ public class LoginSceneManagerController : MonoBehaviour {
                 Debug.Log(loginJson.msg);
                 var tokenJson = loginJson.data;
                 var userJson = tokenJson.user;
-                GlobalUserInfo.setInstance(userJson);
+                GlobalUserInfo.SetTokenItemInstance(tokenJson.token, phone);
+                GlobalUserInfo.SetUserItemInstance(userJson);
                 if (ifChangeScene) {
                     StartCoroutine(FadeScene());
                 }

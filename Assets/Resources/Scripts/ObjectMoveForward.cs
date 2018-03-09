@@ -12,7 +12,7 @@ public class ObjectMoveForward : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void LateUpdate () {
 		obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y, obj.transform.position.z + 20*Time.deltaTime);
     }
 }
