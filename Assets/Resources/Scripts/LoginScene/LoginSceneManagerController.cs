@@ -41,6 +41,20 @@ public class LoginSceneManagerController : MonoBehaviour {
 
     private bool ifChangeScene = false;
 
+    void Start()
+    {
+        if (PlayerPrefs.GetString("phone_number") != null)
+        {
+            var phone = phoneInputField.text = PlayerPrefs.GetString("phone_number");
+            if (PlayerPrefs.GetString("password") != null)
+            {
+                var check = checkInputField.text = PlayerPrefs.GetString("password");
+                StartCoroutine(PostLoginInfo(phone, check));
+            }
+        }
+            
+    }
+
     /*
      * 更改登陆账号
      */
@@ -94,6 +108,8 @@ public class LoginSceneManagerController : MonoBehaviour {
                 return;
             }
             ifChangeScene = true;
+            PlayerPrefs.SetString("phone_number", phone);
+            PlayerPrefs.SetString("password", check);
             StartCoroutine(PostLoginInfo(phone, check));
             GameObject.Find("WaittingObject").transform.localPosition = new Vector3(0, 0, 0);
             GameObject.Find("LoginObject").transform.localPosition = new Vector3(0, 0, -1001);

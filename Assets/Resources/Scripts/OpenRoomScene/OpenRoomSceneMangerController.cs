@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,12 +18,9 @@ public class OpenRoomSceneMangerController : MonoBehaviour {
 
     public void OnStartButtonClick() {
         Debug.Log("Start Button Click");
-        PhotonNetwork.ConnectUsingSettings("v1");
-        //PhotonNetwork.JoinRoom("someRoom");
-
-
-
-        PhotonNetwork.CreateRoom("someRoom");
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 2;
+        PhotonNetwork.JoinOrCreateRoom("aRoom", options, TypedLobby.Default);
         // StartCoroutine(LoadSingelModelScene());
     }
 
