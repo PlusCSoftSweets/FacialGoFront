@@ -459,7 +459,7 @@ public class PhotonView : Photon.MonoBehaviour
         else if (component is Transform)
         {
             Transform trans = (Transform) component;
-
+            
             switch (this.onSerializeTransformOption)
             {
                 case OnSerializeTransform.All:

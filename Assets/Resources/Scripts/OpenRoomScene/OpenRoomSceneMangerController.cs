@@ -7,6 +7,7 @@ public class OpenRoomSceneMangerController : MonoBehaviour {
 
     public void OnInviteButtonClick() {
         // 邀请好友
+        
     }
 
     public void OnBackButtonClick() {
@@ -16,7 +17,13 @@ public class OpenRoomSceneMangerController : MonoBehaviour {
 
     public void OnStartButtonClick() {
         Debug.Log("Start Button Click");
-        StartCoroutine(LoadSingelModelScene());
+        PhotonNetwork.ConnectUsingSettings("v1");
+        //PhotonNetwork.JoinRoom("someRoom");
+
+
+
+        PhotonNetwork.CreateRoom("someRoom");
+        // StartCoroutine(LoadSingelModelScene());
     }
 
     IEnumerator LoadSingelModelScene() {
