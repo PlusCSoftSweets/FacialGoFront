@@ -35,7 +35,7 @@ public class FriendListController : MonoBehaviour {
     {  
         GameObject a = Instantiate(item) as GameObject;  
 		Debug.Log("info" + a.transform.Find ("Text").GetComponent<Text> ().text);
-        a.transform.Find ("Text").GetComponent<Text> ().text = "asd";  
+        a.transform.Find ("Text").GetComponent<Text> ().text = "给朕退下";  
 		
        // a.transform.FindChild ("cancel").GetComponent<Button> ().onClick.AddListener(  
       //    delegate() {  
