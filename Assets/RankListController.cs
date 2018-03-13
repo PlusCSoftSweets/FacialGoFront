@@ -34,8 +34,8 @@ public class RankListController : MonoBehaviour {
     public void AddItem()  
     {  
         GameObject a = Instantiate(item) as GameObject;  
-		Debug.Log("info" + a.transform.FindChild ("Text").GetComponent<Text> ().text);
-        a.transform.FindChild ("Text").GetComponent<Text> ().text = "asd";  
+		Debug.Log("info" + a.transform.Find ("Text").GetComponent<Text> ().text);
+        a.transform.Find ("Text").GetComponent<Text> ().text = "asd";  
 		
        // a.transform.FindChild ("cancel").GetComponent<Button> ().onClick.AddListener(  
       //    delegate() {  
@@ -43,7 +43,7 @@ public class RankListController : MonoBehaviour {
         //    }  
        // );  
         a.transform.parent = parent.transform;
-		Debug.Log("info" + a.transform.FindChild ("Text").GetComponent<Text> ().text);
+		Debug.Log("info" + a.transform.Find ("Text").GetComponent<Text> ().text);
         a.transform.localPosition = new Vector3(itemLocalPos.x, itemLocalPos.y - messages.Count * itemHeight, 0);  
 		Debug.Log("x of item" + itemLocalPos.x);
 		Debug.Log("y of item"+itemLocalPos.y + messages.Count * itemHeight);
