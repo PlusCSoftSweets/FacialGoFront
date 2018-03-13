@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 
 public class MainSceneMangerController : MonoBehaviour {
 
+    public GUISkin Skin;
+
     public GameObject usernameGO;
     public GameObject levelGO;
     public GameObject diamondGO;
@@ -41,6 +43,26 @@ public class MainSceneMangerController : MonoBehaviour {
         public string avatar { get; set; }
         public int exp { get; set; }
         public int diamand { get; set; }
+    }
+
+    public void Awake()
+    {
+        // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
+        PhotonNetwork.automaticallySyncScene = true;
+        // the following line checks if this client was just created (and not yet online). if so, we connect
+        if (PhotonNetwork.connectionStateDetailed == ClientState.PeerCreated)
+        {
+            // Connect to the photon master-server. We use the settings saved in PhotonServerSettings (a .asset file in this project)
+            PhotonNetwork.ConnectUsingSettings("v1.0");
+        }
+
+        // generate a name for this player, if none is assigned yet
+        if (String.IsNullOrEmpty(PhotonNetwork.playerName))
+        {
+            PhotonNetwork.playerName = GlobalUserInfo.tokenInfo.account;
+        }
+        // if you wanted more debug out, turn this on:
+        // PhotonNetwork.logLevel = NetworkLogLevel.Full;
     }
 
     void Start() {

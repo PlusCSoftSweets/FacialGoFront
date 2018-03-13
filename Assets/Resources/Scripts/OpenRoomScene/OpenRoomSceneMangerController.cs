@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,7 @@ public class OpenRoomSceneMangerController : MonoBehaviour {
 
     public void OnInviteButtonClick() {
         // 邀请好友
+        
     }
 
     public void OnBackButtonClick() {
@@ -16,7 +18,10 @@ public class OpenRoomSceneMangerController : MonoBehaviour {
 
     public void OnStartButtonClick() {
         Debug.Log("Start Button Click");
-        StartCoroutine(LoadSingelModelScene());
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 2;
+        PhotonNetwork.JoinOrCreateRoom("aRoom", options, TypedLobby.Default);
+        // StartCoroutine(LoadSingelModelScene());
     }
 
     IEnumerator LoadSingelModelScene() {
