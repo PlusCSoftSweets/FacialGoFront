@@ -51,31 +51,31 @@ public class NetworkManager : PunBehaviour, IPunObservable {
 
     void Update()
     {
-        if (nextSceneNumber == Global.instance.currentScene)
-        {
-            nextSceneNumber++;
-            mirror = GameObject.Find("Mirror(" + Global.instance.currentScene + ")").transform;
-            HAHAController.GetHaHaInstance().mirror = mirror;
-        }
+        //if (nextSceneNumber == Global.instance.currentScene)
+        //{
+        //    nextSceneNumber++;
+        //    mirror = GameObject.Find("Mirror(" + Global.instance.currentScene + ")").transform;
+        //    HAHAController.GetHaHaInstance().mirror = mirror;
+        //}
 
-        if (Mathf.Abs(mirror.position.z - localPlayer.transform.position.z) < 5.0 && !isAbort)
-        {
-            Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            HAHAController.GetHaHaInstance().isEnterMirror = true;
-            Global.instance.playerPosition = localPlayer.transform.position + new Vector3(0, 0, 10);
-            Global.instance.uiCameraPosition = uiCamera.position + new Vector3(0, 0, 10);
-            Global.instance.mainCameraPosition = mainCamera.position + new Vector3(0, 0, 10);
-            for (int i = 1; i <= 10; i++)
-            {
-                Debug.Log("find tree");
-                Debug.Log("Tree (" + i + ")");
-                var tree = GameObject.Find("Tree (" + i + ")");
-                Debug.Log(tree);
-                Global.instance.treesPosition[i - 1] = tree.transform.position + new Vector3(0, 0, 10);
-            }
-            Debug.Log("mark down position");
-            isAbort = true;
-        }
+        //if (Mathf.Abs(mirror.position.z - localPlayer.transform.position.z) < 5.0 && !isAbort)
+        //{
+        //    Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        //    HAHAController.GetHaHaInstance().isEnterMirror = true;
+        //    Global.instance.playerPosition = localPlayer.transform.position + new Vector3(0, 0, 10);
+        //    Global.instance.uiCameraPosition = uiCamera.position + new Vector3(0, 0, 10);
+        //    Global.instance.mainCameraPosition = mainCamera.position + new Vector3(0, 0, 10);
+        //    for (int i = 1; i <= 10; i++)
+        //    {
+        //        Debug.Log("find tree");
+        //        Debug.Log("Tree (" + i + ")");
+        //        var tree = GameObject.Find("Tree (" + i + ")");
+        //        Debug.Log(tree);
+        //        Global.instance.treesPosition[i - 1] = tree.transform.position + new Vector3(0, 0, 10);
+        //    }
+        //    Debug.Log("mark down position");
+        //    isAbort = true;
+        //}
     }
 
     #region Public Method

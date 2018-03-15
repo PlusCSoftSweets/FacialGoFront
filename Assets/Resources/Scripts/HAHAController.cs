@@ -24,12 +24,14 @@ public class HAHAController : Photon.MonoBehaviour
 
     // 声音
     private AudioSource[] m_MyAudioSource = new AudioSource[2];
+
+    // 魔镜相关
+    private bool isEnterMirror = false;        // 判断是否进入魔镜
     #endregion
 
     #region Public Variables
     public bool isPausing = false;            // 判断是否被暂停
     public bool isReverse = false;            // 判断是否转置
-    public bool isEnterMirror = false;        // 判断是否进入魔镜
     public float accelerateSpeed = 20f;       // 加速度
     public float forwardSpeed = 30f;          // 前进速度
     public Transform mirror;                  // 最近的镜子
@@ -66,7 +68,7 @@ public class HAHAController : Photon.MonoBehaviour
         if (!isEnterMirror)
             MoveForward();
         else
-            moveToMirror();
+            MoveToMirror();
 
         // 左右判断函数
         if ((System.Math.Abs(hahaRB.position.x - 1.6f) < 0.20f ||
@@ -177,15 +179,34 @@ public class HAHAController : Photon.MonoBehaviour
             Global.instance.coinNumber = Global.instance.coinNumber + 1;
             m_MyAudioSource[0].Play();
         }
-        if (other.tag.Equals("Magnet"))
+        else if (other.tag.Equals("Magnet"))
         {
             isMagnet = true;
             renderer.material = (Material)Resources.Load("Materials/haha");
             m_MyAudioSource[1].Play();
         }
+        else if (other.name.Equals("Wall"))
+        {
+            mirror = other.transform;
+            mirror.position += new Vector3(0,0,7f);
+            isEnterMirror = true;
+        }
     }
 
-    private void leftMoving()
+    private Vector3 EnterMirror(UnityEngine.Transform mirrorTran)
+    {
+        Vector3 LocalPos = transform.position;                         // 物体所处的世界坐标向量
+        Vector3 LocalForward = mirrorTran.position;                    // 镜子所在地
+        Vector3 VecSpeed = LocalForward - LocalPos;                    // 物体自身Vector3.forward * speed的世界坐标向量
+        return new Vector3(VecSpeed.x, VecSpeed.y, VecSpeed.z);
+    }
+
+    private void MoveToMirror()
+    {
+        hahaRB.velocity = EnterMirror(mirror);
+    }
+
+    private void LeftMoving()
     {
         if (transform.position.x > -4.0f && !isMove)
         {
@@ -198,7 +219,7 @@ public class HAHAController : Photon.MonoBehaviour
         }
     }
 
-    private void rightMoving()
+    private void RightMoving()
     {
         if (transform.position.x < 4.0f && !isMove)
         {
@@ -211,7 +232,7 @@ public class HAHAController : Photon.MonoBehaviour
         }
     }
 
-    private void jump()
+    private void Jump()
     {
         if (isGround && !isMove)
         {
@@ -228,23 +249,23 @@ public class HAHAController : Photon.MonoBehaviour
     public void Move(string direction) {
         if (direction.Equals("Left")) {
             if (!isReverse)
-                leftMoving();
+                LeftMoving();
             else
-                rightMoving();  
+                RightMoving();  
         }
         else if (direction.Equals("Right")) {
             if (!isReverse)
-                rightMoving();
+                RightMoving();
             else
-                leftMoving();
+                LeftMoving();
         }
         else if (direction.Equals("Up")) {
-            jump();
+            Jump();
         }
     }
 
     // 触碰雪糕桶
-    public void pauseForMilliSeconds(float seconds)
+    public void PauseForMilliSeconds(float seconds)
     {
         Vector3 tempVelocity = hahaRB.velocity;
         tempVelocity.z = 0;
@@ -252,23 +273,14 @@ public class HAHAController : Photon.MonoBehaviour
         isPausing = true;
         pauseTimer = seconds;
     }
-
-
     #endregion
 
 
 
 
 
-    
-    public Vector3 enterMirror(UnityEngine.Transform mirrorTran) {
-        Vector3 LocalPos = transform.position;                                  // 物体所处的世界坐标向量
-        Vector3 LocalForward = mirrorTran.position;                    // 镜子所在地
-        Vector3 VecSpeed = LocalForward - LocalPos;                             // 物体自身Vector3.forward * speed的世界坐标向量
-        return new Vector3(VecSpeed.x, VecSpeed.y, VecSpeed.z);
-    }
 
-    void moveToMirror() {
-        //hahaRB.velocity = enterMirror(mirror);
-    }
+
+
+
 }
