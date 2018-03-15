@@ -6,6 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class OpenRoomSceneMangerController : Photon.PunBehaviour {
 
+    public GameObject friendsCanvas;
+
+    bool isCreatedRoom = false;
+
+    void Start() {
+        // 开房
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 2;
+        String roomStr = GlobalUserInfo.tokenInfo.account + DateTime.Now.ToFileTime().ToString();
+        PhotonNetwork.CreateRoom(roomStr, options, TypedLobby.Default);
+    }
+
     #region Photon Messages
     public override void OnPhotonPlayerConnected(PhotonPlayer otherPlayer)
     {
@@ -31,6 +43,10 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
             // LoadArena();
         }
     }
+
+    public override void OnCreatedRoom() {
+        isCreatedRoom = true;
+    }
     #endregion
 
     #region Public Methods
@@ -41,8 +57,11 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
 
     public void OnInviteButtonClick()
     {
-        // 邀请好友
-
+        if (!isCreatedRoom) {
+            Debug.Log("Creating room, wait for finishing");
+            return;
+        }
+        // TODO: 显示好友列表并可以选择好友
     }
 
     public void OnBackButtonClick()
