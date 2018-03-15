@@ -111,10 +111,6 @@ public class MainSceneMangerController : MonoBehaviour {
         }
     }
 
-    public void OnFriendItemClick(GameObject gobj) {
-
-    }
-
     IEnumerator GetFriendList() {
         string url = "http://123.207.93.25:9001/user/" + GlobalUserInfo.userInfo.user_id + "/friend"
                         + "?token=" + GlobalUserInfo.tokenInfo.token;
@@ -188,7 +184,7 @@ public class MainSceneMangerController : MonoBehaviour {
     }
 
     // 图像从二进制流到精灵
-    private Sprite GetSpriteFromBytes(byte[] data, int width, int height) {
+    public static Sprite GetSpriteFromBytes(byte[] data, int width, int height) {
         Texture2D tex = new Texture2D(width, height);
         try
         {

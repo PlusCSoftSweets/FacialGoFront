@@ -3,10 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class OpenRoomSceneMangerController : Photon.PunBehaviour {
 
-    public GameObject friendsCanvas;
+    public GameObject friendCanvas;
+    public GameObject friendContent;
+    public GameObject friendItemPrefab;
 
     bool isCreatedRoom = false;
 
@@ -61,7 +65,84 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
             Debug.Log("Creating room, wait for finishing");
             return;
         }
-        // TODO: 显示好友列表并可以选择好友
+        friendCanvas.SetActive(true);
+        StartCoroutine(GetFriendList());
+    }
+
+    IEnumerator GetFriendList() {
+        string url = "http://123.207.93.25:9001/user/" + GlobalUserInfo.userInfo.user_id + "/friend"
+                        + "?token=" + GlobalUserInfo.tokenInfo.token;
+        Debug.Log("Getting " + url);
+        UnityWebRequest req = UnityWebRequest.Get(url);
+        yield return req.SendWebRequest();
+
+        if (req.isNetworkError || req.isHttpError) {
+            Debug.LogError(req.error);
+            Debug.Log(req.downloadHandler.text);
+            // TODO: 弹窗提示
+        } else {
+            // 清理当前的好友
+            foreach (Transform chlid in friendContent.transform) {
+                Destroy(chlid.gameObject);
+            }
+            Debug.Log("Get friend list success!");
+            var json = JsonUtility.FromJson<MainSceneMangerController.FriendListItem>(req.downloadHandler.text);
+            foreach (var user in json.data) {
+                GameObject oneFriend = Instantiate(friendItemPrefab, friendContent.transform);
+                oneFriend.GetComponentInChildren<Text>().text = user.nickname;
+                MainSceneMangerController.UserItem userItem = new MainSceneMangerController.UserItem();
+                userItem.user_id = user.user_id;
+                userItem.nickname = user.nickname;
+                userItem.avatar = user.avatar;
+                userItem.exp = user.exp;
+                UserInfo userInfo = oneFriend.GetComponent<UserInfo>();
+                userInfo.userItem = userItem;
+                userInfo.OnClick += (info) => {
+                    Debug.Log(info.userItem.nickname);
+                    CloseFriendList();
+                    StartCoroutine(PostInvitation(info.userItem.user_id, PhotonNetwork.room.Name));
+                };
+                // 获取头像
+                StartCoroutine(GetAvatar(user.user_id, oneFriend.GetComponentInChildren<CircleImage>(), 150, 150));
+            }
+        }
+    }
+
+    IEnumerator PostInvitation(string invitee_id, string room_id) {
+        WWWForm form = new WWWForm();
+        form.AddField("token", GlobalUserInfo.tokenInfo.token);
+        form.AddField("invitee_id", invitee_id);
+        form.AddField("room_id", room_id);
+
+        UnityWebRequest req = UnityWebRequest.Post("http://123.207.93.25:9001/game/inviteToRoom", form);
+        yield return req.SendWebRequest();
+
+        if (req.isNetworkError || req.isHttpError) {
+            Debug.LogError(req.downloadHandler.text);
+        } else {
+            // TODO: 弹窗提示
+            Debug.Log("Invitation sended");
+        }
+    }
+
+    IEnumerator GetAvatar(string userId, CircleImage img, int width, int height) {
+        string url = "http://123.207.93.25:9001/user/" + userId + "/avatar";
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        yield return request.SendWebRequest();
+
+        if (request.isNetworkError || request.isHttpError) {
+            Debug.LogError(request.error);
+            // 弹窗提示错误
+        }
+        else {
+            Debug.Log("Form upload complete!");
+            Debug.Log(img);
+            img.sprite = MainSceneMangerController.GetSpriteFromBytes(request.downloadHandler.data, width, height);
+        }
+    }
+
+    public void CloseFriendList() {
+        friendCanvas.SetActive(false);
     }
 
     public void OnBackButtonClick()
