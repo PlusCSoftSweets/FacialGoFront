@@ -43,4 +43,6 @@ MonoBehaviour:
   - RequestForPickupTimes
   - TaggedPlayer
   - OnReverseCalled
+  - CancelReverse
+  - CarryOutReverse
   DisableAutoOpenWizard: 1

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Global : MonoBehaviour
 {
-
+    // leave room 的时候记得销毁
     public static Global instance;
     public int coinNumber = 0;
     public int currentScene = 0;
@@ -12,6 +12,7 @@ public class Global : MonoBehaviour
     public Vector3 mainCameraPosition;
     public Vector3 uiCameraPosition;
     public Vector3[] treesPosition;
+    public bool isCreateBefore = false;
 
     static Global()
     {
@@ -33,5 +34,10 @@ public class Global : MonoBehaviour
         mainCameraPosition = new Vector3(0, 0, 0);
         uiCameraPosition = new Vector3(0, 0, 0);
         treesPosition = new Vector3[10];
+    }
+
+    public float CalculateBarPosition(float x)
+    {
+        return ((x + 200) / 5000) * 600 - 300;
     }
 }

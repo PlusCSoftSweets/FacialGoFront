@@ -6,14 +6,12 @@ public class ObstacleController : MonoBehaviour {
 
 	private Animator animator;
 	private AnimationEvent evt;
-	private GameObjectPool pool;
 	AnimationClip clip;
     AudioSource[] m_MyAudioSource = new AudioSource[1];
 
     // Use this for initialization
     void Start () {
 		animator = GetComponent<Animator> ();
-		pool = GameObjectPool.FindPool ("Obstacle");
 
 		evt = new AnimationEvent();
 		evt.functionName = "FlyEnd";
@@ -38,7 +36,7 @@ public class ObstacleController : MonoBehaviour {
 	}
 
 	public void FlyEnd(GameObject obj) {
-		if (obj == gameObject)
-			pool.FreeObject (gameObject.transform.parent.gameObject);
+        if (obj == gameObject)
+            PhotonNetwork.Destroy(obj);
 	}
 }
