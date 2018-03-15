@@ -47,27 +47,14 @@ public class MainSceneMangerController : MonoBehaviour {
 
     public void Awake()
     {
-        // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
-        PhotonNetwork.automaticallySyncScene = true;
-        // the following line checks if this client was just created (and not yet online). if so, we connect
-        if (PhotonNetwork.connectionStateDetailed == ClientState.PeerCreated)
-        {
-            // Connect to the photon master-server. We use the settings saved in PhotonServerSettings (a .asset file in this project)
-            PhotonNetwork.ConnectUsingSettings("v1.0");
-        }
-
-        // generate a name for this player, if none is assigned yet
-        if (String.IsNullOrEmpty(PhotonNetwork.playerName))
-        {
-            PhotonNetwork.playerName = GlobalUserInfo.tokenInfo.account;
-        }
-        // if you wanted more debug out, turn this on:
-        // PhotonNetwork.logLevel = NetworkLogLevel.Full;
+        
     }
 
     void Start() {
         isNameChange = false;
         isAvatorChange = false;
+
+        UpdateUserInfo();
 
         // 通过Http从数据库拿到三个条目再赋值
         usernameGO.GetComponent<Text>().text = GlobalUserInfo.userInfo.nickname;
@@ -88,6 +75,10 @@ public class MainSceneMangerController : MonoBehaviour {
     // 开房间场景
     public void OnOpenRoomButtonClick() {
         Debug.Log("Open Room Button Click");
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 2;
+        String roomStr = GlobalUserInfo.tokenInfo.account + DateTime.Now.ToFileTime().ToString();
+        PhotonNetwork.JoinOrCreateRoom(roomStr, options, TypedLobby.Default);
         StartCoroutine(FadeScene());
     }
 

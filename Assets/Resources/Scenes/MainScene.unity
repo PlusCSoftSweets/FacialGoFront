@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.4964127, b: 0.57481724, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -292,7 +292,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Name
-      value: Tree (9)
+      value: Tree (3)
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Layer
@@ -531,7 +531,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Name
-      value: Tree (4)
+      value: Tree (8)
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Layer
@@ -1686,7 +1686,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Name
-      value: Tree (3)
+      value: Tree (9)
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Layer
@@ -1757,7 +1757,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Name
-      value: Tree (8)
+      value: Tree (4)
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Layer
@@ -2732,7 +2732,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Name
-      value: Tree (5)
+      value: Tree (7)
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Layer
@@ -3150,6 +3150,10 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 326e0f5780060fb46889aa95081f929d,
         type: 3}
+    - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
+      propertyPath: m_Name
+      value: Tree (2)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
   m_IsPrefabParent: 0
@@ -3386,7 +3390,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1030627235}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 540, y: 952, z: 200}
+  m_LocalPosition: {x: 0, y: 0, z: 200}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 646157517}
@@ -3908,7 +3912,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Name
-      value: Tree (2)
+      value: Tree (10)
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Layer
@@ -4046,7 +4050,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Name
-      value: Tree (7)
+      value: Tree (5)
       objectReference: {fileID: 0}
     - target: {fileID: 1018867971255598, guid: 803c7db6a11cd484aa66080565911c55, type: 2}
       propertyPath: m_Layer

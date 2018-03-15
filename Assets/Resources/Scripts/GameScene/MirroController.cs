@@ -1,15 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MirroController : MonoBehaviour {
 
-    public GameObject player;
-    public GameObject mirror;
-    [SerializeField] private float dis;
-
-    private bool isAbsort = false;
+    [SerializeField]
+    private float dis;
     AudioSource[] m_MyAudioSource = new AudioSource[1];
 
     public delegate void AudioCallBack();
@@ -17,15 +15,6 @@ public class MirroController : MonoBehaviour {
     void Start () {
         m_MyAudioSource = GetComponents<AudioSource>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-        dis = mirror.transform.position.z - player.transform.position.z;
-        if (dis < 5.0 && !isAbsort) {
-            isAbsort = true;
-            HAHAController.getHaHaInstance().isEnterMirror = true;
-        }
-	}
 
     void OnTriggerEnter(Collider other)
     {
@@ -47,8 +36,7 @@ public class MirroController : MonoBehaviour {
     }
     void changeScene()
     {
-        Global.instance.coinNumber = HAHAController.getHaHaInstance().count;
         Global.instance.currentScene++;
-        SceneManager.LoadScene("MirrorScene");
+        PhotonNetwork.LoadLevel("MirrorScene");
     }
 }

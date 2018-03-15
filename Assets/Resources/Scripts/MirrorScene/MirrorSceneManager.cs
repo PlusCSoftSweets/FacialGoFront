@@ -66,12 +66,12 @@ public class MirrorSceneManager : MonoBehaviour {
 					facialState = FacialState.Passed;
                     
                     // for testing
-					// StartCoroutine (WaitAndNextFace ());
-                    SceneManager.LoadScene("SuccessScene");
+					StartCoroutine (WaitAndNextFace ());
+                    // SceneManager.LoadScene("SuccessScene");
 				} else {
 					facialState = FacialState.Trying;
 					TryTime = Time.fixedTime;
-                    SceneManager.LoadScene("FailScene");
+                    // SceneManager.LoadScene("FailScene");
                 }
 			}
 			FacialGameObject.transform.position =
@@ -148,8 +148,10 @@ public class MirrorSceneManager : MonoBehaviour {
 	void StartFaceMove() {
 		if (CurFaceIndex >= Faces.Length) {
 			Debug.Log ("No next face");
-			SceneManager.LoadScene("SingelModelScene");
-			return;
+            // SceneManager.LoadScene("SingelModelScene");
+            PhotonNetwork.LoadLevel("SingelModelScene");
+
+            return;
 		}
 		FacialGameObject.GetComponent<RawImage> ().texture = Faces [CurFaceIndex];
 		CurFaceIndex++;

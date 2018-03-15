@@ -11,26 +11,14 @@ public class BackgroundCollision : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.name.Equals("Tree (9)"))
+        if (collider.name.Equals("Tree (3)"))
         {
-            //player     = GameObject.FindGameObjectWithTag("Player");
-            //mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-            //UICamera   = GameObject.FindGameObjectWithTag("BackGroundCamera");
             hidenTree = GameObject.FindGameObjectsWithTag("Tree");
-            //player.transform.SetPositionAndRotation(
-            //    new Vector3(player.transform.position.x, player.transform.position.y, -182f),
-            //    player.transform.rotation);
-            //mainCamera.transform.SetPositionAndRotation(
-            //    new Vector3(0f, 8f, -200),
-            //    mainCamera.transform.rotation);
-            //UICamera.transform.SetPositionAndRotation(
-            //    new Vector3(0f, 0f, -38.5f),
-            //    UICamera.transform.rotation);
             foreach (GameObject tree in hidenTree)
                 tree.transform.SetPositionAndRotation(
                     new Vector3(tree.transform.position.x, tree.transform.position.y, tree.transform.position.z + 50),
                     tree.transform.rotation);
-            // Debug.Log("Trigger: " + collider.name + "进入！");
+            Debug.Log("Trigger: " + collider.name + "进入！");
         }
         else if (collider.tag.Equals("HidenTree")) {
             collider.gameObject.layer = 0;

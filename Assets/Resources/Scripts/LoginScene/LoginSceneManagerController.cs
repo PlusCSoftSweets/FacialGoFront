@@ -4,9 +4,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using System;
 
-public class LoginSceneManagerController : MonoBehaviour {
+public class LoginSceneManagerController : Photon.PunBehaviour {
 
+#region Public Variables
     public InputField phoneInputField;
     public InputField checkInputField;
 
@@ -39,20 +41,40 @@ public class LoginSceneManagerController : MonoBehaviour {
         public int diamand { get; set; }
     }
 
+#endregion
+
+#region Private Variables
     private bool ifChangeScene = false;
+    private string gameVersion = "v1.0";
+#endregion
 
     void Start()
     {
+        // 实现自动登陆
         if (PlayerPrefs.GetString("phone_number") != null)
         {
-            var phone = phoneInputField.text = PlayerPrefs.GetString("phone_number");
+            phoneInputField.text = PlayerPrefs.GetString("phone_number");
             if (PlayerPrefs.GetString("password") != null)
             {
-                var check = checkInputField.text = PlayerPrefs.GetString("password");
-                StartCoroutine(PostLoginInfo(phone, check));
+                checkInputField.text = PlayerPrefs.GetString("password");
+                OnLoginClick();
             }
         }
             
+    }
+
+    public void Update()
+    {
+        if (PhotonNetwork.connected)
+        {
+            if (ifChangeScene)
+            {
+                StartCoroutine(FadeScene());
+            }else
+            {
+                PhotonNetwork.LeaveLobby();
+            }
+        }
     }
 
     /*
@@ -145,9 +167,7 @@ public class LoginSceneManagerController : MonoBehaviour {
                 var userJson = tokenJson.user;
                 GlobalUserInfo.SetTokenItemInstance(tokenJson.token, phone);
                 GlobalUserInfo.SetUserItemInstance(userJson);
-                if (ifChangeScene) {
-                    StartCoroutine(FadeScene());
-                }
+                ConnectToServer();
             }
             else {
                 Debug.Log(loginJson.msg);
@@ -155,6 +175,31 @@ public class LoginSceneManagerController : MonoBehaviour {
                 GameObject.Find("WaittingObject").transform.localPosition = new Vector3(0, 0, -1001);
                 GameObject.Find("LoginObject").transform.localPosition = new Vector3(0, 0, 0);
             }
+        }
+    }
+
+    // 接入游戏大厅
+    void ConnectToServer()
+    {
+        // 接入游戏大厅
+        // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
+        PhotonNetwork.automaticallySyncScene = true;
+        PhotonNetwork.autoCleanUpPlayerObjects = false;
+        // 认证信息
+        //PhotonNetwork.AuthValues = new AuthenticationValues();
+        //PhotonNetwork.AuthValues.AddAuthParameter("token", GlobalUserInfo.tokenInfo.token);
+        //PhotonNetwork.AuthValues.AddAuthParameter("user_id", GlobalUserInfo.userInfo.user_id);
+        // the following line checks if this client was just created (and not yet online). if so, we connect
+        if (PhotonNetwork.connectionStateDetailed == ClientState.PeerCreated)
+        {
+            // Connect to the photon master-server. We use the settings saved in PhotonServerSettings (a .asset file in this project)
+            PhotonNetwork.ConnectUsingSettings(gameVersion);
+        }
+
+        // generate a name for this player, if none is assigned yet
+        if (String.IsNullOrEmpty(PhotonNetwork.playerName))
+        {
+            PhotonNetwork.playerName = GlobalUserInfo.tokenInfo.account;
         }
     }
 
@@ -181,7 +226,6 @@ public class LoginSceneManagerController : MonoBehaviour {
                 // 弹窗显示错误
                 Debug.Log(checkJson.msg);
             }
-            
         }
     }
 
@@ -194,13 +238,15 @@ public class LoginSceneManagerController : MonoBehaviour {
         SceneManager.LoadScene("MainScene");
     }
 
-    /*
-     * 延迟适当时间 For Debug
-     */
-    IEnumerator SleepForSeconds() {
-        yield return new WaitForSeconds(2);
-        if (ifChangeScene) {
-            StartCoroutine(FadeScene());
-        }
+    #region Photon.PunBehaviour CallBacks
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("OnConnectedToMaster() was called by PUN");
     }
+
+    public override void OnDisconnectedFromPhoton()
+    {
+        Debug.LogWarning("OnDisconnectedFromPhoton() was called by PUN");
+    }
+    #endregion
 }
