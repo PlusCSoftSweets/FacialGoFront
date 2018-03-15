@@ -8,12 +8,12 @@ public class AcceletatorClick : MonoBehaviour {
     GameObject accelerator;
     public GameObject haha;
     public float forwardSpeed = 30f;           // 前进速度
-    public float targetSpeed = 200f;//加速器能够到达的最大速度
+    public float targetSpeed = 200f;  //加速器能够到达的最大速度
     float CreatTime = 15f;
     private int isSpeed = 2;
     bool isClick = false;
     float DispearTime = 3f;
-    Rigidbody rb;
+
 
     // Loading Bar
     public GameObject LoadingBar;
@@ -23,8 +23,6 @@ public class AcceletatorClick : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        rb = haha.GetComponent<Rigidbody>();
-
         // Loading Bar Init
         timeSpeed = 1 / CreatTime;
         currentAmount = 1;

@@ -31,7 +31,7 @@ public class ObstacleController : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider) {
 		if (collider.tag == "Player") {
-			collider.transform.GetComponent<HAHAController> ().pauseForMilliSeconds(1);
+			collider.transform.GetComponent<HAHAController> ().PauseForMilliSeconds(1);
 			animator.SetBool ("Fly", true);
             m_MyAudioSource[0].Play();
         }

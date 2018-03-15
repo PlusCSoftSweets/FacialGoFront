@@ -7,7 +7,7 @@ public class TransButtonClick : MonoBehaviour {
     private bool isClick = false;
     private float time = 0;
     GameObject rotator;
-    public GameObject m_Player;  //要跟随的物体
+    private GameObject m_Player;  //要跟随的物体
     int rotatingSpeed = 15;
     AudioSource[] m_MyAudioSource = new AudioSource[1];
 
@@ -29,10 +29,17 @@ public class TransButtonClick : MonoBehaviour {
 
 	}
 
+
     public void buttonClick() {
+        
+    }
+
+    [PunRPC]
+    public void OnReverseCalled()
+    {
         if (rotator == null)
         {
-            HAHAController player = HAHAController.getHaHaInstance();
+            HAHAController player = HAHAController.GetHaHaInstance();
             player.isReverse = true;
             time = 10;
             isClick = true;
@@ -43,9 +50,10 @@ public class TransButtonClick : MonoBehaviour {
     }
 
     private void cancelReverse() {
-        HAHAController player = HAHAController.getHaHaInstance();
+        HAHAController player = HAHAController.GetHaHaInstance();
         player.isReverse = false;
     }
+
     void LateUpdate()
     {
         if (rotator != null)
