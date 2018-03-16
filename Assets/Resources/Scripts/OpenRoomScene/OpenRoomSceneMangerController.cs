@@ -13,6 +13,10 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
     public GameObject friendItemPrefab;
 
     bool isCreatedRoom = false;
+    void Awake()
+    {
+        PhotonNetwork.OnEventCall += this.OnEvent;
+    }
 
     void Start() {
         // 开房
@@ -23,6 +27,25 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
     }
 
     #region Photon Messages
+    private void OnEvent(byte eventcode, object content, int senderid)
+    {
+        if (eventcode == 0)
+        {
+            PhotonPlayer sender = PhotonPlayer.Find(senderid);
+            byte response = (byte)content;
+            if (response == 0)
+            {
+                Debug.Log("Refuse");
+                // 弹窗，您的好友拒绝邀请
+            }
+            else if(response == 1)
+            {
+                Debug.Log("Agree");
+                LoadArena();
+            }
+        }
+    }
+
     public override void OnPhotonPlayerConnected(PhotonPlayer otherPlayer)
     {
         Debug.Log("OnPhotonPlayerConnected() " + otherPlayer.NickName); //如果你是正在连接的玩家则看不到
@@ -33,7 +56,7 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
             // 如果达到人数就开始游戏
             if (PhotonNetwork.room.PlayerCount == PhotonNetwork.room.MaxPlayers)
             {
-                LoadArena();
+                //LoadArena();
             }
         }
     }
@@ -51,6 +74,8 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
     public override void OnCreatedRoom() {
         isCreatedRoom = true;
     }
+
+
     #endregion
 
     #region Public Methods

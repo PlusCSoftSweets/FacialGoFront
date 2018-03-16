@@ -19,7 +19,7 @@ public class MirroController : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player")) {
-           AudioCallBack callbackTest = new AudioCallBack(changeScene);
+           AudioCallBack callbackTest = new AudioCallBack(ChangeScene);
            PlayClipData(callbackTest);
         }
     }
@@ -34,7 +34,7 @@ public class MirroController : MonoBehaviour {
         yield return new WaitForSeconds(time);
         callback();
     }
-    void changeScene()
+    void ChangeScene()
     {
         Global.instance.currentScene++;
         PhotonNetwork.LoadLevel("MirrorScene");
