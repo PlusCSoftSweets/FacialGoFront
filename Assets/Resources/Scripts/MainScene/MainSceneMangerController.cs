@@ -18,6 +18,7 @@ public class MainSceneMangerController : MonoBehaviour {
     public GameObject accountDetail;
     public GameObject detailManager;
     public GameObject friendCanvas;
+    public GameObject rankCanvas;
     public GameObject friendContent;
     public GameObject friendItemPrefab;
 
@@ -94,6 +95,11 @@ public class MainSceneMangerController : MonoBehaviour {
     public void OnFriendClick() {
         friendCanvas.SetActive(true);
         StartCoroutine(GetFriendList());
+    }
+    //点击排行图标
+    public void OnRankClick()
+    {
+        rankCanvas.SetActive(true);
     }
 
     [System.Serializable]
