@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 
-public class MainSceneMangerController : MonoBehaviour {
+public class MainSceneMangerController : Photon.PunBehaviour {
 
     public GUISkin Skin;
 
@@ -22,8 +22,11 @@ public class MainSceneMangerController : MonoBehaviour {
     public GameObject friendContent;
     public GameObject friendItemPrefab;
 
+    public GameObject dialogCanvas;
+
     public bool isNameChange;
     public bool isAvatorChange;
+
 
     [System.Serializable]
     public class ResponseItem
@@ -92,9 +95,12 @@ public class MainSceneMangerController : MonoBehaviour {
     }
 
     // 轮询查看邀请
+    private bool polling = false;
+    private InvitationItem invitation = null;
     IEnumerator PollInvitation() {
+        polling = true;
         string url = "http://123.207.93.25:9001/game/pollInvitation?token=" + GlobalUserInfo.tokenInfo.token;
-        while (true) {
+        while (polling) {
             UnityWebRequest req = UnityWebRequest.Get(url);
             yield return req.SendWebRequest();
 
@@ -105,17 +111,47 @@ public class MainSceneMangerController : MonoBehaviour {
                 var invitationList = resp.data;
                 if (invitationList.Length > 0) {
                     // 只取第一个邀请
-                    var invitation = invitationList[0];
-                    // TODO: 弹窗显示是否接受邀请
+                    invitation = invitationList[0];
+                    // 弹窗显示是否接受邀请
+                    dialogCanvas.SetActive(true);
                     // 停止轮询
                     Debug.Log("Got invitation, stopping coroutine");
-                    StopCoroutine("PollInvitation");
+                    polling = false;
                 } else {
                     // 没有收到任何邀请，1s之后继续轮询
                     Debug.Log("Polling");
                     yield return new WaitForSeconds(1.0f);
                 }
             }
+        }
+    }
+
+    private bool acceptedInvitation = false;
+    public void AcceptInvitation() {
+        acceptedInvitation = true;
+        dialogCanvas.SetActive(false);
+        
+        // Join the room and tell rejection
+        PhotonNetwork.JoinRoom(invitation.room_id);
+    }
+
+    public void RejectInvitation() {
+        acceptedInvitation = false;
+        dialogCanvas.SetActive(false);
+
+        // Join the room and tell rejection
+        PhotonNetwork.JoinRoom(invitation.room_id);
+    }
+
+    public override void OnJoinedRoom() {
+        if (acceptedInvitation) {
+            PhotonNetwork.RaiseEvent(0, 1, true, null);
+            // TODO: Load GameScene
+        } else {
+            PhotonNetwork.RaiseEvent(0, 0, true, null);
+            PhotonNetwork.LeaveRoom();
+            // TODO: 拒绝本次邀请，继续轮询
+            // StartCoroutine(PollInvitation());
         }
     }
 
