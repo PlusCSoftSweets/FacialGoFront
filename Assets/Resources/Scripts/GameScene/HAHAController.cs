@@ -34,7 +34,9 @@ public class HAHAController : Photon.MonoBehaviour
 
     // 魔镜相关
     public Transform mirror;                  // 最近的镜子
+    public Transform castle;                  // 城堡
     public bool isEnterMirror = false;        // 判断是否进入魔镜
+    public bool isEnterCastle = false;        // 判断是否进入城堡
     #endregion
 
     #region Static Variables
@@ -62,10 +64,12 @@ public class HAHAController : Photon.MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isEnterMirror)
+        if (!isEnterMirror && !isEnterCastle)
             MoveForward();
-        else
+        else if (isEnterMirror)
             MoveToMirror();
+        else if (isEnterCastle)
+            MoveToCastle();
 
         // 碰撞暂停
         if (isPausing)
@@ -179,19 +183,30 @@ public class HAHAController : Photon.MonoBehaviour
             mirror.position += new Vector3(0, 0, 7f);
             isEnterMirror = true;
         }
+        else if (other.name.Equals("FinishLine"))
+        {
+            castle = other.transform;
+            castle.position += new Vector3(0f, 0f, 7f);
+            isEnterCastle = true;
+        }
     }
 
-    private Vector3 EnterMirror(UnityEngine.Transform mirrorTran)
+    private Vector3 EnterObject(UnityEngine.Transform target)
     {
         Vector3 LocalPos = transform.position;                         // 物体所处的世界坐标向量
-        Vector3 LocalForward = mirrorTran.position;                    // 镜子所在地
+        Vector3 LocalForward = target.position;                        // 目标所在地
         Vector3 VecSpeed = LocalForward - LocalPos;                    // 物体自身Vector3.forward * speed的世界坐标向量
         return new Vector3(VecSpeed.x, VecSpeed.y, VecSpeed.z);
     }
 
     private void MoveToMirror()
     {
-        hahaRB.velocity = EnterMirror(mirror);
+        hahaRB.velocity = EnterObject(mirror);
+    }
+
+    private void MoveToCastle()
+    {
+        hahaRB.velocity = EnterObject(castle);
     }
 
     private void LeftMoving()
