@@ -12,6 +12,14 @@ public class SingleModeSceneManager : MonoBehaviour {
     public SpriteRenderer background;
     public SpriteRenderer race;
     public Camera raceCamera;
+    public Transform mainCamera;
+    public Transform uiCamera;
+    public Transform[] trees;
+    #endregion
+
+    #region Private Variables
+    private bool ifUpdate = false;
+    private HAHAController instance;
     #endregion
 
     // Use this for initialization
@@ -22,6 +30,12 @@ public class SingleModeSceneManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         goldTextField.text = Global.instance.coinNumber.ToString();
+        if (instance == null) instance = HAHAController.GetHaHaInstance();
+        else if (!ifUpdate && instance.isEnterMirror)
+        {
+            ifUpdate = true;
+            UpdateGlobalPosition();
+        }
     }
 
     #region Private Method
@@ -77,6 +91,18 @@ public class SingleModeSceneManager : MonoBehaviour {
             temp.sprite = Resources.Load(tr, typeof(Sprite)) as Sprite;
         }
         raceCamera.backgroundColor = new Color(r, g, b);
+    }
+
+    // 当碰撞到Mirror前面的墙的时候，记录目标位置
+    private void UpdateGlobalPosition()
+    {
+        Global.instance.playerPosition = instance.gameObject.transform.position + new Vector3(0, 0, 7);
+        Global.instance.mainCameraPosition = mainCamera.position + new Vector3(0, 0, 7);
+        Global.instance.uiCameraPosition = uiCamera.position + new Vector3(0, 0, 7);
+        for (int i = 0; i < 10; i++)
+        {
+            Global.instance.treesPosition[i] = trees[i].position + new Vector3(0, 0, 7);
+        }
     }
     #endregion
 }

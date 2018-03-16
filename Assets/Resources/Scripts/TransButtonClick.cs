@@ -1,67 +1,83 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class TransButtonClick : MonoBehaviour {
+public class TransButtonClick : Photon.PunBehaviour {
 
+    #region Public Variables
+    public Text showHint;
+    #endregion
+
+    #region Private Variables
+    private float rotateTime = 0;
     private bool isClick = false;
-    private float time = 0;
-    GameObject rotator;
-    private GameObject m_Player;  //要跟随的物体
-    int rotatingSpeed = 15;
-    AudioSource[] m_MyAudioSource = new AudioSource[1];
+    private GameObject rotator;
+    private GameObject player;
+    private const int rotatingSpeed = 15;
+    private AudioSource[] m_MyAudioSource = new AudioSource[1];
+    #endregion
 
     void Start()
     {
-        m_Player = GameObject.FindGameObjectWithTag("Player");
         m_MyAudioSource = GetComponents<AudioSource>();
     }
 
-    // Update is called once per frame
     void Update () {
-        if (time < 0.001 && isClick) {
-            cancelReverse();
+        if (rotateTime < 0.001 && isClick) {
+            CancelReverse();
             isClick = false;
             Destroy(rotator);
         }
         else if (isClick)
-            time -= Time.deltaTime;
-
-	}
-
-
-    public void buttonClick() {
-        
-    }
-
-    [PunRPC]
-    public void OnReverseCalled()
-    {
-        if (rotator == null)
         {
-            HAHAController player = HAHAController.GetHaHaInstance();
-            player.isReverse = true;
-            time = 10;
-            isClick = true;
-            m_MyAudioSource[0].Play();
-            GameObject obj = (GameObject)Resources.Load("Prefabs/Rotator");    //加载预制体到内存
-            rotator = Instantiate<GameObject>(obj);    //实例化加速器
+            rotateTime -= Time.deltaTime;
         }
-    }
-
-    private void cancelReverse() {
-        HAHAController player = HAHAController.GetHaHaInstance();
-        player.isReverse = false;
-    }
+	}
 
     void LateUpdate()
     {
         if (rotator != null)
         {
-            rotator.transform.position = new Vector3(m_Player.transform.position.x, 
-                m_Player.transform.position.y + 1.8f, m_Player.transform.position.z);
-            //rotator.transform.Rotate(Vector3.back* rotatingSpeed);
-            rotator.transform.Rotate(0* Time.deltaTime, 0 * Time.deltaTime, -90 * Time.deltaTime * rotatingSpeed);
+            rotator.transform.position = new Vector3(
+                player.transform.position.x,
+                player.transform.position.y + 1.8f, player.transform.position.z);
+            rotator.transform.Rotate(0 * Time.deltaTime,
+                0 * Time.deltaTime,
+                -90 * Time.deltaTime * rotatingSpeed);
         }
     }
+
+    #region Public Methods
+    public void OnReverseCalled()
+    {
+        if (Global.instance.coinNumber < 5)
+        {
+            showHint.text = "金币不足！";
+            return;
+        }
+        Global.instance.coinNumber -= 5;
+        photonView.RPC("CarryOutReverse", PhotonTargets.Others);
+    }
+    #endregion
+
+    #region Private Methods
+    [PunRPC]
+    private void CarryOutReverse()
+    {
+        if (player == null) player = HAHAController.GetHaHaInstance().gameObject;
+        if (!player.GetComponent<HAHAController>().isReverse)
+        {
+            isClick = true;
+            rotateTime = 10;
+            player.GetComponent<HAHAController>().isReverse = true;
+            rotator = Instantiate<GameObject>(Resources.Load("Prefabs/Rotator") as GameObject);
+            m_MyAudioSource[0].Play();
+        }
+    }
+
+    private void CancelReverse() {
+        player.GetComponent<HAHAController>().isReverse = false;
+    }
+    #endregion
 }

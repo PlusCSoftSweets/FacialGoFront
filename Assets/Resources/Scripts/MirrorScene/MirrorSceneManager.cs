@@ -15,18 +15,18 @@ public class MirrorSceneManager : MonoBehaviour {
 	public Texture[] Faces;
 
 	private int CurFaceIndex = 0;
+    private int random_face_index;
 
-	public float FacialMoveSpeed = 500.0f;
+    public float FacialMoveSpeed = 500.0f;
 	public float SampleInterval = 1.0f;
 	public float TryInterval = 5.0f;
 	[Range(0.0f, 1.0f)]
-	public float PassPercent = 0.8f;
+	public float PassPercent = 0.6f;
 
 	private GUIStyle buttonStyle;
 	private Vector3 FacialGameObjectOriginPos;
 	private float SampleTime;
 	private float TryTime;
-
 	double percent = 0.0;
     AudioSource[] m_MyAudioSource = new AudioSource[3];
 
@@ -115,19 +115,16 @@ public class MirrorSceneManager : MonoBehaviour {
 	IEnumerator CheckMatch() {
 		yield return null;
 		Texture2D texture = WebcamCtl.Snapshot ();
-        int face_number = 0;
+        int face_number = random_face_index;
 		yield return null;
-
-		double rand = Random.Range (0.5f, 0.9f);
+        
 
 		// TODO: EncodeTo can be only called in main thread, consider a way to make it in other thread
-		//byte[] imageBytes = texture.EncodeToPNG();
+		byte[] imageBytes = texture.EncodeToPNG();
 
 		var thread = UnityThreadHelper.CreateThread(()=>{
-			// TODO: Use the real interface to cal percent
-			percent = rand;
-
-			//percent = FaceDiscr.uniqueInstance.Discriminent(imageBytes,face_number);
+            // TODO: Use the real interface to cal percent
+            percent = FaceDiscr.GetInstance().Face_Getpercent(face_number,imageBytes);
 			Debug.Log(percent);
 			UnityThreadHelper.Dispatcher.Dispatch(()=>{
 				PercentGameObject.GetComponent<Text> ().text = ((int)(percent * 100)).ToString () + "%";
@@ -146,14 +143,16 @@ public class MirrorSceneManager : MonoBehaviour {
 	}
 
 	void StartFaceMove() {
-		if (CurFaceIndex >= Faces.Length) {
+		if (CurFaceIndex >= 1) {
 			Debug.Log ("No next face");
             // SceneManager.LoadScene("SingelModelScene");
             PhotonNetwork.LoadLevel("SingelModelScene");
 
             return;
 		}
-		FacialGameObject.GetComponent<RawImage> ().texture = Faces [CurFaceIndex];
+
+        random_face_index = Random.Range(0, 4);
+		FacialGameObject.GetComponent<RawImage> ().texture = Faces [random_face_index];
 		CurFaceIndex++;
 		// Facial fly out
 		if (facialState != FacialState.Moving) {
