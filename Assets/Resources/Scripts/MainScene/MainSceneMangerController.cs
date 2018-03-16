@@ -68,11 +68,54 @@ public class MainSceneMangerController : MonoBehaviour {
         url += GlobalUserInfo.userInfo.user_id;
         url += "/avatar";
         StartCoroutine(_GetUserFace(url, 100, 100));
+
+        StartCoroutine(PollInvitation());
     }
 
     void Update() {
         if (isNameChange) {
             UpdateUserInfo();
+        }
+    }
+
+    [System.Serializable]
+    public class InvitationItem {
+        public string inviter_id;
+        public string room_id;        
+    }
+
+    [System.Serializable]
+    public class InvitationResp {
+        public int status;
+        public string msg;
+        public InvitationItem[] data;
+    }
+
+    // 轮询查看邀请
+    IEnumerator PollInvitation() {
+        string url = "http://123.207.93.25:9001/game/pollInvitation?token=" + GlobalUserInfo.tokenInfo.token;
+        while (true) {
+            UnityWebRequest req = UnityWebRequest.Get(url);
+            yield return req.SendWebRequest();
+
+            if (req.isNetworkError || req.isHttpError) {
+                Debug.LogError(req.downloadHandler.text);
+            } else {
+                var resp = JsonUtility.FromJson<InvitationResp>(req.downloadHandler.text);
+                var invitationList = resp.data;
+                if (invitationList.Length > 0) {
+                    // 只取第一个邀请
+                    var invitation = invitationList[0];
+                    // TODO: 弹窗显示是否接受邀请
+                    // 停止轮询
+                    Debug.Log("Got invitation, stopping coroutine");
+                    StopCoroutine("PollInvitation");
+                } else {
+                    // 没有收到任何邀请，1s之后继续轮询
+                    Debug.Log("Polling");
+                    yield return new WaitForSeconds(1.0f);
+                }
+            }
         }
     }
 
