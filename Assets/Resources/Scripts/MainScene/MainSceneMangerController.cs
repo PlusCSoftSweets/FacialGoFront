@@ -146,12 +146,22 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     public override void OnJoinedRoom() {
         if (acceptedInvitation) {
             PhotonNetwork.RaiseEvent(0, 1, true, null);
-            // TODO: Load GameScene
         } else {
             PhotonNetwork.RaiseEvent(0, 0, true, null);
             PhotonNetwork.LeaveRoom();
-            // TODO: 拒绝本次邀请，继续轮询
-            // StartCoroutine(PollInvitation());
+        }
+        StartCoroutine(DeleteInvitation());
+    }
+
+    IEnumerator DeleteInvitation() {
+        string url = "http://123.207.93.25:9001/game/deleteInvitation/" + GlobalUserInfo.userInfo.user_id;
+        WWWForm form = new WWWForm();
+        form.AddField("token", GlobalUserInfo.tokenInfo.token);
+        var req = UnityWebRequest.Post(url, form);
+        yield return req.SendWebRequest();
+        // 拒绝了本次邀请，继续轮询
+        if (!acceptedInvitation) {
+            StartCoroutine(PollInvitation());
         }
     }
 
