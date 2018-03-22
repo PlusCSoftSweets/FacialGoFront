@@ -16,12 +16,12 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
 
     void OnEnable()
     {
-        PhotonNetwork.OnEventCall += OnEventCalled;
+        PhotonNetwork.OnEventCall += this.OnEventCalled;
     }
 
     void OnDisable()
     {
-        PhotonNetwork.OnEventCall -= OnEventCalled;
+        PhotonNetwork.OnEventCall -= this.OnEventCalled;
     }
 
     void Start() {
@@ -45,6 +45,7 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
             // 如果达到人数就开始游戏
             if (PhotonNetwork.room.PlayerCount == PhotonNetwork.room.MaxPlayers)
             {
+                LoadArena();
             }
         }
     }
@@ -55,7 +56,7 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
         if (PhotonNetwork.isMasterClient)
         {
             Debug.Log("OnPhotonPlayerDisConnected isMasterClient " + PhotonNetwork.isMasterClient); //在 OnPhotonPlayerDisconnected 之前调用
-            // LoadArena();
+            
         }
     }
 
@@ -174,14 +175,18 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
     // Raise Event响应事件
     private void OnEventCalled(byte eventCode, object content, int senderid)
     {
+        Debug.Log("0");
         if (eventCode == 0)
         {
+            Debug.Log("1");
             if ((byte)content == 0)
             {
                 // jujue 
+                Debug.Log("2");
             }
             else
             {
+                Debug.Log("3");
                 LoadArena();
             }
         }
