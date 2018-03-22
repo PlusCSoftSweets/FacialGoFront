@@ -14,6 +14,16 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
 
     bool isCreatedRoom = false;
 
+    void OnEnable()
+    {
+        PhotonNetwork.OnEventCall += OnEventCalled;
+    }
+
+    void OnDisable()
+    {
+        PhotonNetwork.OnEventCall -= OnEventCalled;
+    }
+
     void Start() {
         // 开房
         RoomOptions options = new RoomOptions();
@@ -33,7 +43,6 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
             // 如果达到人数就开始游戏
             if (PhotonNetwork.room.PlayerCount == PhotonNetwork.room.MaxPlayers)
             {
-                LoadArena();
             }
         }
     }
@@ -160,6 +169,22 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
     #endregion
 
     #region Private Methods //私有方法区域
+    // Raise Event响应事件
+    private void OnEventCalled(byte eventCode, object content, int senderid)
+    {
+        if (eventCode == 0)
+        {
+            if ((byte)content == 0)
+            {
+                // jujue 
+            }
+            else
+            {
+                LoadArena();
+            }
+        }
+    }
+
     // 只有房主才可以加载场景
     private void LoadArena()
     {
