@@ -25,11 +25,13 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour {
     }
 
     void Start() {
-        // 开房
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 2;
-        String roomStr = GlobalUserInfo.tokenInfo.account + DateTime.Now.ToFileTime().ToString();
-        PhotonNetwork.CreateRoom(roomStr, options, TypedLobby.Default);
+        if (!PhotonNetwork.inRoom) {
+            // 开房
+            RoomOptions options = new RoomOptions();
+            options.MaxPlayers = 2;
+            String roomStr = GlobalUserInfo.tokenInfo.account + DateTime.Now.ToFileTime().ToString();
+            PhotonNetwork.CreateRoom(roomStr, options, TypedLobby.Default);
+        }
     }
 
     #region Photon Messages

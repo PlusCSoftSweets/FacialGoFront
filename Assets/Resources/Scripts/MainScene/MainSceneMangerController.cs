@@ -140,18 +140,21 @@ public class MainSceneMangerController : Photon.PunBehaviour {
         dialogCanvas.SetActive(false);
 
         // Join the room and tell rejection
-        PhotonNetwork.JoinRoom(invitation.room_id);
-    }
-
-    public override void OnJoinedRoom() {
-        if (acceptedInvitation) {
-            PhotonNetwork.RaiseEvent(0, 1, true, null);
-        } else {
-            PhotonNetwork.RaiseEvent(0, 0, true, null);
-            PhotonNetwork.LeaveRoom();
-        }
+        // PhotonNetwork.JoinRoom(invitation.room_id);
         StartCoroutine(DeleteInvitation());
     }
+
+    // public override void OnJoinedRoom() {
+    //     if (acceptedInvitation) {
+    //         PhotonNetwork.RaiseEvent(0, 1, true, null);
+    //         Debug.Log("Accept");
+    //     } else {
+    //         PhotonNetwork.RaiseEvent(0, 0, true, null);
+    //         Debug.Log("Reject");
+    //         PhotonNetwork.LeaveRoom();
+    //     }
+    //     StartCoroutine(DeleteInvitation());
+    // }
 
     IEnumerator DeleteInvitation() {
         string url = "http://123.207.93.25:9001/game/deleteInvitation/" + GlobalUserInfo.userInfo.user_id;
