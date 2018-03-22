@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HAHAController : Photon.MonoBehaviour
+public class HAHAController : Photon.PunBehaviour
 {
     #region Private Variables
     // 移动相关
@@ -19,6 +19,8 @@ public class HAHAController : Photon.MonoBehaviour
 
     // 玩家相关
     private Rigidbody hahaRB;                 // haha刚体
+    private bool isGameOn = false;            // 游戏是否开始
+    private float waittingTime = 0;           // 等待游戏开始时间
 
     // 声音
     private AudioSource[] m_MyAudioSource = new AudioSource[1];
@@ -35,6 +37,8 @@ public class HAHAController : Photon.MonoBehaviour
     // 魔镜相关
     public Transform mirror;                  // 最近的镜子
     public bool isEnterMirror = false;        // 判断是否进入魔镜
+
+    public bool isOtherReady = false;         // 对方是否加入房间
     #endregion
 
     #region Static Variables
@@ -48,6 +52,11 @@ public class HAHAController : Photon.MonoBehaviour
     }  // 获取控制器实例
     #endregion
 
+    void Awake()
+    {
+        photonView.RPC("TellOtherReady", PhotonTargets.Others);
+    }
+
     void Start()
     {
         InitController();
@@ -57,11 +66,21 @@ public class HAHAController : Photon.MonoBehaviour
     void Update()
     {
         if (photonView.isMine == false && PhotonNetwork.connected == true) return;
+        if (PhotonNetwork.isMasterClient && isOtherReady && !isGameOn)
+        {
+            waittingTime += Time.deltaTime;
+            if (waittingTime > 3)
+            {
+                photonView.RPC("SetGameOn", PhotonTargets.All);
+            }
+        }
+        if (!isGameOn) return;
         if (isMagnet) MagnetWork();
     }
 
     void FixedUpdate()
     {
+        if (!isGameOn) return;
         if (!isEnterMirror)
             MoveForward();
         else
@@ -229,6 +248,18 @@ public class HAHAController : Photon.MonoBehaviour
             hahaRB.velocity += moveVerticalVec;
             hahaRB.AddForce(Vector3.up * 100);
         }
+    }
+
+    [PunRPC]
+    private void TellOtherReady()
+    {
+        isOtherReady = true;
+    }
+
+    [PunRPC]
+    private void SetGameOn()
+    {
+        isGameOn = true;
     }
     #endregion
 
