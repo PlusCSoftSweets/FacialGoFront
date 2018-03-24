@@ -145,8 +145,8 @@ public class MirrorSceneManager : MonoBehaviour {
 	void StartFaceMove() {
 		if (CurFaceIndex >= 1) {
 			Debug.Log ("No next face");
-            // SceneManager.LoadScene("SingelModelScene");
-            PhotonNetwork.LoadLevel("SingelModelScene");
+            SceneManager.LoadScene("SingelModelScene");
+            // PhotonNetwork.LoadLevel("SingelModelScene");
 
             return;
 		}

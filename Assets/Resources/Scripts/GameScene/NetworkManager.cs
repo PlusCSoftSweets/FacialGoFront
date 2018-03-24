@@ -47,12 +47,14 @@ public class NetworkManager : PunBehaviour, IPunObservable {
                 Global.instance.isCreateBefore = true;
                 localPlayer = PhotonNetwork.Instantiate(localPlayer.name, new Vector3(GetRandom(rangeX), 1.35f, -182f), Quaternion.identity, 0);
                 mark = PhotonNetwork.Instantiate(mark.name, new Vector2(0, 0), Quaternion.identity, 0);
+                localPlayer.name = "localHAHA";
                 InitSceneObject();
             }
             else
             {
                 localPlayer = PhotonNetwork.Instantiate(localPlayer.name, new Vector3(GetRandom(rangeX), 1.35f, -182f), Quaternion.identity, 0);
                 mark = PhotonNetwork.Instantiate(mark.name, new Vector2(0, 0), Quaternion.identity, 0);
+                localPlayer.name = "localHAHA";
                 RecoverPosition();
             }
         }

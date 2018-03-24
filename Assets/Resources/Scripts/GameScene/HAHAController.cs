@@ -78,6 +78,7 @@ public class HAHAController : Photon.PunBehaviour
                 byte evCode = 3;
                 byte content = 1;
                 bool reliable = true;
+                isGameOn = true;
                 PhotonNetwork.RaiseEvent(evCode, content, reliable, null);
             }
         }
