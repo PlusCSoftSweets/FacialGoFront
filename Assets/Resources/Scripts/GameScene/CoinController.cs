@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon;
 
-public class CoinController : MonoBehaviour
+public class CoinController : PunBehaviour
 {
     GameObject target;
     public bool isCanMove = false;
@@ -21,7 +22,14 @@ public class CoinController : MonoBehaviour
     {
         if (other.tag.Equals("Player"))
         {
-			PhotonNetwork.Destroy(gameObject);
+            //PhotonNetwork.Destroy(gameObject);
+            PhotonNetwork.RPC(photonView, "SetActive", PhotonTargets.All, false, null);
         }
+    }
+
+    [PunRPC]
+    private void SetActive()
+    {
+        this.gameObject.SetActive(false);
     }
 }
