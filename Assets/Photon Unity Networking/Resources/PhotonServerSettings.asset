@@ -45,4 +45,6 @@ MonoBehaviour:
   - OnReverseCalled
   - CancelReverse
   - CarryOutReverse
+  - SetGameOn
+  - TellOtherReady
   DisableAutoOpenWizard: 1

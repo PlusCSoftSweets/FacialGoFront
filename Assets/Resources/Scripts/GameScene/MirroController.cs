@@ -37,6 +37,6 @@ public class MirroController : MonoBehaviour {
     void changeScene()
     {
         Global.instance.currentScene++;
-        PhotonNetwork.LoadLevel("MirrorScene");
+        SceneManager.LoadScene("MirrorScene");
     }
 }

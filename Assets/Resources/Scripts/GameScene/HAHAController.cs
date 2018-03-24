@@ -54,7 +54,11 @@ public class HAHAController : Photon.PunBehaviour
 
     void Awake()
     {
-        photonView.RPC("TellOtherReady", PhotonTargets.Others);
+        PhotonNetwork.OnEventCall += this.OnEvent;
+        byte evCode = 2;
+        byte content = 1;
+        bool reliable = true;
+        PhotonNetwork.RaiseEvent(evCode, content, reliable, null);
     }
 
     void Start()
@@ -71,7 +75,10 @@ public class HAHAController : Photon.PunBehaviour
             waittingTime += Time.deltaTime;
             if (waittingTime > 3)
             {
-                photonView.RPC("SetGameOn", PhotonTargets.All);
+                byte evCode = 3;
+                byte content = 1;
+                bool reliable = true;
+                PhotonNetwork.RaiseEvent(evCode, content, reliable, null);
             }
         }
         if (!isGameOn) return;
@@ -250,13 +257,29 @@ public class HAHAController : Photon.PunBehaviour
         }
     }
 
-    [PunRPC]
+    private void OnEvent(byte eventcode, object content, int senderid)
+    {
+        if (eventcode == 2)
+        {
+            if ((byte)content == 1)
+            {
+                TellOtherReady();
+            }
+        }
+        else if (eventcode == 3)
+        {
+            if ((byte) content == 1)
+            {
+                SetGameOn();
+            }
+        }
+    }
+
     private void TellOtherReady()
     {
         isOtherReady = true;
     }
 
-    [PunRPC]
     private void SetGameOn()
     {
         isGameOn = true;

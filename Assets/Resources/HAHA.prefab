@@ -232,6 +232,7 @@ MonoBehaviour:
   magnetTime: 10
   mirror: {fileID: 0}
   isEnterMirror: 0
+  isOtherReady: 0
 --- !u!114 &114533627968883316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -275,7 +276,7 @@ MonoBehaviour:
     TeleportIfDistanceGreaterThan: 3
     InterpolateOption: 4
     InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 10
+    InterpolateLerpSpeed: 100
     InterpolateMoveTowardsAcceleration: 2
     InterpolateMoveTowardsDeceleration: 2
     InterpolateSpeedCurve:
