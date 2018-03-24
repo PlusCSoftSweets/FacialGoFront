@@ -45,4 +45,7 @@ MonoBehaviour:
   - OnReverseCalled
   - CancelReverse
   - CarryOutReverse
+  - LayUpBarricade
+  - SetPlayerResult
+  - GameOverCalled
   DisableAutoOpenWizard: 1

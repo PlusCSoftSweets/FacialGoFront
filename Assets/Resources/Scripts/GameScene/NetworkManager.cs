@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon;
+using UnityEngine.SceneManagement;
 
 public class NetworkManager : PunBehaviour, IPunObservable {
 
     #region Public Static Variables
-    public static NetworkManager instance;
+
     #endregion
 
     #region Public Variables
@@ -16,6 +17,7 @@ public class NetworkManager : PunBehaviour, IPunObservable {
     public Transform[] trees;
     public GameObject bar;
     public GameObject mark;
+    public NetworkManager instance;
 
     // 初始化数量
     public int goldNumber;
@@ -23,6 +25,7 @@ public class NetworkManager : PunBehaviour, IPunObservable {
     public float rangeMinZ;
     public float rangeMaxZ;
     public float rangeMinY;
+    public bool isFailed = false;
     #endregion
 
     #region Private Variables
@@ -31,6 +34,8 @@ public class NetworkManager : PunBehaviour, IPunObservable {
     private Transform mirror;
     private bool isAbort = false;
     private float markPosition = 0;
+    private GameObject[] coinGroup;
+    private GameObject[] obstacleGroup;
     #endregion
 
     // Use this for initialization
@@ -77,6 +82,31 @@ public class NetworkManager : PunBehaviour, IPunObservable {
             this.markPosition = (float)stream.ReceiveNext();
         }
     }
+
+    public void GameOverChangeScene()
+    {
+        for (int i = 0; i < goldNumber; i++)
+        {
+            PhotonNetwork.Destroy(coinGroup[i]);
+        }
+        for (int i = 0; i < obstacleNumber; i++)
+        {
+            PhotonNetwork.Destroy(obstacleGroup[i]);
+        }
+        UnityEngine.Object.Destroy(Global.instance.gameObject);
+        UnityEngine.Object.Destroy(FingerGestures.Instance.gameObject);
+        PhotonNetwork.LeaveRoom();
+
+        if (isFailed)
+        {
+            SceneManager.LoadScene("FailScene");
+        }
+        else
+        {
+            SceneManager.LoadScene("SuccessScene");
+        }
+        
+    }
     #endregion
 
     #region Private Methed
@@ -112,23 +142,27 @@ public class NetworkManager : PunBehaviour, IPunObservable {
 
     private void CreateCoins()
     {
+        coinGroup = new GameObject[goldNumber];
         for (int i = 0; i < goldNumber; i++)
         {
             float z = UnityEngine.Random.Range(rangeMinZ, rangeMaxZ);
             float x = GetRandom(rangeX);
             float y = rangeMinY;
-            DontDestroyOnLoad(PhotonNetwork.InstantiateSceneObject("Gold", new Vector3(x, y, z), Quaternion.identity, 0, null));
+            coinGroup[i] = PhotonNetwork.InstantiateSceneObject("Gold", new Vector3(x, y, z), Quaternion.identity, 0, null);
+            DontDestroyOnLoad(coinGroup[i]);
         }
     }
 
     private void CreateObstacles()
     {
+        obstacleGroup = new GameObject[obstacleNumber];
         for (int i = 0; i < obstacleNumber; i++)
         {
             float z = UnityEngine.Random.Range(rangeMinZ, rangeMaxZ);
             float x = GetRandom(rangeX);
             float y = rangeMinY;
-            DontDestroyOnLoad(PhotonNetwork.InstantiateSceneObject("ObstacleWrapper", new Vector3(x, y, z), Quaternion.identity, 0, null));
+            obstacleGroup[i] = PhotonNetwork.InstantiateSceneObject("ObstacleWrapper", new Vector3(x, y, z), Quaternion.identity, 0, null);
+            DontDestroyOnLoad(obstacleGroup[i]);
         }
     }
     #endregion
