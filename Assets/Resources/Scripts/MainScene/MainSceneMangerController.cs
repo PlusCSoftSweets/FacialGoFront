@@ -18,6 +18,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     public GameObject accountDetail;
     public GameObject detailManager;
     public GameObject friendCanvas;
+    public GameObject RankCanvas;
     public GameObject rankCanvas;
     public GameObject friendContent;
     public GameObject friendItemPrefab;
@@ -261,6 +262,10 @@ public class MainSceneMangerController : Photon.PunBehaviour {
 
     public void CloseFriendList() {
         friendCanvas.SetActive(false);
+    }
+    public void CloseRankCanvas()
+    {
+        RankCanvas.SetActive(false);
     }
 
     // 获取人脸

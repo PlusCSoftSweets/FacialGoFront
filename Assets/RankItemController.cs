@@ -10,12 +10,15 @@ public class RankItemController : MonoBehaviour {
     Vector3 itemLocalPos;
     Vector2 contentSize;
     float itemHeight;
+    public GameObject AllLine;
+    public GameObject FriendLine;
 
     void Start()
     {
-        Debug.Log("排行榜");
+        FriendLine.SetActive(false);
+       // Debug.Log("排行榜");
         item = (GameObject)Instantiate(Resources.Load("Prefabs/RankItem"));
-        parent = GameObject.Find("Content");
+        parent = GameObject.Find("RankContent");
         contentSize = parent.GetComponent<RectTransform>().sizeDelta;
         itemHeight = item.GetComponent<RectTransform>().rect.height;
         itemLocalPos = item.transform.localPosition;
@@ -40,24 +43,36 @@ public class RankItemController : MonoBehaviour {
     }
 
     //移除列表项  
-    public void RemoveItem(GameObject t)
+    //public void RemoveItem(GameObject t)
+    //{
+    //    int index = messages.IndexOf(t);
+    //    messages.Remove(t);
+    //    Destroy(t);
+
+    //    for (int i = index; i < messages.Count; i++)//移除的列表项后的每一项都向前移动  
+    //    {
+    //        messages[i].transform.localPosition += new Vector3(0, itemHeight, 0);
+    //    }
+
+    //    if (contentSize.y <= messages.Count * itemHeight)//调整内容的高度  
+    //        parent.GetComponent<RectTransform>().sizeDelta = new Vector2(contentSize.x, messages.Count * itemHeight);
+    //    else
+    //        parent.GetComponent<RectTransform>().sizeDelta = contentSize;
+    //}
+    //public void CancleOnClick()
+    //{
+    //    RemoveItem(this.gameObject);
+    //}
+    public void onAllClick()
     {
-        int index = messages.IndexOf(t);
-        messages.Remove(t);
-        Destroy(t);
-
-        for (int i = index; i < messages.Count; i++)//移除的列表项后的每一项都向前移动  
-        {
-            messages[i].transform.localPosition += new Vector3(0, itemHeight, 0);
-        }
-
-        if (contentSize.y <= messages.Count * itemHeight)//调整内容的高度  
-            parent.GetComponent<RectTransform>().sizeDelta = new Vector2(contentSize.x, messages.Count * itemHeight);
-        else
-            parent.GetComponent<RectTransform>().sizeDelta = contentSize;
+        AllLine.SetActive(true);
+        FriendLine.SetActive(false);
+        //加载全部排行榜，利用AddItem函数
     }
-    public void CancleOnClick()
+    public void onFriendClick()
     {
-        RemoveItem(this.gameObject);
+        AllLine.SetActive(false);
+        FriendLine.SetActive(true);
+        //加载好友排行榜
     }
 }
