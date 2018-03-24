@@ -42,27 +42,31 @@ public class NetworkManager : PunBehaviour, IPunObservable {
         }
         else
         {
-            if (!Global.instance.isCreateBefore)
-            {   
-                Global.instance.isCreateBefore = true;
-                localPlayer = PhotonNetwork.Instantiate(localPlayer.name, new Vector3(GetRandom(rangeX), 1.35f, -182f), Quaternion.identity, 0);
+            // if (!Global.instance.isCreateBefore || HAHAController.LocalPlayerInstance == null)
+            if (HAHAController.LocalPlayerInstance == null)
+            {
+                // Global.instance.isCreateBefore = true;
+                //localPlayer = PhotonNetwork.Instantiate(localPlayer.name, new Vector3(GetRandom(rangeX), 1.35f, -182f), Quaternion.identity, 0);
+                //mark = PhotonNetwork.Instantiate(mark.name, new Vector2(0, 0), Quaternion.identity, 0);
+                //localPlayer.name = "localHAHA";
+                HAHAController.LocalPlayerInstance = PhotonNetwork.Instantiate(localPlayer.name, new Vector3(GetRandom(rangeX), 1.35f, -182f), Quaternion.identity, 0);
                 mark = PhotonNetwork.Instantiate(mark.name, new Vector2(0, 0), Quaternion.identity, 0);
-                localPlayer.name = "localHAHA";
-                InitSceneObject();
+                HAHAController.LocalPlayerInstance.name = "localHAHA";
+                DontDestroyOnLoad(HAHAController.LocalPlayerInstance);
+
+                // 只有房主才能生成金币和障碍
+                if (PhotonNetwork.isMasterClient) {
+                    InitSceneObject();
+                }
             }
             else
             {
-                localPlayer = PhotonNetwork.Instantiate(localPlayer.name, new Vector3(GetRandom(rangeX), 1.35f, -182f), Quaternion.identity, 0);
+                // localPlayer = PhotonNetwork.Instantiate(localPlayer.name, new Vector3(GetRandom(rangeX), 1.35f, -182f), Quaternion.identity, 0);
                 mark = PhotonNetwork.Instantiate(mark.name, new Vector2(0, 0), Quaternion.identity, 0);
-                localPlayer.name = "localHAHA";
+                // localPlayer.name = "localHAHA";
                 RecoverPosition();
             }
         }
-    }
-
-    void Update()
-    {
-        
     }
 
     #region Public Method
@@ -101,7 +105,8 @@ public class NetworkManager : PunBehaviour, IPunObservable {
     private void RecoverPosition()
     {
         Debug.Log("recover positon");
-        localPlayer.transform.position = Global.instance.playerPosition;
+        // localPlayer.transform.position = Global.instance.playerPosition;
+        HAHAController.LocalPlayerInstance.transform.position = Global.instance.playerPosition;
         for (int i = 0; i < 10; i++)
         {
             trees[i].position = Global.instance.treesPosition[i];

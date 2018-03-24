@@ -96,12 +96,15 @@ public class SingleModeSceneManager : MonoBehaviour {
     // 当碰撞到Mirror前面的墙的时候，记录目标位置
     private void UpdateGlobalPosition()
     {
-        Global.instance.playerPosition = instance.gameObject.transform.position + new Vector3(0, 0, 7);
-        Global.instance.mainCameraPosition = mainCamera.position + new Vector3(0, 0, 7);
-        Global.instance.uiCameraPosition = uiCamera.position + new Vector3(0, 0, 7);
-        for (int i = 0; i < 10; i++)
+        if (instance.gameObject.GetPhotonView().isMine)
         {
-            Global.instance.treesPosition[i] = trees[i].position + new Vector3(0, 0, 7);
+            Global.instance.playerPosition = instance.gameObject.transform.position + new Vector3(0, 0, 7);
+            Global.instance.mainCameraPosition = mainCamera.position + new Vector3(0, 0, 7);
+            Global.instance.uiCameraPosition = uiCamera.position + new Vector3(0, 0, 7);
+            for (int i = 0; i < 10; i++)
+            {
+                Global.instance.treesPosition[i] = trees[i].position + new Vector3(0, 0, 7);
+            }
         }
     }
     #endregion

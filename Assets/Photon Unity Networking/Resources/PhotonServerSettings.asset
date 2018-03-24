@@ -47,4 +47,5 @@ MonoBehaviour:
   - CarryOutReverse
   - SetGameOn
   - TellOtherReady
+  - SetActive
   DisableAutoOpenWizard: 1

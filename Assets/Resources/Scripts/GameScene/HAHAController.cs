@@ -43,6 +43,7 @@ public class HAHAController : Photon.PunBehaviour
 
     #region Static Variables
     private static HAHAController playerInstance;  // 控制器实例
+    public static GameObject LocalPlayerInstance; // 当前玩家实例，不销毁
     #endregion
 
     #region Static Method
@@ -70,17 +71,26 @@ public class HAHAController : Photon.PunBehaviour
     void Update()
     {
         if (photonView.isMine == false && PhotonNetwork.connected == true) return;
-        if (PhotonNetwork.isMasterClient && isOtherReady && !isGameOn)
+
+        // 当玩家数量大于一个人的时候才等待，否则直接开始
+        if (PhotonNetwork.room.PlayerCount > 1)
         {
-            waittingTime += Time.deltaTime;
-            if (waittingTime > 3)
+            if (PhotonNetwork.isMasterClient && isOtherReady && !isGameOn)
             {
-                byte evCode = 3;
-                byte content = 1;
-                bool reliable = true;
-                isGameOn = true;
-                PhotonNetwork.RaiseEvent(evCode, content, reliable, null);
+                waittingTime += Time.deltaTime;
+                if (waittingTime > 3)
+                {
+                    byte evCode = 3;
+                    byte content = 1;
+                    bool reliable = true;
+                    isGameOn = true;
+                    PhotonNetwork.RaiseEvent(evCode, content, reliable, null);
+                }
             }
+        }
+        else if (!isGameOn)
+        {
+            isGameOn = true;
         }
         if (!isGameOn) return;
         if (isMagnet) MagnetWork();
@@ -88,7 +98,9 @@ public class HAHAController : Photon.PunBehaviour
 
     void FixedUpdate()
     {
+        Debug.Log("isGameOn:" + isGameOn);
         if (!isGameOn) return;
+        Debug.Log("isEnterMirror:" + isEnterMirror);
         if (!isEnterMirror)
             MoveForward();
         else
@@ -204,6 +216,7 @@ public class HAHAController : Photon.PunBehaviour
         {
             mirror = other.transform;
             mirror.position += new Vector3(0, 0, 7f);
+            other.gameObject.SetActive(false);
             isEnterMirror = true;
         }
     }

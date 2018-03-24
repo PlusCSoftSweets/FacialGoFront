@@ -18,9 +18,12 @@ public class MirroController : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player")) {
-           AudioCallBack callbackTest = new AudioCallBack(ChangeScene);
-           PlayClipData(callbackTest);
+        if (other.gameObject.name == "localHAHA") {
+            HAHAController.GetHaHaInstance().isEnterMirror = false;
+            Debug.Log("HAHAController.GetHaHaInstance().isEnterMirror = " + HAHAController.GetHaHaInstance().isEnterMirror);
+            HAHAController.LocalPlayerInstance.GetComponent<HAHAController>().isEnterMirror = false;
+            AudioCallBack callbackTest = new AudioCallBack(ChangeScene);
+            PlayClipData(callbackTest);
         }
     }
     public void PlayClipData(AudioCallBack callback)
