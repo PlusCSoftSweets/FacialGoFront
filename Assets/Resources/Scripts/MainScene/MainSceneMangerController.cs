@@ -133,6 +133,9 @@ public class MainSceneMangerController : Photon.PunBehaviour {
         
         // Join the room and tell rejection
         PhotonNetwork.JoinRoom(invitation.room_id);
+    }
+
+    public override void OnJoinedRoom() {
         SceneManager.LoadScene("SingelModelScene");
     }
 
