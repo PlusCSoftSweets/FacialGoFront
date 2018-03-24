@@ -183,7 +183,7 @@ public class LoginSceneManagerController : Photon.PunBehaviour {
     {
         // 接入游戏大厅
         // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
-        PhotonNetwork.automaticallySyncScene = true;
+        PhotonNetwork.automaticallySyncScene = false;
         PhotonNetwork.autoCleanUpPlayerObjects = false;
         // 认证信息
         //PhotonNetwork.AuthValues = new AuthenticationValues();

@@ -133,6 +133,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
         
         // Join the room and tell rejection
         PhotonNetwork.JoinRoom(invitation.room_id);
+        SceneManager.LoadScene("SingelModelScene");
     }
 
     public void RejectInvitation() {
