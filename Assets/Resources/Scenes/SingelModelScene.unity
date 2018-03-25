@@ -434,8 +434,9 @@ GameObject:
   - component: {fileID: 73215847}
   - component: {fileID: 73215846}
   - component: {fileID: 73215845}
+  - component: {fileID: 73215849}
   m_Layer: 5
-  m_Name: Mirror(9)
+  m_Name: FinishLine
   m_TagString: Mirror
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -603,6 +604,18 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!114 &73215849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 73215843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b01860c57900e0e45b9c0195401ac3e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dis: 0
 --- !u!1 &74089482
 GameObject:
   m_ObjectHideFlags: 0
@@ -3547,7 +3560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa8e653c8e405d94ebfd1dd89bfc38ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localPlayer: {fileID: 1801070949531168, guid: 6e22d5896f5250c4cac7898b6b9f0f9a,
+  playerPrefab: {fileID: 1801070949531168, guid: 6e22d5896f5250c4cac7898b6b9f0f9a,
     type: 2}
   mainCamera: {fileID: 1177824149}
   uiCamera: {fileID: 835699047}
@@ -3564,8 +3577,9 @@ MonoBehaviour:
   - {fileID: 739633294}
   bar: {fileID: 382065648}
   mark: {fileID: 1678079706787210, guid: 5a150df8d8378a54ea6b0c949eac6ed1, type: 2}
-  goldNumber: 250
-  obstacleNumber: 100
+  avator: {fileID: 0}
+  goldNumber: 200
+  obstacleNumber: 80
   rangeMinZ: 0
   rangeMaxZ: 5000
   rangeMinY: 1
@@ -4121,6 +4135,7 @@ GameObject:
   - component: {fileID: 1258644304}
   - component: {fileID: 1258644306}
   - component: {fileID: 1258644305}
+  - component: {fileID: 1258644307}
   m_Layer: 5
   m_Name: MoveText
   m_TagString: Untagged
@@ -4185,6 +4200,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1258644303}
+--- !u!114 &1258644307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1258644303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a333d1a985f7a944ba86d6c3b9fd6e6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1354589236
 GameObject:
   m_ObjectHideFlags: 0
@@ -4530,7 +4556,7 @@ GameObject:
   - component: {fileID: 1380967219}
   - component: {fileID: 1380967218}
   m_Layer: 5
-  m_Name: Wall
+  m_Name: FinishWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4846,7 +4872,7 @@ RectTransform:
   m_GameObject: {fileID: 1501053685}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 309441901}
   m_RootOrder: 1
@@ -4854,7 +4880,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 126, y: 166}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1501053687
 MonoBehaviour:

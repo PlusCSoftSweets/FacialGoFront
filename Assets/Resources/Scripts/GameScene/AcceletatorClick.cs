@@ -36,13 +36,11 @@ public class AcceletatorClick : MonoBehaviour {
 	void Update () {
         // 只获得LoaclPlayer
         if (player == null) player = HAHAController.GetHaHaInstance().gameObject;
-        if (isClick)
-        {
+        if (isClick) {
             LaunchOutRocket();
             isClick = false;
         }
-        if (isSpeed == 1)
-        {
+        if (isSpeed == 1) {
             LoadingBarWorking();
         }
     }

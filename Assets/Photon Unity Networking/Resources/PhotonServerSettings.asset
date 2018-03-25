@@ -48,4 +48,5 @@ MonoBehaviour:
   - SetGameOn
   - TellOtherReady
   - SetActive
+  - GameOverCalled
   DisableAutoOpenWizard: 1

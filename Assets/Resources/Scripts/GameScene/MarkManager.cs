@@ -8,9 +8,16 @@ public class MarkManager : Photon.PunBehaviour {
     private Transform player;
     #endregion
 
-    // Use this for initialization
-    void Start() {
-	}
+    #region Public Static Variables
+    public static GameObject LocalMarkInstance;
+    #endregion
+    
+    void Awake() {
+        if (photonView.isMine) {
+            LocalMarkInstance = this.gameObject;
+        }
+        DontDestroyOnLoad(this.gameObject);
+    }
 	
 	// Update is called once per frame
 	void Update () {

@@ -117,11 +117,11 @@ public class MirrorSceneManager : MonoBehaviour {
 		Texture2D texture = WebcamCtl.Snapshot ();
         int face_number = random_face_index;
 		yield return null;
-        
+    
 
 		// TODO: EncodeTo can be only called in main thread, consider a way to make it in other thread
 		byte[] imageBytes = texture.EncodeToPNG();
-
+        
 		var thread = UnityThreadHelper.CreateThread(()=>{
             // TODO: Use the real interface to cal percent
             percent = FaceDiscr.GetInstance().Face_Getpercent(face_number,imageBytes);
@@ -134,7 +134,7 @@ public class MirrorSceneManager : MonoBehaviour {
 				}
 			});
 		});
-		//thread.Start ();
+		thread.Start ();
 	}
 
 	IEnumerator WaitAndNextFace() {

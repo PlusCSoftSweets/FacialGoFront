@@ -9,27 +9,25 @@ public class CoinController : PunBehaviour
     public bool isCanMove = false;
     public float speed = 50;
 
-    void Update()
-    {
-        if (isCanMove)
-        {
+    void Start() {
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    void Update() {
+        if (isCanMove) {
             if (target == null) target = HAHAController.GetHaHaInstance().gameObject;
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * speed);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag.Equals("Player"))
-        {
-            //PhotonNetwork.Destroy(gameObject);
+    private void OnTriggerEnter(Collider other) {
+        if (other.tag.Equals("Player")) {
             PhotonNetwork.RPC(photonView, "SetActive", PhotonTargets.All, false, null);
         }
     }
 
     [PunRPC]
-    private void SetActive()
-    {
+    private void SetActive() {
         this.gameObject.SetActive(false);
     }
 }

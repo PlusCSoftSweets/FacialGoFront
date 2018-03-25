@@ -9,8 +9,7 @@ using Newtonsoft.Json;
 
 public class MainSceneMangerController : Photon.PunBehaviour {
 
-    public GUISkin Skin;
-
+    #region Public Variables
     public GameObject usernameGO;
     public GameObject levelGO;
     public GameObject diamondGO;
@@ -27,6 +26,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     public bool isNameChange;
     public bool isAvatorChange;
 
+    #endregion
 
     [System.Serializable]
     public class ResponseItem
@@ -130,35 +130,18 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     public void AcceptInvitation() {
         acceptedInvitation = true;
         dialogCanvas.SetActive(false);
-        
-        // Join the room and tell rejection
-        PhotonNetwork.JoinRoom(invitation.room_id);
+        StartCoroutine(DeleteInvitation());
     }
 
     public override void OnJoinedRoom() {
-        SceneManager.LoadScene("SingelModelScene");
+        StartCoroutine(FadeScene());
     }
 
     public void RejectInvitation() {
         acceptedInvitation = false;
         dialogCanvas.SetActive(false);
-
-        // Join the room and tell rejection
-        // PhotonNetwork.JoinRoom(invitation.room_id);
         StartCoroutine(DeleteInvitation());
     }
-
-    // public override void OnJoinedRoom() {
-    //     if (acceptedInvitation) {
-    //         PhotonNetwork.RaiseEvent(0, 1, true, null);
-    //         Debug.Log("Accept");
-    //     } else {
-    //         PhotonNetwork.RaiseEvent(0, 0, true, null);
-    //         Debug.Log("Reject");
-    //         PhotonNetwork.LeaveRoom();
-    //     }
-    //     StartCoroutine(DeleteInvitation());
-    // }
 
     IEnumerator DeleteInvitation() {
         string url = "http://123.207.93.25:9001/game/deleteInvitation/" + GlobalUserInfo.userInfo.user_id;
@@ -170,16 +153,19 @@ public class MainSceneMangerController : Photon.PunBehaviour {
         if (!acceptedInvitation) {
             StartCoroutine(PollInvitation());
         }
+        else {
+            PhotonNetwork.JoinRoom(invitation.room_id);
+        }
     }
 
     // 开房间场景
     public void OnOpenRoomButtonClick() {
         Debug.Log("Open Room Button Click");
-        // RoomOptions options = new RoomOptions();
-        // options.MaxPlayers = 2;
-        // String roomStr = GlobalUserInfo.tokenInfo.account + DateTime.Now.ToFileTime().ToString();
-        // PhotonNetwork.JoinOrCreateRoom(roomStr, options, TypedLobby.Default);
-        StartCoroutine(FadeScene());
+        RoomOptions options = new RoomOptions() {
+            MaxPlayers = 2
+        };
+        String roomStr = GlobalUserInfo.tokenInfo.account + DateTime.Now.ToFileTime().ToString();
+        PhotonNetwork.CreateRoom(roomStr, options, TypedLobby.Default);
     }
 
     // 账号详情
