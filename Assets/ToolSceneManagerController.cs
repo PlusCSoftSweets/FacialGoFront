@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ToolSceneManagerController : MonoBehaviour {
+    public GameObject DetailCanvas;
 
 	// Use this for initialization
 	void Start () {
@@ -13,8 +14,12 @@ public class ToolSceneManagerController : MonoBehaviour {
 	void Update () {
 		
 	}
-    public void onClick()
+    public void onCloseButtonClick()
     {
-        Debug.Log("切换测试");
+        DetailCanvas.SetActive(false);
+    }
+    public void onItemClick()
+    {
+        DetailCanvas.SetActive(true);
     }
 }

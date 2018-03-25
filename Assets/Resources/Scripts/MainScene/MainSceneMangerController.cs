@@ -20,6 +20,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     public GameObject friendCanvas;
     public GameObject RankCanvas;
     public GameObject rankCanvas;
+    public GameObject RandomCanvas;
     public GameObject friendContent;
     public GameObject friendItemPrefab;
 
@@ -168,12 +169,31 @@ public class MainSceneMangerController : Photon.PunBehaviour {
 
     // 开房间场景
     public void OnOpenRoomButtonClick() {
-        Debug.Log("Open Room Button Click");
+        //Debug.Log("Open Room Button Click");
         // RoomOptions options = new RoomOptions();
         // options.MaxPlayers = 2;
         // String roomStr = GlobalUserInfo.tokenInfo.account + DateTime.Now.ToFileTime().ToString();
         // PhotonNetwork.JoinOrCreateRoom(roomStr, options, TypedLobby.Default);
-        StartCoroutine(FadeScene());
+        StartCoroutine(FadeScene("OpenRoomScene"));
+    }
+    //
+        public void OnOpenToolButtonClick()
+    {
+        //Debug.Log("Open Tool Button Click");
+        //SceneManager.LoadScene("ToolScene");
+        //Application.LoadLevel("scene_1");
+        // StartCoroutine(FadeScene("ToolScene"));
+        SceneManager.LoadScene("ToolScene");
+    }
+    //随机匹配场景
+    public void OnRandomButtonClick()
+    {
+        RandomCanvas.SetActive(true);
+    }
+    //关闭随机匹配场景
+    public void OnRandomCloseButtonClick()
+    {
+        RandomCanvas.SetActive(false);
     }
 
     // 账号详情
@@ -337,9 +357,9 @@ public class MainSceneMangerController : Photon.PunBehaviour {
         }
     }
 
-    IEnumerator FadeScene() {
+    IEnumerator FadeScene(String scene) {
         float time = GameObject.Find("Fade").GetComponent<FadeScene>().BeginFade(1);
         yield return new WaitForSeconds(time);
-        SceneManager.LoadScene("OpenRoomScene");
+        SceneManager.LoadScene(scene);
     }
 }
