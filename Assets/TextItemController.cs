@@ -10,6 +10,9 @@ public class TextItemController : MonoBehaviour {
     Vector3 itemLocalPos;
     Vector2 contentSize;
     float itemHeight;
+    string[] array = { "那你很棒哦", "是在下输了", "扎心了老铁" ,"那又关我什么事","都可以，没关系"};
+    public GameObject Content;
+    public GameObject Description;
 
     void Start()
     {
@@ -18,17 +21,18 @@ public class TextItemController : MonoBehaviour {
         contentSize = parent.GetComponent<RectTransform>().sizeDelta;
         itemHeight = item.GetComponent<RectTransform>().rect.height;
         itemLocalPos = item.transform.localPosition;
-        for (int i = 0; i < 14; i++)
+        for (int i = 0; i < 5; i++)
         {
-            AddItem();
+            AddItem(i);
         }
+        WordItemClick();
     }
 
     //添加列表项  
-    public void AddItem()
+    public void AddItem(int i)
     {
         GameObject a = Instantiate(item) as GameObject;
-        a.transform.Find("Text").GetComponent<Text>().text = "哟吼，那你很棒哦";
+        a.transform.Find("Text").GetComponent<Text>().text = array[i];
         a.transform.parent = parent.transform;
         a.transform.localPosition = new Vector3(itemLocalPos.x, itemLocalPos.y - messages.Count * itemHeight, 0);
         messages.Add(a);
@@ -37,27 +41,21 @@ public class TextItemController : MonoBehaviour {
             parent.GetComponent<RectTransform>().sizeDelta = new Vector2(contentSize.x, messages.Count * itemHeight);
         }
     }
-
-    //移除列表项  
-    public void RemoveItem(GameObject t)
+    //添加评论点击监听器
+    public void WordItemClick()
     {
-        int index = messages.IndexOf(t);
-        messages.Remove(t);
-        Destroy(t);
-
-        for (int i = index; i < messages.Count; i++)//移除的列表项后的每一项都向前移动  
+        foreach (Transform child in Content.transform)
         {
-            messages[i].transform.localPosition += new Vector3(0, itemHeight, 0);
+            Button btn = child.GetComponent<Button>();
+            Transform grand = child.Find("Text");
+            string text = grand.GetComponent<Text>().text;
+            btn.onClick.AddListener(delegate () {
+                this.onItemClick(text);
+            });
         }
-
-        if (contentSize.y <= messages.Count * itemHeight)//调整内容的高度  
-            parent.GetComponent<RectTransform>().sizeDelta = new Vector2(contentSize.x, messages.Count * itemHeight);
-        else
-            parent.GetComponent<RectTransform>().sizeDelta = contentSize;
     }
-    public void CancleOnClick()
+    public void onItemClick(string text)
     {
-        RemoveItem(this.gameObject);
+        Description.GetComponent<Text>().text = text;
     }
-
 }
