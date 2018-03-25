@@ -29,9 +29,11 @@ public class ToolSceneManagerController : MonoBehaviour {
     public void onCloseButtonClick()
     {
         DetailCanvas.SetActive(false);
+        Debug.Log("关闭按钮");
     }
     public void onItemClick(string text)
     {
+        //Destroy(this.gameObject);
         DetailCanvas.SetActive(true);
         Transform father = DetailCanvas.transform;
         Transform title = father.Find("Title");
