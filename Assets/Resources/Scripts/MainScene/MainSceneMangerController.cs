@@ -21,6 +21,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     public GameObject RankCanvas;
     public GameObject rankCanvas;
     public GameObject RandomCanvas;
+    public GameObject ExplainCanvas;
     public GameObject friendContent;
     public GameObject friendItemPrefab;
 
@@ -190,10 +191,18 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     {
         RandomCanvas.SetActive(true);
     }
+    public void OnHelpButtonClick()
+    {
+        ExplainCanvas.SetActive(true);
+    }
     //关闭随机匹配场景
     public void OnRandomCloseButtonClick()
     {
         RandomCanvas.SetActive(false);
+    }
+    public void OnExplainCloseButtonClick()
+    {
+        ExplainCanvas.SetActive(false);
     }
 
     // 账号详情
