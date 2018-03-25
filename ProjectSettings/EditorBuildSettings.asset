@@ -35,3 +35,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Resources/Scenes/ResultScene/SuccessScene.unity
     guid: d21a37d33817211439acad0c21b4f82b
+  - enabled: 1
+    path: Assets/Resources/Scenes/ToolScene.unity
+    guid: 2aae870bdd32814459724e98722828f5
