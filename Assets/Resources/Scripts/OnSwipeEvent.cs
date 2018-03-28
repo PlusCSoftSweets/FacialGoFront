@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class OnSwipeEvent : MonoBehaviour {
 
+    public static GameObject swipeEvent;
+
+    void Start()
+    {
+        if (swipeEvent == null) {
+            swipeEvent = this.gameObject;
+            DontDestroyOnLoad(this.gameObject);
+        }
+    }
+
     public void OnSwipe(SwipeGesture gesture)
     {
         // 完整的滑动数据

@@ -19,9 +19,6 @@ public class SavePhotoManagerController : MonoBehaviour {
         Debug.Log(tex.width);
         Debug.Log(tex.height);
         myImage.overrideSprite = ss;
-        
-        
-
         //Sprite temp = myImage.sprite;
         //Texture2D ttex = temp.texture;
 	}

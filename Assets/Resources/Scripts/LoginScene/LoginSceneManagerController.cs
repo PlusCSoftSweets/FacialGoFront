@@ -112,7 +112,6 @@ public class LoginSceneManagerController : Photon.PunBehaviour {
      * 登陆按钮
      */
     public void OnLoginClick() {
-        Debug.Log("Login Button Click");
         string phone = phoneInputField.text;
         string check = checkInputField.text;
 
@@ -179,27 +178,14 @@ public class LoginSceneManagerController : Photon.PunBehaviour {
     }
 
     // 接入游戏大厅
-    void ConnectToServer()
-    {
-        // 接入游戏大厅
-        // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
-        PhotonNetwork.automaticallySyncScene = true;
+    void ConnectToServer() {
+        PhotonNetwork.automaticallySyncScene = false;
         PhotonNetwork.autoCleanUpPlayerObjects = false;
-        // 认证信息
-        //PhotonNetwork.AuthValues = new AuthenticationValues();
-        //PhotonNetwork.AuthValues.AddAuthParameter("token", GlobalUserInfo.tokenInfo.token);
-        //PhotonNetwork.AuthValues.AddAuthParameter("user_id", GlobalUserInfo.userInfo.user_id);
-        // the following line checks if this client was just created (and not yet online). if so, we connect
-        if (PhotonNetwork.connectionStateDetailed == ClientState.PeerCreated)
-        {
-            // Connect to the photon master-server. We use the settings saved in PhotonServerSettings (a .asset file in this project)
+        if (PhotonNetwork.connectionStateDetailed == ClientState.PeerCreated) {
             PhotonNetwork.ConnectUsingSettings(gameVersion);
         }
-
-        // generate a name for this player, if none is assigned yet
-        if (String.IsNullOrEmpty(PhotonNetwork.playerName))
-        {
-            PhotonNetwork.playerName = GlobalUserInfo.tokenInfo.account;
+        if (String.IsNullOrEmpty(PhotonNetwork.playerName)) {
+            PhotonNetwork.playerName = GlobalUserInfo.userInfo.user_id;
         }
     }
 

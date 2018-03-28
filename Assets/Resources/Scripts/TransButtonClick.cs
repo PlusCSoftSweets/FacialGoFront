@@ -21,6 +21,7 @@ public class TransButtonClick : Photon.PunBehaviour {
     void Start()
     {
         m_MyAudioSource = GetComponents<AudioSource>();
+        PhotonNetwork.OnEventCall += OnEvent;
     }
 
     void Update () {
@@ -29,8 +30,7 @@ public class TransButtonClick : Photon.PunBehaviour {
             isClick = false;
             Destroy(rotator);
         }
-        else if (isClick)
-        {
+        else if (isClick) {
             rotateTime -= Time.deltaTime;
         }
 	}
@@ -49,25 +49,30 @@ public class TransButtonClick : Photon.PunBehaviour {
     }
 
     #region Public Methods
-    public void OnReverseCalled()
-    {
-        if (Global.instance.coinNumber < 5)
-        {
+    public void OnReverseCalled() {
+        if (Global.instance.coinNumber < 5) {
             showHint.text = "金币不足！";
             return;
         }
         Global.instance.coinNumber -= 5;
-        photonView.RPC("CarryOutReverse", PhotonTargets.Others);
+        PhotonNetwork.RaiseEvent(10, "REVERSE", true, null);
+        //PhotonNetwork.RPC(photonView, "CarryOutReverse", PhotonTargets.Others, false, null);
     }
     #endregion
 
     #region Private Methods
-    [PunRPC]
-    private void CarryOutReverse()
-    {
+    private void OnEvent(byte eventcode, object content, int senderid) {
+        if (eventcode == 10) {
+            if (((string)content).Equals("REVERSE")) {
+                Debug.Log("REVERSE");
+                CarryOutReverse();
+            }
+        }
+    }
+    
+    private void CarryOutReverse() {
         if (player == null) player = HAHAController.GetHaHaInstance().gameObject;
-        if (!player.GetComponent<HAHAController>().isReverse)
-        {
+        if (!player.GetComponent<HAHAController>().isReverse) {
             isClick = true;
             rotateTime = 10;
             player.GetComponent<HAHAController>().isReverse = true;
