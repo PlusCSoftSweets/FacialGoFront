@@ -35,6 +35,7 @@ public class NetworkManager : PunBehaviour, IPunObservable {
     private float markPosition = 0;
     private bool GameOver = false;
     private bool isWin = false;
+    private bool findMark = false;
     #endregion
 
     // Use this for initialization
@@ -50,15 +51,20 @@ public class NetworkManager : PunBehaviour, IPunObservable {
                 PhotonNetwork.Instantiate(playerPrefab.name,
                                           new Vector3(GetRandom(rangeX), 3.35f, -182f),
                                           Quaternion.identity, 0);
-                PhotonNetwork.Instantiate(mark.name, new Vector2(0, 0), Quaternion.identity, 0);
+                
                 HAHAController.LocalPlayerInstance.name = "localHAHA";
-
+                PhotonNetwork.Instantiate(mark.name, new Vector2(0, 0), Quaternion.identity, 0);
+                MarkManager.LocalMarkInstance.name = "localMark";
+                MarkManager.LocalMarkInstance.transform.parent = bar.transform;
+                MarkManager.LocalMarkInstance.GetComponent<RectTransform>().localPosition = new Vector2(-300, 0);
                 // 只有房主才能生成金币和障碍
                 if (PhotonNetwork.isMasterClient) {
                     InitSceneObject();
                 }
             }
             else {
+                MarkManager.LocalMarkInstance = PhotonNetwork.Instantiate(mark.name, new Vector2(0, 0), Quaternion.identity, 0);
+                MarkManager.LocalMarkInstance.name = "localMark";
                 RecoverPosition();
             }
         }
@@ -69,6 +75,15 @@ public class NetworkManager : PunBehaviour, IPunObservable {
             GameOver = true;
             isWin = true;
             PhotonNetwork.RPC(photonView, "GameOverCalled", PhotonTargets.All, false, null);
+        }
+        if (!findMark) {
+            GameObject otherMark = GameObject.Find("mark(Clone)");
+            if (otherMark != null) {
+                Debug.Log("Find it");
+                findMark = true;
+                otherMark.transform.parent = bar.transform;
+            }
+            Debug.Log("not found");
         }
     }
     #region Public Method
@@ -96,8 +111,6 @@ public class NetworkManager : PunBehaviour, IPunObservable {
     }
 
     private void InitSceneObject() {
-        mark.transform.parent = bar.transform;
-        mark.GetComponent<RectTransform>().localPosition = new Vector2(-300, 0);
         CreateCoins();
         CreateObstacles();
     }
@@ -112,7 +125,7 @@ public class NetworkManager : PunBehaviour, IPunObservable {
         mainCamera.position = Global.instance.mainCameraPosition;
         uiCamera.position = Global.instance.uiCameraPosition;
         MarkManager.LocalMarkInstance.transform.parent = bar.transform;
-        MarkManager.LocalMarkInstance.GetComponent<RectTransform>().localPosition = new Vector2(Global.instance.CalculateBarPosition(Global.instance.playerPosition.z), 0);
+        MarkManager.LocalMarkInstance.GetComponent<RectTransform>().localPosition =  new Vector2(Global.instance.CalculateBarPosition(Global.instance.playerPosition.z), 0);
     }
 
     private void CreateCoins() {

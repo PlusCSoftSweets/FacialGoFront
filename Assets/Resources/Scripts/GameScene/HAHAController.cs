@@ -106,6 +106,10 @@ public class HAHAController : Photon.PunBehaviour {
     // 1. 判断触碰的左右
     void FixedUpdate() {
         if (!isGameOn) return;
+        // 以下操作只针对本地玩家
+        if (photonView.isMine == false && PhotonNetwork.connected == true) return;
+
+        Debug.Log(gameObject.name + " is Enter Mirror:" + isEnterMirror);
         if (isEnterMirror) {
             MoveToMirror();
         }
@@ -120,8 +124,6 @@ public class HAHAController : Photon.PunBehaviour {
             if (pauseTimer < 0) isPausing = false;
         }
 
-        // 以下操作只针对本地玩家
-        if (photonView.isMine == false && PhotonNetwork.connected == true) return;
         MoveLeftOrRight();
     }
 
@@ -193,6 +195,7 @@ public class HAHAController : Photon.PunBehaviour {
     }
 
     private Vector3 EnterMirror(UnityEngine.Transform mirrorTran) {
+        Debug.Log(gameObject.name + "EnterMirror" + mirrorTran.ToString());
         Vector3 LocalPos = transform.position;                         // 物体所处的世界坐标向量
         Vector3 LocalForward = mirrorTran.position;                    // 镜子所在地
         Vector3 VecSpeed = LocalForward - LocalPos;                    // 物体自身Vector3.forward * speed的世界坐标向量
@@ -277,17 +280,20 @@ public class HAHAController : Photon.PunBehaviour {
             m_MyAudioSource[0].Play();
         }
         else if (other.name.Equals("Wall")) {
-            mirror = other.transform;
-            mirror.position += new Vector3(0, 0, 7f);
-            if (photonView.isMine)
+            if (photonView.isMine) {
+                mirror = other.transform;
+                mirror.position += new Vector3(0, 0, 7f);
                 other.gameObject.SetActive(false);
-            isEnterMirror = true;
+                isEnterMirror = true;
+            }
+                
         }
         else if (other.name.Equals("FinishWall")) {
-            finishLine = other.transform;
-            finishLine.position += new Vector3(0, 0, 7f);
-            if (photonView.isMine)
+            if (photonView.isMine) {
+                finishLine = other.transform;
+                finishLine.position += new Vector3(0, 0, 7f);
                 other.gameObject.SetActive(false);
+            }            
         }
     }
     #endregion

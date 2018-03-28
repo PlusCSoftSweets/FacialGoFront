@@ -233,6 +233,8 @@ MonoBehaviour:
   mirror: {fileID: 0}
   isEnterMirror: 0
   isOtherReady: 0
+  isFinish: 0
+  finishLine: {fileID: 0}
 --- !u!114 &114533627968883316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -273,10 +275,10 @@ MonoBehaviour:
   m_PositionModel:
     SynchronizeEnabled: 1
     TeleportEnabled: 1
-    TeleportIfDistanceGreaterThan: 3
+    TeleportIfDistanceGreaterThan: 10
     InterpolateOption: 4
     InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 20
+    InterpolateLerpSpeed: 3
     InterpolateMoveTowardsAcceleration: 2
     InterpolateMoveTowardsDeceleration: 2
     InterpolateSpeedCurve:
