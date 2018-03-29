@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MirroController : MonoBehaviour {
+public class MirroController : MonoBehaviour
+{
 
     [SerializeField]
     private float dis;
@@ -12,12 +13,15 @@ public class MirroController : MonoBehaviour {
 
     public delegate void AudioCallBack();
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         m_MyAudioSource = GetComponents<AudioSource>();
     }
 
-    void OnTriggerEnter(Collider other) {
-        if (other.gameObject.name == "localHAHA") {
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "localHAHA")
+        {
             other.gameObject.GetComponent<HAHAController>().isEnterMirror = false;
             other.gameObject.GetComponent<Rigidbody>().useGravity = false;
             Debug.Log("In MirrorController:" + other.gameObject.name + HAHAController.GetHaHaInstance().isEnterMirror);
@@ -26,16 +30,19 @@ public class MirroController : MonoBehaviour {
             PlayClipData(callbackTest);
         }
     }
-    public void PlayClipData(AudioCallBack callback) {
+    public void PlayClipData(AudioCallBack callback)
+    {
         m_MyAudioSource[0].Play();
         StartCoroutine(DelayedCallback(m_MyAudioSource[0].clip.length, callback));
     }
 
-    private IEnumerator DelayedCallback(float time, AudioCallBack callback) {
+    private IEnumerator DelayedCallback(float time, AudioCallBack callback)
+    {
         yield return new WaitForSeconds(time);
         callback();
     }
-    void ChangeScene() {
+    void ChangeScene()
+    {
         Global.instance.currentScene++;
         SceneManager.LoadScene("MirrorScene");
     }
