@@ -7,8 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 
-public class MainSceneMangerController : Photon.PunBehaviour
-{
+public class MainSceneMangerController : Photon.PunBehaviour {
 
     #region Public Variables
     public GameObject usernameGO;
@@ -58,11 +57,10 @@ public class MainSceneMangerController : Photon.PunBehaviour
 
     public void Awake()
     {
-
+        
     }
 
-    void Start()
-    {
+    void Start() {
         isNameChange = false;
         isAvatorChange = false;
 
@@ -80,24 +78,20 @@ public class MainSceneMangerController : Photon.PunBehaviour
         StartCoroutine(PollInvitation());
     }
 
-    void Update()
-    {
-        if (isNameChange)
-        {
+    void Update() {
+        if (isNameChange) {
             UpdateUserInfo();
         }
     }
 
     [System.Serializable]
-    public class InvitationItem
-    {
+    public class InvitationItem {
         public string inviter_id;
-        public string room_id;
+        public string room_id;        
     }
 
     [System.Serializable]
-    public class InvitationResp
-    {
+    public class InvitationResp {
         public int status;
         public string msg;
         public InvitationItem[] data;
@@ -106,25 +100,19 @@ public class MainSceneMangerController : Photon.PunBehaviour
     // 轮询查看邀请
     private bool polling = false;
     private InvitationItem invitation = null;
-    IEnumerator PollInvitation()
-    {
+    IEnumerator PollInvitation() {
         polling = true;
         string url = "http://123.207.93.25:9001/game/pollInvitation?token=" + GlobalUserInfo.tokenInfo.token;
-        while (polling)
-        {
+        while (polling) {
             UnityWebRequest req = UnityWebRequest.Get(url);
             yield return req.SendWebRequest();
 
-            if (req.isNetworkError || req.isHttpError)
-            {
+            if (req.isNetworkError || req.isHttpError) {
                 Debug.LogError(req.downloadHandler.text);
-            }
-            else
-            {
+            } else {
                 var resp = JsonUtility.FromJson<InvitationResp>(req.downloadHandler.text);
                 var invitationList = resp.data;
-                if (invitationList.Length > 0)
-                {
+                if (invitationList.Length > 0) {
                     // 只取第一个邀请
                     invitation = invitationList[0];
                     // 弹窗显示是否接受邀请
@@ -132,9 +120,7 @@ public class MainSceneMangerController : Photon.PunBehaviour
                     // 停止轮询
                     Debug.Log("Got invitation, stopping coroutine");
                     polling = false;
-                }
-                else
-                {
+                } else {
                     // 没有收到任何邀请，1s之后继续轮询
                     Debug.Log("Polling");
                     yield return new WaitForSeconds(1.0f);
@@ -144,56 +130,48 @@ public class MainSceneMangerController : Photon.PunBehaviour
     }
 
     private bool acceptedInvitation = false;
-    public void AcceptInvitation()
-    {
+    public void AcceptInvitation() {
         acceptedInvitation = true;
         dialogCanvas.SetActive(false);
         StartCoroutine(DeleteInvitation());
     }
 
-    public override void OnJoinedRoom()
-    {
+    public override void OnJoinedRoom() {
         StartCoroutine(FadeScene());
     }
 
-    public void RejectInvitation()
-    {
+    public void RejectInvitation() {
         acceptedInvitation = false;
         dialogCanvas.SetActive(false);
         StartCoroutine(DeleteInvitation());
     }
 
-    IEnumerator DeleteInvitation()
-    {
+    IEnumerator DeleteInvitation() {
         string url = "http://123.207.93.25:9001/game/deleteInvitation/" + GlobalUserInfo.userInfo.user_id;
         WWWForm form = new WWWForm();
         form.AddField("token", GlobalUserInfo.tokenInfo.token);
         var req = UnityWebRequest.Post(url, form);
         yield return req.SendWebRequest();
         // 拒绝了本次邀请，继续轮询
-        if (!acceptedInvitation)
-        {
+        if (!acceptedInvitation) {
             StartCoroutine(PollInvitation());
         }
-        else
-        {
+        else {
             PhotonNetwork.JoinRoom(invitation.room_id);
         }
     }
 
     // 开房间场景
-    public void OnOpenRoomButtonClick()
-    {
+    public void OnOpenRoomButtonClick() {
         Debug.Log("Open Room Button Click");
-        RoomOptions options = new RoomOptions()
-        {
+        RoomOptions options = new RoomOptions() {
             MaxPlayers = 2
         };
         String roomStr = GlobalUserInfo.tokenInfo.account + DateTime.Now.ToFileTime().ToString();
         PhotonNetwork.CreateRoom(roomStr, options, TypedLobby.Default);
     }
     //
-    public void OnOpenToolButtonClick()
+        public void OnOpenToolButtonClick()
     {
         //Debug.Log("Open Tool Button Click");
         //SceneManager.LoadScene("ToolScene");
@@ -221,14 +199,12 @@ public class MainSceneMangerController : Photon.PunBehaviour
     }
 
     // 账号详情
-    public void OnAvatorClick()
-    {
+    public void OnAvatorClick(){
         accountDetail.SetActive(true);
     }
 
     // 点击好友图标
-    public void OnFriendClick()
-    {
+    public void OnFriendClick() {
         friendCanvas.SetActive(true);
         StartCoroutine(GetFriendList());
     }
@@ -239,15 +215,13 @@ public class MainSceneMangerController : Photon.PunBehaviour
     }
 
     [System.Serializable]
-    public class FriendListItem
-    {
+    public class FriendListItem {
         public int status;
         public string msg;
         public _UserItem[] data;
 
         [System.Serializable]
-        public class _UserItem
-        {
+        public class _UserItem {
             public string user_id;
             public string nickname;
             public string avatar;
@@ -255,31 +229,25 @@ public class MainSceneMangerController : Photon.PunBehaviour
         }
     }
 
-    IEnumerator GetFriendList()
-    {
+    IEnumerator GetFriendList() {
         string url = "http://123.207.93.25:9001/user/" + GlobalUserInfo.userInfo.user_id + "/friend"
                         + "?token=" + GlobalUserInfo.tokenInfo.token;
         Debug.Log("Getting " + url);
         UnityWebRequest req = UnityWebRequest.Get(url);
         yield return req.SendWebRequest();
 
-        if (req.isNetworkError || req.isHttpError)
-        {
+        if (req.isNetworkError || req.isHttpError) {
             Debug.LogError(req.error);
             Debug.Log(req.downloadHandler.text);
             // TODO: 弹窗提示
-        }
-        else
-        {
+        } else {
             // 清理当前的好友
-            foreach (Transform chlid in friendContent.transform)
-            {
+            foreach (Transform chlid in friendContent.transform) {
                 Destroy(chlid.gameObject);
             }
             Debug.Log("Get friend list success!");
             var json = JsonUtility.FromJson<FriendListItem>(req.downloadHandler.text);
-            foreach (var user in json.data)
-            {
+            foreach (var user in json.data) {
                 GameObject oneFriend = Instantiate(friendItemPrefab, friendContent.transform);
                 oneFriend.GetComponentInChildren<Text>().text = user.nickname;
                 UserItem userItem = new UserItem();
@@ -298,27 +266,23 @@ public class MainSceneMangerController : Photon.PunBehaviour
         }
     }
 
-    IEnumerator GetAvatar(string userId, CircleImage img, int width, int height)
-    {
+    IEnumerator GetAvatar(string userId, CircleImage img, int width, int height) {
         string url = "http://123.207.93.25:9001/user/" + userId + "/avatar";
         UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();
 
-        if (request.isNetworkError || request.isHttpError)
-        {
+        if (request.isNetworkError || request.isHttpError) {
             Debug.LogError(request.error);
             // 弹窗提示错误
         }
-        else
-        {
+        else {
             Debug.Log("Form upload complete!");
             Debug.Log(img);
             img.sprite = GetSpriteFromBytes(request.downloadHandler.data, width, height);
         }
     }
 
-    public void CloseFriendList()
-    {
+    public void CloseFriendList() {
         friendCanvas.SetActive(false);
     }
     public void CloseRankCanvas()
@@ -327,26 +291,22 @@ public class MainSceneMangerController : Photon.PunBehaviour
     }
 
     // 获取人脸
-    IEnumerator _GetUserFace(string url, int width, int height)
-    {
+    IEnumerator _GetUserFace(string url, int width, int height) {
         UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();
 
-        if (request.isNetworkError || request.isHttpError)
-        {
+        if (request.isNetworkError || request.isHttpError) {
             Debug.Log(request.error);
             // 弹窗提示错误
         }
-        else
-        {
+        else {
             Debug.Log("Form upload complete!");
             userFace.GetComponent<CircleImage>().sprite = GetSpriteFromBytes(request.downloadHandler.data, width, height);
         }
     }
 
     // 图像从二进制流到精灵
-    public static Sprite GetSpriteFromBytes(byte[] data, int width, int height)
-    {
+    public static Sprite GetSpriteFromBytes(byte[] data, int width, int height) {
         Texture2D tex = new Texture2D(width, height);
         try
         {
@@ -360,8 +320,7 @@ public class MainSceneMangerController : Photon.PunBehaviour
     }
 
     // 更新用户姓名
-    public void UpdateUserInfo()
-    {
+    public void UpdateUserInfo() {
         string url = "http://123.207.93.25:9001/user/";
         url += GlobalUserInfo.userInfo.user_id;
         StartCoroutine(GetUserInfo(url));
@@ -371,43 +330,36 @@ public class MainSceneMangerController : Photon.PunBehaviour
     }
 
     // 更改改名状态信息
-    public void UpdateIsChangeName(DetailManagerController detail)
-    {
+    public void UpdateIsChangeName(DetailManagerController detail) {
         isNameChange = detail.isNicknameChange;
         Debug.Log(isNameChange);
     }
 
     // 获取用户信息
-    IEnumerator GetUserInfo(string url)
-    {
+    IEnumerator GetUserInfo(string url) {
         UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();
 
-        if (request.isNetworkError || request.isHttpError)
-        {
+        if (request.isNetworkError || request.isHttpError) {
             Debug.Log(request.error);
         }
-        else
-        {
+        else {
             Debug.Log("Get complete!");
             var responseJson = JsonConvert.DeserializeObject<ResponseItem>(request.downloadHandler.text);
-            if (responseJson.status == 0)
-            {
+            if (responseJson.status == 0) {
                 // 输出登陆成功信息
                 Debug.Log(responseJson.msg);
                 var userJson = responseJson.data.user;
                 GlobalUserInfo.userInfo.nickname = userJson.nickname;
             }
-            else
-            {
+            else {
                 Debug.Log(responseJson.msg);
                 // 弹窗显示错误信息
             }
         }
     }
 
-    IEnumerator FadeScene()
-    {
+    IEnumerator FadeScene() {
         float time = GameObject.Find("Fade").GetComponent<FadeScene>().BeginFade(1);
         yield return new WaitForSeconds(time);
         SceneManager.LoadScene("OpenRoomScene");
