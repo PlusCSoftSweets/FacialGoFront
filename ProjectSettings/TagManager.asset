@@ -13,6 +13,7 @@ TagManager:
   - Obstacle
   - Mirror
   - LogoutText
+  - ToolItem
   layers:
   - Default
   - TransparentFX

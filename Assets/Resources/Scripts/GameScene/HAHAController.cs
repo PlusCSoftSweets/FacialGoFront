@@ -38,6 +38,7 @@ public class HAHAController : Photon.PunBehaviour {
 
     // 魔镜相关
     public Transform mirror;                  // 最近的镜子
+    public Transform castle;                  // 城堡
     public bool isEnterMirror = false;        // 判断是否进入魔镜
 
     // 多人游戏相关
@@ -46,6 +47,7 @@ public class HAHAController : Photon.PunBehaviour {
     // 游戏结束
     public bool isFinish = false;
     public Transform finishLine;
+    public bool isEnterCastle = false;        // 判断是否进入城堡
     #endregion
 
     #region Static Variables
@@ -108,17 +110,13 @@ public class HAHAController : Photon.PunBehaviour {
         if (!isGameOn) return;
         // 以下操作只针对本地玩家
         if (photonView.isMine == false && PhotonNetwork.connected == true) return;
-
-        Debug.Log(gameObject.name + " is Enter Mirror:" + isEnterMirror);
-        if (isEnterMirror) {
-            MoveToMirror();
-        }
-        else if (isFinish) {
-            EnterMirror(finishLine);
-        }
-        else {
+        if (!isEnterMirror && !isEnterCastle)
             MoveForward();
-        }
+        else if (isEnterMirror)
+            MoveToMirror();
+        else if (isEnterCastle)
+            MoveToCastle();
+
         if (isPausing) {
             pauseTimer -= Time.deltaTime;
             if (pauseTimer < 0) isPausing = false;
@@ -191,13 +189,13 @@ public class HAHAController : Photon.PunBehaviour {
     }
 
     private void MoveToMirror() {
-        hahaRB.velocity = EnterMirror(mirror);
+        hahaRB.velocity = EnterObject(mirror);
     }
 
-    private Vector3 EnterMirror(UnityEngine.Transform mirrorTran) {
-        Debug.Log(gameObject.name + "EnterMirror" + mirrorTran.ToString());
+    private Vector3 EnterObject(UnityEngine.Transform target)
+    {
         Vector3 LocalPos = transform.position;                         // 物体所处的世界坐标向量
-        Vector3 LocalForward = mirrorTran.position;                    // 镜子所在地
+        Vector3 LocalForward = target.position;                        // 目标所在地
         Vector3 VecSpeed = LocalForward - LocalPos;                    // 物体自身Vector3.forward * speed的世界坐标向量
         return new Vector3(VecSpeed.x, VecSpeed.y, VecSpeed.z);
     }
@@ -211,6 +209,11 @@ public class HAHAController : Photon.PunBehaviour {
             moveHorizontalVec -= moveHorizontalVec;
             isMove = false;
         }
+    }
+
+    private void MoveToCastle()
+    {
+        hahaRB.velocity = EnterObject(castle);
     }
 
     private void LeftMoving() {
@@ -285,8 +288,7 @@ public class HAHAController : Photon.PunBehaviour {
                 mirror.position += new Vector3(0, 0, 7f);
                 other.gameObject.SetActive(false);
                 isEnterMirror = true;
-            }
-                
+            } 
         }
         else if (other.name.Equals("FinishWall")) {
             if (photonView.isMine) {
@@ -294,6 +296,16 @@ public class HAHAController : Photon.PunBehaviour {
                 finishLine.position += new Vector3(0, 0, 7f);
                 other.gameObject.SetActive(false);
             }            
+        }
+        else if (other.name.Equals("FinishLine"))
+        {
+            if (photonView.isMine)
+            {
+                castle = other.transform;
+                castle.position += new Vector3(0f, 0f, 7f);
+                isEnterCastle = true;
+                other.gameObject.SetActive(false);
+            }
         }
     }
     #endregion

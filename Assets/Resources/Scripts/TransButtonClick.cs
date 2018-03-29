@@ -56,7 +56,6 @@ public class TransButtonClick : Photon.PunBehaviour {
         }
         Global.instance.coinNumber -= 5;
         PhotonNetwork.RaiseEvent(10, "REVERSE", true, null);
-        //PhotonNetwork.RPC(photonView, "CarryOutReverse", PhotonTargets.Others, false, null);
     }
     #endregion
 

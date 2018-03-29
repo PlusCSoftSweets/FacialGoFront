@@ -17,7 +17,10 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     public GameObject accountDetail;
     public GameObject detailManager;
     public GameObject friendCanvas;
+    public GameObject RankCanvas;
     public GameObject rankCanvas;
+    public GameObject RandomCanvas;
+    public GameObject ExplainCanvas;
     public GameObject friendContent;
     public GameObject friendItemPrefab;
 
@@ -167,6 +170,33 @@ public class MainSceneMangerController : Photon.PunBehaviour {
         String roomStr = GlobalUserInfo.tokenInfo.account + DateTime.Now.ToFileTime().ToString();
         PhotonNetwork.CreateRoom(roomStr, options, TypedLobby.Default);
     }
+    //
+        public void OnOpenToolButtonClick()
+    {
+        //Debug.Log("Open Tool Button Click");
+        //SceneManager.LoadScene("ToolScene");
+        //Application.LoadLevel("scene_1");
+        // StartCoroutine(FadeScene("ToolScene"));
+        SceneManager.LoadScene("ToolScene");
+    }
+    //随机匹配场景
+    public void OnRandomButtonClick()
+    {
+        RandomCanvas.SetActive(true);
+    }
+    public void OnHelpButtonClick()
+    {
+        ExplainCanvas.SetActive(true);
+    }
+    //关闭随机匹配场景
+    public void OnRandomCloseButtonClick()
+    {
+        RandomCanvas.SetActive(false);
+    }
+    public void OnExplainCloseButtonClick()
+    {
+        ExplainCanvas.SetActive(false);
+    }
 
     // 账号详情
     public void OnAvatorClick(){
@@ -254,6 +284,10 @@ public class MainSceneMangerController : Photon.PunBehaviour {
 
     public void CloseFriendList() {
         friendCanvas.SetActive(false);
+    }
+    public void CloseRankCanvas()
+    {
+        RankCanvas.SetActive(false);
     }
 
     // 获取人脸
