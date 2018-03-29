@@ -24,6 +24,9 @@ public class HAHAController : Photon.PunBehaviour
 
     // 声音
     private AudioSource[] m_MyAudioSource = new AudioSource[1];
+
+    // 游戏相关
+    private bool isSinglePlayer = false;      // 是否是单人游戏
     #endregion
 
     #region Public Variables
@@ -36,13 +39,21 @@ public class HAHAController : Photon.PunBehaviour
 
     // 魔镜相关
     public Transform mirror;                  // 最近的镜子
+    public Transform castle;                  // 城堡
     public bool isEnterMirror = false;        // 判断是否进入魔镜
 
+    // 多人游戏相关
     public bool isOtherReady = false;         // 对方是否加入房间
+
+    // 游戏结束
+    public bool isFinish = false;
+    public Transform finishLine;
+    public bool isEnterCastle = false;        // 判断是否进入城堡
     #endregion
 
     #region Static Variables
     private static HAHAController playerInstance;  // 控制器实例
+    public static GameObject LocalPlayerInstance;  // 当前玩家实例，不销毁
     #endregion
 
     #region Static Method
@@ -52,60 +63,78 @@ public class HAHAController : Photon.PunBehaviour
     }  // 获取控制器实例
     #endregion
 
+    // 1. 设置LocalPlayerInstance实例，并且不销毁
+    // 2. 注册监听事件
     void Awake()
     {
-        photonView.RPC("TellOtherReady", PhotonTargets.Others);
+        // 设置当前玩家实例，并且不销毁
+        if (photonView.isMine)
+        {
+            LocalPlayerInstance = this.gameObject;
+        }
+        DontDestroyOnLoad(this.gameObject);
+
+        // 注册监听事件
+        PhotonNetwork.OnEventCall += this.OnListenGameOn;
+        byte evCode = 2;
+        byte content = 1;
+        bool reliable = true;
+        PhotonNetwork.RaiseEvent(evCode, content, reliable, null);
     }
 
+    // 1. 初始化控制器
+    // 2. 设置跟随的相机
+    // 3. 判断是单人游戏还是多人游戏
     void Start()
     {
         InitController();
         SetUpMyCamera();
+        if (PhotonNetwork.room.PlayerCount == 1)
+        {
+            isSinglePlayer = true;
+        }
+        else
+        {
+            isSinglePlayer = false;
+        }
     }
 
+    // 1. 判断游戏开始
+    // 2. 判断磁铁是否起作用
     void Update()
     {
         if (photonView.isMine == false && PhotonNetwork.connected == true) return;
-        if (PhotonNetwork.isMasterClient && isOtherReady && !isGameOn)
+        if ((PhotonNetwork.isMasterClient && isOtherReady && !isGameOn) || isSinglePlayer)
         {
-            waittingTime += Time.deltaTime;
-            if (waittingTime > 3)
-            {
-                photonView.RPC("SetGameOn", PhotonTargets.All);
-            }
+            StateGameOn();
         }
         if (!isGameOn) return;
         if (isMagnet) MagnetWork();
     }
 
+    // 1. 移动判断，是前进还是进入魔镜
+    // 2. 触碰雪糕筒暂停
+    // 只作用于本地玩家的函数
+    // 1. 判断触碰的左右
     void FixedUpdate()
     {
         if (!isGameOn) return;
-        if (!isEnterMirror)
+        // 以下操作只针对本地玩家
+        if (photonView.isMine == false && PhotonNetwork.connected == true) return;
+        if (!isEnterMirror && !isEnterCastle)
             MoveForward();
-        else
+        else if (isEnterMirror)
             MoveToMirror();
+        else if (isEnterCastle)
+            MoveToCastle();
 
-        // 碰撞暂停
         if (isPausing)
         {
             pauseTimer -= Time.deltaTime;
-            if (pauseTimer < 0)
-                isPausing = false;
+            if (pauseTimer < 0) isPausing = false;
         }
 
-        if (photonView.isMine == false && PhotonNetwork.connected == true) return;
-
-        // 左右判断函数
-        if ((System.Math.Abs(hahaRB.position.x - 1.6f) < 0.20f ||
-            System.Math.Abs(hahaRB.position.x + 4.5f) < 0.20f ||
-            System.Math.Abs(hahaRB.position.x - 4.5f) < 0.20f ||
-            System.Math.Abs(hahaRB.position.x + 1.6f) < 0.20f) &&
-            System.Math.Abs(hahaRB.position.x - lastPosition.x) > 2 && isMove)
-        {
-            moveHorizontalVec -= moveHorizontalVec;
-            isMove = false;
-        }
+        MoveLeftOrRight();
     }
 
     #region Private Method
@@ -127,12 +156,23 @@ public class HAHAController : Photon.PunBehaviour
         MyCameraWork myCamera = GetComponent<MyCameraWork>();
         if (myCamera != null)
         {
-            Debug.Log("myCamera");
             if (photonView.isMine)
             {
-                Debug.Log("isMine");
                 myCamera.followOnStart = true;
             }
+        }
+    }
+
+    private void StateGameOn()
+    {
+        waittingTime += Time.deltaTime;
+        if (waittingTime > 3)
+        {
+            byte evCode = 3;
+            byte content = 1;
+            bool reliable = true;
+            isGameOn = true;
+            PhotonNetwork.RaiseEvent(evCode, content, reliable, null);
         }
     }
 
@@ -142,10 +182,8 @@ public class HAHAController : Photon.PunBehaviour
         Collider[] colliders = Physics.OverlapSphere(this.transform.position, 10);
         foreach (var item in colliders)
         {
-            //如果是金币
             if (item.tag.Equals("Gold"))
             {
-                //让金币的开始移动
                 item.GetComponent<CoinController>().isCanMove = true;
             }
         }
@@ -176,41 +214,35 @@ public class HAHAController : Photon.PunBehaviour
         hahaRB.velocity = tempVelocity;
     }
 
-    private void OnCollisionEnter(Collision collider)
+    private void MoveToMirror()
     {
-        if (collider.gameObject.name.Equals("Forest-Race"))
-        {
-            isGround = true;
-        }
+        hahaRB.velocity = EnterObject(mirror);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag.Equals("Gold"))
-        {
-            other.gameObject.SetActive(false);
-            Global.instance.coinNumber = Global.instance.coinNumber + 1;
-            m_MyAudioSource[0].Play();
-        }
-        else if (other.name.Equals("Wall"))
-        {
-            mirror = other.transform;
-            mirror.position += new Vector3(0, 0, 7f);
-            isEnterMirror = true;
-        }
-    }
-
-    private Vector3 EnterMirror(UnityEngine.Transform mirrorTran)
+    private Vector3 EnterObject(UnityEngine.Transform target)
     {
         Vector3 LocalPos = transform.position;                         // 物体所处的世界坐标向量
-        Vector3 LocalForward = mirrorTran.position;                    // 镜子所在地
+        Vector3 LocalForward = target.position;                        // 目标所在地
         Vector3 VecSpeed = LocalForward - LocalPos;                    // 物体自身Vector3.forward * speed的世界坐标向量
         return new Vector3(VecSpeed.x, VecSpeed.y, VecSpeed.z);
     }
 
-    private void MoveToMirror()
+    private void MoveLeftOrRight()
     {
-        hahaRB.velocity = EnterMirror(mirror);
+        if ((System.Math.Abs(hahaRB.position.x - 1.6f) < 0.20f ||
+            System.Math.Abs(hahaRB.position.x + 4.5f) < 0.20f ||
+            System.Math.Abs(hahaRB.position.x - 4.5f) < 0.20f ||
+            System.Math.Abs(hahaRB.position.x + 1.6f) < 0.20f) &&
+            System.Math.Abs(hahaRB.position.x - lastPosition.x) > 2 && isMove)
+        {
+            moveHorizontalVec -= moveHorizontalVec;
+            isMove = false;
+        }
+    }
+
+    private void MoveToCastle()
+    {
+        hahaRB.velocity = EnterObject(castle);
     }
 
     private void LeftMoving()
@@ -250,16 +282,81 @@ public class HAHAController : Photon.PunBehaviour
         }
     }
 
-    [PunRPC]
+    private void OnListenGameOn(byte eventcode, object content, int senderid)
+    {
+        if (eventcode == 2)
+        {
+            if ((byte)content == 1)
+            {
+                TellOtherReady();
+            }
+        }
+        else if (eventcode == 3)
+        {
+            if ((byte)content == 1)
+            {
+                SetGameOn();
+            }
+        }
+    }
+
     private void TellOtherReady()
     {
         isOtherReady = true;
     }
 
-    [PunRPC]
     private void SetGameOn()
     {
         isGameOn = true;
+    }
+
+    // 1. 与地面的碰撞检测
+    private void OnCollisionEnter(Collision collider)
+    {
+        if (collider.gameObject.name.Equals("Forest-Race"))
+        {
+            isGround = true;
+        }
+    }
+
+    // 1. 与金币的碰撞检测
+    // 2. 与镜子前的墙壁的碰撞检测
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag.Equals("Gold"))
+        {
+            Global.instance.coinNumber = Global.instance.coinNumber + 1;
+            m_MyAudioSource[0].Play();
+        }
+        else if (other.name.Equals("Wall"))
+        {
+            if (photonView.isMine)
+            {
+                mirror = other.transform;
+                mirror.position += new Vector3(0, 0, 7f);
+                other.gameObject.SetActive(false);
+                isEnterMirror = true;
+            }
+        }
+        else if (other.name.Equals("FinishWall"))
+        {
+            if (photonView.isMine)
+            {
+                finishLine = other.transform;
+                finishLine.position += new Vector3(0, 0, 7f);
+                other.gameObject.SetActive(false);
+            }
+        }
+        else if (other.name.Equals("FinishLine"))
+        {
+            if (photonView.isMine)
+            {
+                castle = other.transform;
+                castle.position += new Vector3(0f, 0f, 7f);
+                isEnterCastle = true;
+                other.gameObject.SetActive(false);
+            }
+        }
     }
     #endregion
 
@@ -268,7 +365,6 @@ public class HAHAController : Photon.PunBehaviour
     public void Move(string direction)
     {
         if (photonView.isMine == false && PhotonNetwork.connected == true) return;
-
         if (direction.Equals("Left"))
         {
             if (!isReverse)
@@ -297,6 +393,19 @@ public class HAHAController : Photon.PunBehaviour
         hahaRB.velocity = tempVelocity;
         isPausing = true;
         pauseTimer = seconds;
+    }
+
+    public void InitData()
+    {
+        // 移动相关
+        isMove = false;              // 判断正在左右移动
+        isGround = true;             // 判断在地面
+        isPausing = false;            // 判断是否被暂停
+        isReverse = false;            // 判断是否转置
+        isMagnet = false;             // 判断是否正在磁铁状态
+        accelerateSpeed = 20f;       // 加速度
+        forwardSpeed = 30f;          // 前进速度
+        magnetTime = 0;              // 磁铁生效时间
     }
     #endregion
 }

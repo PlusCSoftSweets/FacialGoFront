@@ -32,7 +32,9 @@ MonoBehaviour:
   - DestroyRpc
   - DoJump
   - Flash
+  - GameOverCalled
   - InstantiateRpc
+  - LayUpBarricade
   - Marco
   - PickupItemInit
   - Polo
@@ -41,8 +43,7 @@ MonoBehaviour:
   - PunRespawn
   - RequestForPickupItems
   - RequestForPickupTimes
+  - SetActive
+  - SetPlayerResult
   - TaggedPlayer
-  - OnReverseCalled
-  - CancelReverse
-  - CarryOutReverse
   DisableAutoOpenWizard: 1

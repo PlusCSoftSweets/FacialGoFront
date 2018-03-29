@@ -7,20 +7,19 @@ using UnityEngine.Networking;
 
 public class FailSceneManagerController : MonoBehaviour {
 
-    public GameObject usernameGO;
-    public GameObject levelGO;
-    public GameObject diamondGO;
+    #region Public Variables
+    public Text experience;
+    public Text diamond;
+    #endregion
+
+    #region Private Variables
+    private float exp;
+    private float dia;
+    #endregion
 
     void Start() {
-        string usernameStr = usernameGO.GetComponent<Text>().text;
-        string levelStr = levelGO.GetComponent<Text>().text;
-        string diamondStr = diamondGO.GetComponent<Text>().text;
-
-        // 通过Http从数据库拿到三个条目再赋值
-
-        usernameGO.GetComponent<Text>().text = usernameStr;
-        levelGO.GetComponent<Text>().text = levelStr;
-        diamondGO.GetComponent<Text>().text = diamondStr;
+        experience.text = "经验+";
+        diamond.text = "X";
     }
 
     public void OnDetermineClick()
