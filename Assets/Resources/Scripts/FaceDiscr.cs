@@ -48,6 +48,7 @@ public class FaceDiscr : MonoBehaviour
 
         Texture2D t1d = new Texture2D(grayMat.width(), grayMat.height());
         Utils.matToTexture2D(grayMat, t1d);
+        Mat graymat2 = grayMat;
 
         var bytes2 = t1d.EncodeToPNG();
         Upload(bytes2,vac);
@@ -96,7 +97,7 @@ public class FaceDiscr : MonoBehaviour
                 Size dsize = new Size(200, 200);
 
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
-                Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
+                Imgproc.resize(graymat2.submat(rects[i]), testSampleMat, dsize);
                 testSampleMat = Stressed(testSampleMat);
                 Texture2D t3d = new Texture2D(testSampleMat.width(), testSampleMat.height());
                 Utils.matToTexture2D(testSampleMat, t3d);
@@ -146,7 +147,7 @@ public class FaceDiscr : MonoBehaviour
 
                 Size dsize = new Size(50, 50);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
-                Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
+                Imgproc.resize(graymat2.submat(rects[i]), testSampleMat, dsize);
                 testSampleMat = Stressed(testSampleMat);
 
                 Texture2D t3d = new Texture2D(testSampleMat.width(), testSampleMat.height());
@@ -201,7 +202,7 @@ public class FaceDiscr : MonoBehaviour
 
                 Size dsize = new Size(50, 50);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
-                Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
+                Imgproc.resize(graymat2.submat(rects[i]), testSampleMat, dsize);
 
                 testSampleMat = Stressed(testSampleMat);
                 Texture2D t3d = new Texture2D(testSampleMat.width(), testSampleMat.height());
@@ -250,11 +251,11 @@ public class FaceDiscr : MonoBehaviour
                 Utils.matToTexture2D(Roifacemat, t2d);
 
                 var bytes = t2d.EncodeToPNG();
-                
+
                 //Upload(bytes, -1 * frac);
                 Size dsize = new Size(200, 200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
-                Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
+                Imgproc.resize(graymat2.submat(rects[i]), testSampleMat, dsize);
 
                 testSampleMat = Stressed(testSampleMat);
 
