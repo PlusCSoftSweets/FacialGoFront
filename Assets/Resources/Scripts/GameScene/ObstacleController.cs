@@ -13,6 +13,7 @@ public class ObstacleController : PunBehaviour {
     void Start () {
 		animator = GetComponent<Animator> ();
         DontDestroyOnLoad(this.gameObject.transform.parent.gameObject);
+        Global.instance.obstacleGroup.Add(this.gameObject.transform.parent.gameObject);
         evt = new AnimationEvent() {
             functionName = "FlyEnd",
             objectReferenceParameter = gameObject,
@@ -25,7 +26,7 @@ public class ObstacleController : PunBehaviour {
     }
 
 	void OnTriggerEnter(Collider collider) {
-		if (collider.tag == "Player") {
+		if (collider.CompareTag("Player")) {
 			collider.transform.GetComponent<HAHAController> ().PauseForMilliSeconds(1);
 			animator.SetBool ("Fly", true);
             m_MyAudioSource[0].Play();
@@ -34,12 +35,13 @@ public class ObstacleController : PunBehaviour {
 
 	public void FlyEnd(GameObject obj) {
         if (obj == gameObject)
-            this.gameObject.transform.position = new Vector3(-20, 0, 0);
-            //PhotonNetwork.RPC(photonView, "SetActive", PhotonTargets.All, false, null);
+            // this.gameObject.transform.position = new Vector3(-20, 0, 0);
+            PhotonNetwork.RPC(photonView, "SetActive", PhotonTargets.All, false, null);
 	}
 
-    //[PunRPC]
-    //private void SetActive() {
-    //    this.gameObject.SetActive(false);
-    //}
+    [PunRPC]
+    private void SetActive()
+    {
+        this.gameObject.SetActive(false);
+    }
 }
