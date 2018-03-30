@@ -9,7 +9,7 @@ public class FaceDiscr : MonoBehaviour
 {
 
     public GameObject uploaderPrefab;
-    private int vac;
+
     public static FaceDiscr FaceDiscr_singleinstance = null;
     String front_face_haar = "haarcascade_frontalface_alt2.xml";
     MatOfRect faces;
@@ -21,6 +21,7 @@ public class FaceDiscr : MonoBehaviour
     String face_cascade_name = "haarcascade_frontalface_alt2.xml";
     String eyes_cascade_name = "haarcascade_eye.xml";
     String smile_cascade_name = "haarcascade_smile.xml";
+    private int vac;
 
     private FaceDiscr()
     {
@@ -32,7 +33,8 @@ public class FaceDiscr : MonoBehaviour
             FaceDiscr_singleinstance = this;
             vac = 0;
             DontDestroyOnLoad(gameObject);
-        } else
+        }
+        else
         {
             Destroy(gameObject);
         }
@@ -43,7 +45,7 @@ public class FaceDiscr : MonoBehaviour
     }
     public double Face_Getpercent(int face_number, Mat faceMat, Mat grayMat, int frac)
     {
-        
+
         Texture2D t1d = new Texture2D(grayMat.width(), grayMat.height());
         Utils.matToTexture2D(grayMat, t1d);
 
@@ -52,7 +54,6 @@ public class FaceDiscr : MonoBehaviour
         vac++;
         List<Mat> images = new List<Mat>();
         List<int> labelsList = new List<int>();
-       
         Debug.Log(frac);
         //MatOfInt labels = new MatOfInt();
         /*
@@ -89,11 +90,11 @@ public class FaceDiscr : MonoBehaviour
                 Utils.matToTexture2D(Roifacemat, t2d);
 
                 var bytes = t2d.EncodeToPNG();
-                //Upload(bytes,-1*frac);
-                
+                //Upload(bytes, -1 * frac);
+
                 Size dsize = new Size(200, 200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
-                Imgproc.resize(faceMat.submat(rects[i]), testSampleMat, dsize);
+                Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
                 testSampleMat = Stressed(testSampleMat);
                 Texture2D t3d = new Texture2D(testSampleMat.width(), testSampleMat.height());
                 Utils.matToTexture2D(testSampleMat, t3d);
@@ -101,7 +102,6 @@ public class FaceDiscr : MonoBehaviour
                 bytes = t3d.EncodeToPNG();
                 Upload(bytes, vac);
                 vac++;
-
                 if (rects.Length > 0) return 0.8;
 
                 if (cascade_smile != null)
@@ -140,11 +140,11 @@ public class FaceDiscr : MonoBehaviour
                 Utils.matToTexture2D(Roifacemat, t2d);
                 var bytes = t2d.EncodeToPNG();
 
-                //Upload(bytes,-1*frac);
+                //Upload(bytes, -1 * frac);
 
                 Size dsize = new Size(200, 200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
-                Imgproc.resize(faceMat.submat(rects[i]), testSampleMat, dsize);
+                Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
                 testSampleMat = Stressed(testSampleMat);
 
                 Texture2D t3d = new Texture2D(testSampleMat.width(), testSampleMat.height());
@@ -199,15 +199,15 @@ public class FaceDiscr : MonoBehaviour
 
                 Size dsize = new Size(200, 200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
-                Imgproc.resize(faceMat.submat(rects[i]), testSampleMat, dsize);
+                Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
 
-                testSampleMat= Stressed(testSampleMat);
+                testSampleMat = Stressed(testSampleMat);
                 Texture2D t3d = new Texture2D(testSampleMat.width(), testSampleMat.height());
 
 
                 Utils.matToTexture2D(testSampleMat, t3d);
 
-                
+
                 bytes = t3d.EncodeToPNG();
                 Upload(bytes, vac);
                 vac++;
@@ -249,10 +249,10 @@ public class FaceDiscr : MonoBehaviour
 
                 var bytes = t2d.EncodeToPNG();
 
-                //Upload(bytes,-1*frac);
-                Size dsize = new Size(200,200);
+                //Upload(bytes, -1 * frac);
+                Size dsize = new Size(200, 200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
-                Imgproc.resize(faceMat.submat(rects[i]), testSampleMat, dsize);
+                Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
 
                 testSampleMat = Stressed(testSampleMat);
 
@@ -291,8 +291,8 @@ public class FaceDiscr : MonoBehaviour
             {
                 double[] data = new double[1];
                 data = Roifacemat.get(j, k);
-                if (data[0] < 0.3) data[0] -= 0.225;
-                if (data[0] > 0.3) data[0] += 0.225;
+                if (data[0] < 0.5) data[0] -= 0.225;
+                if (data[0] > 0.5) data[0] += 0.225;
                 if (data[0] > 1) data[0] = 1;
                 if (data[0] < 0) data[0] = 0;
                 Roifacemat.put(j, k, data);
@@ -302,17 +302,17 @@ public class FaceDiscr : MonoBehaviour
         Imgproc.blur(Roifacemat, afRoifacemat, ke);*/
         return Roifacemat;
     }
-    void Upload(byte[] bytes,int num)
+    void Upload(byte[] bytes, int num)
     {
         // spawn an uploader
         var uploader = Instantiate(uploaderPrefab);
-        StartCoroutine(UploadCo(uploader, bytes,num));
+        StartCoroutine(UploadCo(uploader, bytes, num));
     }
 
-    IEnumerator UploadCo(GameObject uploader, byte[] bytes,int num)
+    IEnumerator UploadCo(GameObject uploader, byte[] bytes, int num)
     {
-        yield return new WaitUntil(()=>uploader.activeSelf);
-        uploader.GetComponent<PhotoUploader>().Upload(bytes,num);
+        yield return new WaitUntil(() => uploader.activeSelf);
+        uploader.GetComponent<PhotoUploader>().Upload(bytes, num);
     }
 }
 

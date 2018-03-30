@@ -20,7 +20,7 @@ public class MirrorSceneManager : MonoBehaviour
     private int random_face_index;
 
     public float FacialMoveSpeed = 500.0f;
-    public float SampleInterval = 5.0f;
+    public float SampleInterval = 1.0f;
     public float TryInterval = 5.0f;
     [Range(0.0f, 1.0f)]
     public float PassPercent = 0.6f;
@@ -185,8 +185,7 @@ public class MirrorSceneManager : MonoBehaviour
 
     void StartFaceMove()
     {
-        string front_face_haar = Utils.getFilePath("haarcascade_frontalface_alt2.xml");
-        Debug.Log(front_face_haar);
+       
         if (CurFaceIndex >= 1)
         {
             Debug.Log("No next face");
