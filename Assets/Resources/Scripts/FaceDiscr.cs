@@ -48,7 +48,8 @@ public class FaceDiscr : MonoBehaviour
         Utils.matToTexture2D(grayMat, t1d);
 
         var bytes2 = t1d.EncodeToPNG();
-        Upload(bytes2,0);
+        Upload(bytes2,vac);
+        vac++;
         List<Mat> images = new List<Mat>();
         List<int> labelsList = new List<int>();
        
