@@ -21,6 +21,18 @@ public class Global : MonoBehaviour {
         instance = go.AddComponent<Global>();
     }
 
+    public void ClearData() {
+        coinNumber = 0;
+        currentScene = 0;
+        isCreateBefore = false;
+        coinGroup = new List<GameObject>();
+        obstacleGroup = new List<GameObject>();
+        playerPosition = new Vector3(0, 0, 0);
+        mainCameraPosition = new Vector3(0, 0, 0);
+        uiCameraPosition = new Vector3(0, 0, 0);
+        treesPosition = new Vector3[10];
+    }
+
     // Use this for initialization
     void Start() {
         Debug.Log("Global Start");

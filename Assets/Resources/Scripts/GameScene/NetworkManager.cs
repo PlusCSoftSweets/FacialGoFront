@@ -104,6 +104,7 @@ public class NetworkManager : PunBehaviour {
             UnityEngine.Object.Destroy(GameObject.Find("HAHA(Clone)"));
         }
         UnityEngine.Object.Destroy(OnSwipeEvent.swipeEvent);
+        Global.instance.ClearData();
         UnityEngine.Object.Destroy(Global.instance.gameObject);
         UnityEngine.Object.Destroy(FingerGestures.Instance.gameObject);
         PhotonNetwork.LeaveRoom();
