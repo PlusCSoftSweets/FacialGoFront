@@ -87,12 +87,22 @@ public class NetworkManager : PunBehaviour {
         };
         Debug.Log("UpLoad Result");
         PhotonNetwork.RaiseEvent(1, new int[] { int.Parse(GlobalUserInfo.userInfo.user_id), result }, true, options);
-        for (int i = 0; i < Global.instance.coinGroup.Count; i++)
-            PhotonNetwork.Destroy(Global.instance.coinGroup[i]);
-        for (int i = 0; i < Global.instance.obstacleGroup.Count; i++)
-            PhotonNetwork.Destroy(Global.instance.obstacleGroup[i]);
-        PhotonNetwork.Destroy(HAHAController.LocalPlayerInstance);
-        PhotonNetwork.Destroy(GameObject.Find("HAHA(Clone)"));
+        if (PhotonNetwork.isMasterClient) {
+            for (int i = 0; i < Global.instance.coinGroup.Count; i++)
+                PhotonNetwork.Destroy(Global.instance.coinGroup[i]);
+            for (int i = 0; i < Global.instance.obstacleGroup.Count; i++)
+                PhotonNetwork.Destroy(Global.instance.obstacleGroup[i]);
+            PhotonNetwork.Destroy(HAHAController.LocalPlayerInstance);
+            PhotonNetwork.Destroy(GameObject.Find("HAHA(Clone)"));
+        }
+        else {
+            for (int i = 0; i < Global.instance.coinGroup.Count; i++)
+                UnityEngine.Object.Destroy(Global.instance.coinGroup[i]);
+            for (int i = 0; i < Global.instance.obstacleGroup.Count; i++)
+                UnityEngine.Object.Destroy(Global.instance.obstacleGroup[i]);
+            UnityEngine.Object.Destroy(HAHAController.LocalPlayerInstance);
+            UnityEngine.Object.Destroy(GameObject.Find("HAHA(Clone)"));
+        }
         UnityEngine.Object.Destroy(OnSwipeEvent.swipeEvent);
         UnityEngine.Object.Destroy(Global.instance.gameObject);
         UnityEngine.Object.Destroy(FingerGestures.Instance.gameObject);
