@@ -93,7 +93,6 @@ public class NetworkManager : PunBehaviour {
             for (int i = 0; i < Global.instance.obstacleGroup.Count; i++)
                 PhotonNetwork.Destroy(Global.instance.obstacleGroup[i]);
             PhotonNetwork.Destroy(HAHAController.LocalPlayerInstance);
-            PhotonNetwork.Destroy(GameObject.Find("HAHA(Clone)"));
         }
         else {
             for (int i = 0; i < Global.instance.coinGroup.Count; i++)
@@ -101,11 +100,11 @@ public class NetworkManager : PunBehaviour {
             for (int i = 0; i < Global.instance.obstacleGroup.Count; i++)
                 UnityEngine.Object.Destroy(Global.instance.obstacleGroup[i]);
             UnityEngine.Object.Destroy(HAHAController.LocalPlayerInstance);
-            UnityEngine.Object.Destroy(GameObject.Find("HAHA(Clone)"));
         }
-        UnityEngine.Object.Destroy(OnSwipeEvent.swipeEvent);
-        Global.instance.ClearData();
+        UnityEngine.Object.Destroy(GameObject.Find("HAHA(Clone)"));
+        UnityEngine.Object.Destroy(OnSwipeEvent.swipeEvent);        
         UnityEngine.Object.Destroy(Global.instance.gameObject);
+        Global.instance = null;
         UnityEngine.Object.Destroy(FingerGestures.Instance.gameObject);
         PhotonNetwork.LeaveRoom();
         Debug.Log("Destory Complete");

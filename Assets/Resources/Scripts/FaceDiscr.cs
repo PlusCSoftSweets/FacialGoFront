@@ -78,7 +78,7 @@ public class FaceDiscr : MonoBehaviour
             eye_glass = new MatOfRect();
             if (cascade != null)
                 cascade.detectMultiScale(grayMat, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                    new Size(200, 200), new Size());
+                    new Size(50, 50), new Size());
             else return 0.5;
             OpenCVForUnity.Rect[] rects = faces.toArray();
             Debug.Log(rects.Length);
@@ -90,9 +90,11 @@ public class FaceDiscr : MonoBehaviour
                 Utils.matToTexture2D(Roifacemat, t2d);
 
                 var bytes = t2d.EncodeToPNG();
+
                 //Upload(bytes, -1 * frac);
 
                 Size dsize = new Size(200, 200);
+
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
                 Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
                 testSampleMat = Stressed(testSampleMat);
@@ -106,7 +108,7 @@ public class FaceDiscr : MonoBehaviour
 
                 if (cascade_smile != null)
                     cascade_smile.detectMultiScale(Roifacemat, smile_faces, 1.1, 55, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                        new Size(200, 200), new Size());
+                        new Size(50, 50), new Size());
                 OpenCVForUnity.Rect[] smile_rects = faces.toArray();
                 cascade_eye_mouth.detectMultiScale(Roifacemat, eye_glass, 1.1, 2, 0 | 2, new Size(50, 50), new Size());
                 OpenCVForUnity.Rect[] eyes = eye_glass.toArray();
@@ -128,7 +130,7 @@ public class FaceDiscr : MonoBehaviour
             smile_faces = new MatOfRect();
             if (cascade != null)
                 cascade.detectMultiScale(grayMat, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                    new Size(200, 200), new Size());
+                    new Size(50, 50), new Size());
             else return 0.5;
             OpenCVForUnity.Rect[] rects = faces.toArray();
             Debug.Log(rects.Length);
@@ -142,7 +144,7 @@ public class FaceDiscr : MonoBehaviour
 
                 //Upload(bytes, -1 * frac);
 
-                Size dsize = new Size(200, 200);
+                Size dsize = new Size(50, 50);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
                 Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
                 testSampleMat = Stressed(testSampleMat);
@@ -181,7 +183,7 @@ public class FaceDiscr : MonoBehaviour
             smile_faces = new MatOfRect();
             if (cascade != null)
                 cascade.detectMultiScale(grayMat, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                    new Size(200, 200), new Size());
+                    new Size(50, 50), new Size());
             else return 0.5;
             OpenCVForUnity.Rect[] rects = faces.toArray();
             Debug.Log(rects.Length);
@@ -197,7 +199,7 @@ public class FaceDiscr : MonoBehaviour
 
                 //Upload(bytes,frac);
 
-                Size dsize = new Size(200, 200);
+                Size dsize = new Size(50, 50);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
                 Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
 
@@ -214,7 +216,7 @@ public class FaceDiscr : MonoBehaviour
 
                 if (cascade_smile != null)
                     cascade_smile.detectMultiScale(grayMat, smile_faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                        new Size(200, 200), new Size());
+                        new Size(50, 50), new Size());
                 OpenCVForUnity.Rect[] smile_rects = faces.toArray();
 
                 Debug.Log(13);
@@ -233,7 +235,7 @@ public class FaceDiscr : MonoBehaviour
             smile_faces = new MatOfRect();
             if (cascade != null)
                 cascade.detectMultiScale(grayMat, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                    new Size(200, 200), new Size());
+                    new Size(50, 50), new Size());
             else return 0.5;
             OpenCVForUnity.Rect[] rects = faces.toArray();
 
@@ -248,7 +250,7 @@ public class FaceDiscr : MonoBehaviour
                 Utils.matToTexture2D(Roifacemat, t2d);
 
                 var bytes = t2d.EncodeToPNG();
-
+                
                 //Upload(bytes, -1 * frac);
                 Size dsize = new Size(200, 200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
@@ -266,9 +268,9 @@ public class FaceDiscr : MonoBehaviour
                 if (rects.Length > 0) return 0.8;
                 if (cascade_smile != null)
                     cascade_smile.detectMultiScale(Roifacemat, smile_faces, 1.1, 55, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                        new Size(200, 200), new Size());
+                        new Size(50, 50), new Size());
                 OpenCVForUnity.Rect[] smile_rects = faces.toArray();
-                cascade_eye_mouth.detectMultiScale(Roifacemat, eye_glass, 1.1, 2, 0 | 2, new Size(200, 200), new Size());
+                cascade_eye_mouth.detectMultiScale(Roifacemat, eye_glass, 1.1, 2, 0 | 2, new Size(50, 50), new Size());
                 OpenCVForUnity.Rect[] eyes = eye_glass.toArray();
 
                 Debug.Log(13);

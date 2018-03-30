@@ -15,10 +15,11 @@ public class Global : MonoBehaviour {
     public List<GameObject> coinGroup = new List<GameObject>();
     public List<GameObject> obstacleGroup = new List<GameObject>();
 
-    static Global() {
-        GameObject go = new GameObject("Global");
-        DontDestroyOnLoad(go);
-        instance = go.AddComponent<Global>();
+    void Awake() {
+        if (instance == null) {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
     }
 
     public void ClearData() {

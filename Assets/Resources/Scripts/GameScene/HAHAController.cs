@@ -25,7 +25,7 @@ public class HAHAController : Photon.PunBehaviour {
     private AudioSource[] m_MyAudioSource = new AudioSource[1];
 
     // 游戏相关
-    private bool isSinglePlayer = false;      // 是否是单人游戏
+    
     #endregion
 
     #region Public Variables
@@ -44,6 +44,7 @@ public class HAHAController : Photon.PunBehaviour {
 
     // 多人游戏相关
     public bool isOtherReady = false;         // 对方是否加入房间
+    public bool isSinglePlayer = false;      // 是否是单人游戏
 
     // 游戏结束
     public bool isFinish = false;
