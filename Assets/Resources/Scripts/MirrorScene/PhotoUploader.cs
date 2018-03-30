@@ -18,7 +18,7 @@ public class PhotoUploader : MonoBehaviour {
     {
         var form = new WWWForm();
         form.AddField("token", GlobalUserInfo.tokenInfo.token);
-        form.AddField("room_id", GlobalUserInfo.roomId);
+        form.AddField("room_id", GlobalUserInfo.roomInfo.roomIndex);
         form.AddField("stage", num);
         form.AddBinaryData("photo", Roiface);
         UnityWebRequest req = UnityWebRequest.Post("http://123.207.93.25:9001/game/postPhoto", form);

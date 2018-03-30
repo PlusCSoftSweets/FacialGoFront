@@ -37,7 +37,7 @@ public class FaceEditSceneController : MonoBehaviour {
     }
 
     IEnumerator GetPhotos() {
-        string roomId = GlobalUserInfo.roomId;
+        string roomId = GlobalUserInfo.roomInfo.roomIndex;
         string baseUrl = "http://123.207.93.25:9001/game/getPhoto?";
         baseUrl += "token=" + GlobalUserInfo.tokenInfo.token;
         baseUrl += "&room_id=" + roomId;

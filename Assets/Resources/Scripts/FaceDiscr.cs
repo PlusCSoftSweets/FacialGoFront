@@ -9,7 +9,7 @@ public class FaceDiscr : MonoBehaviour
 {
 
     public GameObject uploaderPrefab;
-
+    private int vac;
     public static FaceDiscr FaceDiscr_singleinstance = null;
     String front_face_haar = "haarcascade_frontalface_alt2.xml";
     MatOfRect faces;
@@ -30,6 +30,7 @@ public class FaceDiscr : MonoBehaviour
         if (FaceDiscr_singleinstance == null)
         {
             FaceDiscr_singleinstance = this;
+            vac = 0;
             DontDestroyOnLoad(gameObject);
         } else
         {
@@ -47,9 +48,10 @@ public class FaceDiscr : MonoBehaviour
         Utils.matToTexture2D(grayMat, t1d);
 
         var bytes2 = t1d.EncodeToPNG();
-        //Upload(bytes2,0);
+        Upload(bytes2,0);
         List<Mat> images = new List<Mat>();
         List<int> labelsList = new List<int>();
+       
         Debug.Log(frac);
         //MatOfInt labels = new MatOfInt();
         /*
@@ -86,7 +88,7 @@ public class FaceDiscr : MonoBehaviour
                 Utils.matToTexture2D(Roifacemat, t2d);
 
                 var bytes = t2d.EncodeToPNG();
-                Upload(bytes,-1*frac);
+                //Upload(bytes,-1*frac);
                 
                 Size dsize = new Size(200, 200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
@@ -96,7 +98,8 @@ public class FaceDiscr : MonoBehaviour
                 Utils.matToTexture2D(testSampleMat, t3d);
 
                 bytes = t3d.EncodeToPNG();
-                Upload(bytes, frac);
+                Upload(bytes, vac);
+                vac++;
 
                 if (rects.Length > 0) return 0.8;
 
@@ -136,7 +139,7 @@ public class FaceDiscr : MonoBehaviour
                 Utils.matToTexture2D(Roifacemat, t2d);
                 var bytes = t2d.EncodeToPNG();
 
-                Upload(bytes,-1*frac);
+                //Upload(bytes,-1*frac);
 
                 Size dsize = new Size(200, 200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
@@ -147,7 +150,8 @@ public class FaceDiscr : MonoBehaviour
                 Utils.matToTexture2D(testSampleMat, t3d);
 
                 bytes = t3d.EncodeToPNG();
-                Upload(bytes, frac);
+                Upload(bytes, vac);
+                vac++;
 
                 if (rects.Length > 0) return 0.8;
 
@@ -204,7 +208,8 @@ public class FaceDiscr : MonoBehaviour
 
                 
                 bytes = t3d.EncodeToPNG();
-                Upload(bytes, frac);
+                Upload(bytes, vac);
+                vac++;
 
                 if (cascade_smile != null)
                     cascade_smile.detectMultiScale(grayMat, smile_faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
@@ -243,7 +248,7 @@ public class FaceDiscr : MonoBehaviour
 
                 var bytes = t2d.EncodeToPNG();
 
-                Upload(bytes,-1*frac);
+                //Upload(bytes,-1*frac);
                 Size dsize = new Size(200,200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
                 Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
@@ -254,7 +259,8 @@ public class FaceDiscr : MonoBehaviour
                 Utils.matToTexture2D(testSampleMat, t3d);
                 bytes = t3d.EncodeToPNG();
 
-                Upload(bytes, frac);
+                Upload(bytes, vac);
+                vac++;
 
                 if (rects.Length > 0) return 0.8;
                 if (cascade_smile != null)
