@@ -17,7 +17,7 @@ public class PhotoUploader : MonoBehaviour {
     IEnumerator Postpic(byte[] Roiface, int num)
     {
         var form = new WWWForm();
-        form.AddField("token", "f16a163c62492537e19e887f4eefc1e93f2a01dfd3a71e8bb2791b2219d9205b");
+        form.AddField("token", GlobalUserInfo.tokenInfo.token);
         form.AddField("room_id", GlobalUserInfo.roomId);
         form.AddField("stage", num);
         form.AddBinaryData("photo", Roiface);
