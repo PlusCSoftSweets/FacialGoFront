@@ -189,7 +189,7 @@ MonoBehaviour:
   FacialMoveSpeed: 500
   SampleInterval: 1
   TryInterval: 5
-  PassPercent: 0.8
+  PassPercent: 0.6
 --- !u!4 &159947488
 Transform:
   m_ObjectHideFlags: 0
