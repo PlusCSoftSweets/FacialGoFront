@@ -158,7 +158,7 @@ public class LoginSceneManagerController : Photon.PunBehaviour {
         yield return www.SendWebRequest();
 
         if (www.isNetworkError || www.isHttpError) {
-            ShowOutDialog("网络错误！");
+            ShowOutDialog("账号或密码错误！");
             waittingObject.localPosition = new Vector3(0, 0, -1001);
             loginObject.localPosition = new Vector3(0, 0, 0);
         }
@@ -215,6 +215,8 @@ public class LoginSceneManagerController : Photon.PunBehaviour {
 
     public override void OnDisconnectedFromPhoton() {
         ShowOutDialog("服务器崩溃，请退出游戏！");
+        waittingObject.localPosition = new Vector3(0, 0, -1001);
+        loginObject.localPosition = new Vector3(0, 0, 0);
     }
     #endregion
 }

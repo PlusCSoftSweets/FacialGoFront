@@ -83,6 +83,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     private bool acceptedInvitation = false;
     private bool polling = false;
     private InvitationItem invitation = null;
+    private string roomId;
     #endregion
 
     void Start() {
@@ -139,6 +140,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
             MaxPlayers = 2
         };
         String roomStr = GlobalUserInfo.tokenInfo.account + DateTime.Now.ToFileTime().ToString();
+        roomId = roomStr;
         PhotonNetwork.CreateRoom(roomStr, options, TypedLobby.Default);
     }
 
@@ -267,6 +269,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
             StartCoroutine(PollInvitation());
         }
         else {
+            roomId = invitation.room_id;
             PhotonNetwork.JoinRoom(invitation.room_id);
         }
     }
@@ -318,6 +321,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     #region Photon.PunBehaviour CallBacks
     // Join or Create room will call this method
     public override void OnJoinedRoom() {
+        GlobalUserInfo.roomInfo.roomIndex = roomId;
         StartCoroutine(FadeScene("OpenRoomScene"));
     }
 

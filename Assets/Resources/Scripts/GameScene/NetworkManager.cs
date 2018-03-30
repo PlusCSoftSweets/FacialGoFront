@@ -36,8 +36,6 @@ public class NetworkManager : PunBehaviour {
     private Transform mirror;
     private bool isAbort = false;
     private bool findMark = false;
-    private GameObject[] coinGroup;
-    private GameObject[] obstacleGroup;
     #endregion
 
     void Start() {
@@ -82,12 +80,17 @@ public class NetworkManager : PunBehaviour {
 
     #region Public Method
     public void GameOverChangeScene() {
-        for (int i = 0; i < goldNumber; i++) {
-            PhotonNetwork.Destroy(coinGroup[i]);
-        }
-        for (int i = 0; i < obstacleNumber; i++) {
-            PhotonNetwork.Destroy(obstacleGroup[i]);
-        }
+        int result = 1;
+        if (isFailed) result = 0;
+        PhotonNetwork.RaiseEvent(1, new int[] { int.Parse(GlobalUserInfo.userInfo.user_id), result}, true, null);
+        for (int i = 0; i < Global.instance.coinGroup.Count; i++)
+            PhotonNetwork.Destroy(Global.instance.coinGroup[i]);
+        for (int i = 0; i < Global.instance.obstacleGroup.Count; i++)
+            PhotonNetwork.Destroy(Global.instance.obstacleGroup[i]);
+        PhotonNetwork.Destroy(HAHAController.LocalPlayerInstance);
+        if (GameObject.Find("HAHA(Clone)") != null)
+            PhotonNetwork.Destroy(GameObject.Find("HAHA(Clone)"));
+        UnityEngine.Object.Destroy(OnSwipeEvent.swipeEvent);
         UnityEngine.Object.Destroy(Global.instance.gameObject);
         UnityEngine.Object.Destroy(FingerGestures.Instance.gameObject);
         PhotonNetwork.LeaveRoom();
@@ -127,22 +130,20 @@ public class NetworkManager : PunBehaviour {
     }
 
     private void CreateCoins() {
-        coinGroup = new GameObject[goldNumber];
         for (int i = 0; i < goldNumber; i++) {
             float z = UnityEngine.Random.Range(rangeMinZ, rangeMaxZ);
             float x = GetRandom(rangeX);
             float y = rangeMinY;
-            coinGroup[i] = PhotonNetwork.InstantiateSceneObject("Gold", new Vector3(x, y, z), Quaternion.identity, 0, null);
+            Global.instance.coinGroup.Add(PhotonNetwork.InstantiateSceneObject("Gold", new Vector3(x, y, z), Quaternion.identity, 0, null));
         }
     }
 
     private void CreateObstacles() {
-        obstacleGroup = new GameObject[obstacleNumber];
         for (int i = 0; i < obstacleNumber; i++) {
             float z = UnityEngine.Random.Range(rangeMinZ, rangeMaxZ);
             float x = GetRandom(rangeX);
             float y = rangeMinY;
-            obstacleGroup[i] = PhotonNetwork.InstantiateSceneObject("ObstacleWrapper", new Vector3(x, y, z), Quaternion.identity, 0, null);
+            Global.instance.obstacleGroup.Add(PhotonNetwork.InstantiateSceneObject("ObstacleWrapper", new Vector3(x, y, z), Quaternion.identity, 0, null));
         }
     }
     #endregion

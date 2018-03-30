@@ -86,6 +86,7 @@ public class DetailManagerController : MonoBehaviour {
 
     // 退出游戏
     public void OnQuitButtonClick() {
+        PhotonNetwork.LeaveLobby();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -95,6 +96,9 @@ public class DetailManagerController : MonoBehaviour {
 
     // 切换账号跳转
     public void OnSwitchAccountButtonClick() {
+        PhotonNetwork.LeaveLobby();
+        PlayerPrefs.SetString("phone_number", "");
+        PlayerPrefs.SetString("password", "");
         SceneManager.LoadScene("LoginScene");
     }
 }

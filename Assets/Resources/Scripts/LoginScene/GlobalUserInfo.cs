@@ -16,10 +16,18 @@ public class TokenItem {
     public string account { get; set; }
 }
 
+public class RoomItem {
+    public string myId { get; set; }
+    public string otherId { get; set; }
+    public string roomIndex { get; set; }
+}
+
 static public class GlobalUserInfo {
 
     static public UserItem userInfo = new UserItem();
     static public TokenItem tokenInfo = new TokenItem();
+    static public RoomItem roomInfo = new RoomItem();
+    
 
     static public void SetUserItemInstance(LoginSceneManagerController.UserItem user) {
         if (user.avatar == null) user.avatar = "";
@@ -33,6 +41,12 @@ static public class GlobalUserInfo {
     static public void SetTokenItemInstance(string t, string a) {
         tokenInfo.token = t;
         tokenInfo.account = a;
+    }
+
+    static public void SetRoomItemInstance(string myId, string otherId, string roomIndex) {
+        roomInfo.myId = myId;
+        roomInfo.otherId = otherId;
+        roomInfo.roomIndex = roomIndex;
     }
 
     internal static void SetUserItemInstance(MainSceneMangerController.UserItem userJson)

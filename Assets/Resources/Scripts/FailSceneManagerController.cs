@@ -18,37 +18,13 @@ public class FailSceneManagerController : MonoBehaviour {
     #endregion
 
     void Start() {
-        experience.text = "经验+";
-        diamond.text = "X";
+        experience.text = "经验+20";
+        diamond.text = "X0";
     }
 
     public void OnDetermineClick()
     {
         StartCoroutine(FadeScene());
-    }
-
-    /*
-    * 网络通信
-    */
-    IEnumerator GetUserInfo(string phone, string check)
-    {
-        WWWForm userInfo = new WWWForm();
-        userInfo.AddField("phoneNumber", phone);
-
-        UnityWebRequest request = UnityWebRequest.Post("http://www.my-server.com/myform", userInfo);
-        yield return request.SendWebRequest();
-
-        if (request.isNetworkError || request.isHttpError)
-        {
-            Debug.Log(request.error);
-            // 弹窗提示错误
-        }
-        else
-        {
-            Debug.Log("Form upload complete!");
-            Debug.Log(request.downloadHandler.text);
-            // ulong results = request.downloadedBytes;
-        }
     }
 
     IEnumerator FadeScene()

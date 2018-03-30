@@ -22,12 +22,13 @@ public class CoinController : PunBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if (other.tag.Equals("Player")) {
-            PhotonNetwork.RPC(photonView, "SetActive", PhotonTargets.All, false, null);
+            this.gameObject.transform.position = new Vector3(-20, 0, 0);
+            // PhotonNetwork.RPC(photonView, "SetActive", PhotonTargets.All, false, null);
         }
     }
 
-    [PunRPC]
-    private void SetActive() {
-        this.gameObject.SetActive(false);
-    }
+    //[PunRPC]
+    //private void SetActive() {
+    //    this.gameObject.SetActive(false);
+    //}
 }

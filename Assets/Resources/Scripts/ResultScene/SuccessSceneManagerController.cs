@@ -19,38 +19,17 @@ public class SuccessSceneManagerController : MonoBehaviour {
 
     void Start()
     {
-        experience.text = "经验+";
-        diamond.text = "X";
+        experience.text = "经验+40";
+        diamond.text = "X2";
     }
 
     public void OnDetermineClick() {
         StartCoroutine(FadeScene());
     }
 
-    /*
-    * 网络通信
-    */
-    IEnumerator GetUserInfo(string phone, string check) {
-        WWWForm userInfo = new WWWForm();
-        userInfo.AddField("phoneNumber", phone);
-
-        UnityWebRequest request = UnityWebRequest.Post("http://www.my-server.com/myform", userInfo);
-        yield return request.SendWebRequest();
-
-        if (request.isNetworkError || request.isHttpError) {
-            Debug.Log(request.error);
-            // 弹窗提示错误
-        }
-        else {
-            Debug.Log("Form upload complete!");
-            Debug.Log(request.downloadHandler.text);
-            // ulong results = request.downloadedBytes;
-        }
-    }
-
     IEnumerator FadeScene() {
         float time = GameObject.Find("Fade").GetComponent<FadeScene>().BeginFade(1);
         yield return new WaitForSeconds(time);
-        SceneManager.LoadScene("SavePhotoScene");
+        SceneManager.LoadScene("FaceEditScene");
     }
 }

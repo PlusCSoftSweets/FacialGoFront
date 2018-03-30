@@ -15,8 +15,10 @@ public class FinishLineController : Photon.PunBehaviour {
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.name == "localHAHA") {
             HAHAController.GetHaHaInstance().isFinish = true;
-            PhotonNetwork.RaiseEvent(11, "FINISH", true, null);
-            GameOverCalled();
+            if (PhotonNetwork.RaiseEvent(11, "FINISH", true, null)) {
+                PhotonNetwork.RaiseEvent(1, new int[] { int.Parse(GlobalUserInfo.userInfo.user_id), int.Parse(GlobalUserInfo.userInfo.user_id)}, true, null);
+                GameOverCalled();
+            }
         }
     }
 

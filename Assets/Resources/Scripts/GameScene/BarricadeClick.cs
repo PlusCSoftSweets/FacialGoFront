@@ -40,8 +40,8 @@ public class BarricadeClick : Photon.PunBehaviour {
 
     private void LayUpBarricade() {
         if (player == null) player = HAHAController.GetHaHaInstance().gameObject;
-        Vector3 targetPosition = player.transform.position + new Vector3(0, 0, 3);
-        PhotonNetwork.InstantiateSceneObject("ObstacleWrapper", targetPosition, Quaternion.identity, 0, null);
+        Vector3 targetPosition = player.transform.position + new Vector3(0, -player.transform.position.y, 3);
+        Global.instance.obstacleGroup.Add(PhotonNetwork.InstantiateSceneObject("ObstacleWrapper", targetPosition, Quaternion.identity, 0, null));
     }
     #endregion
 }
