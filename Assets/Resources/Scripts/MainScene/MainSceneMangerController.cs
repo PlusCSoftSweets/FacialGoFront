@@ -64,7 +64,8 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     }
 
     [System.Serializable]
-    public class FriendListItem {
+    public class FriendListItem
+    {
         public int status;
         public string msg;
         public _UserItem[] data;
