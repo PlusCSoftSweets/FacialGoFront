@@ -324,7 +324,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     #region Photon.PunBehaviour CallBacks
     // Join or Create room will call this method
     public override void OnJoinedRoom() {
-        GlobalUserInfo.roomInfo.roomIndex = roomId;
+        GlobalUserInfo.roomInfo.roomIndex = PhotonNetwork.room.Name;
         StartCoroutine(FadeScene("OpenRoomScene"));
     }
 
