@@ -146,6 +146,6 @@ public class FaceEditSceneController : MonoBehaviour {
 
     public void OnDownloadClick() {
         DateTime dateTime = DateTime.Now;
-        ScreenCapture.CaptureScreenshot(dateTime.ToString("yyyy-MM-dd HH:mm:ss") + ".png");
+        ScreenCapture.CaptureScreenshot(dateTime.ToString("yyyy-MM-dd HH-mm-ss") + ".png");
     }
 }
