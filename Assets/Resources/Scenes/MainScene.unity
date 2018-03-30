@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311926, g: 0.38074008, b: 0.35872707, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -532,6 +532,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllLine: {fileID: 1187719838}
   FriendLine: {fileID: 2021339037}
+  RankContent: {fileID: 911194575}
 --- !u!114 &131403676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1715,8 +1716,8 @@ Transform:
   - {fileID: 1529627037}
   - {fileID: 1972106787}
   - {fileID: 1843412941}
-  - {fileID: 943147463}
   - {fileID: 866944848}
+  - {fileID: 943147463}
   - {fileID: 672089096}
   - {fileID: 1532057763}
   m_Father: {fileID: 0}
@@ -2958,7 +2959,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 672089095}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 540, y: 952, z: 200}
+  m_LocalPosition: {x: 0, y: 0, z: 200}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 160935012}
@@ -3336,7 +3337,7 @@ RectTransform:
   - {fileID: 894069535}
   - {fileID: 1228771609}
   m_Father: {fileID: 332701958}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

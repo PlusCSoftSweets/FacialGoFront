@@ -47,7 +47,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
         public string nickname { get; set; }
         public string avatar { get; set; }
         public int exp { get; set; }
-        public int diamand { get; set; }
+        public int diamond { get; set; }
     }
 
     [System.Serializable]
@@ -64,7 +64,8 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     }
 
     [System.Serializable]
-    public class FriendListItem {
+    public class FriendListItem
+    {
         public int status;
         public string msg;
         public _UserItem[] data;
@@ -203,10 +204,12 @@ public class MainSceneMangerController : Photon.PunBehaviour {
             if (responseJson.status == 0) {
                 var userJson = responseJson.data.user;
                 GlobalUserInfo.userInfo.nickname = userJson.nickname;
-                GlobalUserInfo.userInfo.diamand = userJson.diamand;
+                GlobalUserInfo.userInfo.diamand = userJson.diamond;
                 GlobalUserInfo.userInfo.exp = userJson.exp;
                 GlobalUserInfo.userInfo.user_id = userJson.user_id;
                 GlobalUserInfo.userInfo.avatar = userJson.avatar;
+                Debug.Log(userJson.diamond);
+                Debug.Log(userJson.exp);
                 ShowUpUserInfo();
             }
             else {
