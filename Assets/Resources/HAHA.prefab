@@ -230,11 +230,14 @@ MonoBehaviour:
   accelerateSpeed: 20
   forwardSpeed: 30
   magnetTime: 10
+  playerInit: {fileID: 2100000, guid: f9d5abcedb2a1594b93ce6abf7305066, type: 2}
   mirror: {fileID: 0}
+  castle: {fileID: 0}
   isEnterMirror: 0
   isOtherReady: 0
   isFinish: 0
   finishLine: {fileID: 0}
+  isEnterCastle: 0
 --- !u!114 &114533627968883316
 MonoBehaviour:
   m_ObjectHideFlags: 1

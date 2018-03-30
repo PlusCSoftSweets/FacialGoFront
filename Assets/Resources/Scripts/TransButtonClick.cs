@@ -7,6 +7,7 @@ public class TransButtonClick : Photon.PunBehaviour {
 
     #region Public Variables
     public Text showHint;
+    public GameObject rotatorPrefs;
     #endregion
 
     #region Private Variables
@@ -18,8 +19,7 @@ public class TransButtonClick : Photon.PunBehaviour {
     private AudioSource[] m_MyAudioSource = new AudioSource[1];
     #endregion
 
-    void Start()
-    {
+    void Start() {
         m_MyAudioSource = GetComponents<AudioSource>();
         PhotonNetwork.OnEventCall += OnEvent;
     }
@@ -35,10 +35,8 @@ public class TransButtonClick : Photon.PunBehaviour {
         }
 	}
 
-    void LateUpdate()
-    {
-        if (rotator != null)
-        {
+    void LateUpdate() {
+        if (rotator != null) {
             rotator.transform.position = new Vector3(
                 player.transform.position.x,
                 player.transform.position.y + 1.8f, player.transform.position.z);
@@ -63,7 +61,6 @@ public class TransButtonClick : Photon.PunBehaviour {
     private void OnEvent(byte eventcode, object content, int senderid) {
         if (eventcode == 10) {
             if (((string)content).Equals("REVERSE")) {
-                Debug.Log("REVERSE");
                 CarryOutReverse();
             }
         }
@@ -73,9 +70,9 @@ public class TransButtonClick : Photon.PunBehaviour {
         if (player == null) player = HAHAController.GetHaHaInstance().gameObject;
         if (!player.GetComponent<HAHAController>().isReverse) {
             isClick = true;
-            rotateTime = 10;
+            rotateTime = 5;
             player.GetComponent<HAHAController>().isReverse = true;
-            rotator = Instantiate<GameObject>(Resources.Load("Prefabs/Rotator") as GameObject);
+            rotator = Instantiate<GameObject>(rotatorPrefs);
             m_MyAudioSource[0].Play();
         }
     }

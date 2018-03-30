@@ -14,26 +14,34 @@ public class BarricadeClick : Photon.PunBehaviour {
     private GameObject player;
     #endregion
 
+    void Awake() {
+        PhotonNetwork.OnEventCall += OnEvent;
+    }
+
     #region Public Methods
-    public void OnBarricadeButtonClick()
-    {
-        if (Global.instance.coinNumber < 5)
-        {
+    public void OnBarricadeButtonClick() {
+        if (Global.instance.coinNumber < 5) {
             showHint.text = "金币不足！";
             return;
         }
         Global.instance.coinNumber -= 5;
-        photonView.RPC("LayUpBarricade", PhotonTargets.Others);
+        PhotonNetwork.RaiseEvent(10, "BARRICADE", true, null);
     }
     #endregion
 
     #region Private Methods
-    [PunRPC]
-    private void LayUpBarricade()
-    {
+    private void OnEvent(byte eventcode, object content, int senderid) {
+        if (eventcode == 10) {
+            if (((string)content).Equals("BARRICADE")) {
+                LayUpBarricade();
+            }
+        }
+    }
+
+    private void LayUpBarricade() {
         if (player == null) player = HAHAController.GetHaHaInstance().gameObject;
         Vector3 targetPosition = player.transform.position + new Vector3(0, 0, 3);
-        DontDestroyOnLoad(PhotonNetwork.InstantiateSceneObject("ObstacleWrapper", targetPosition, Quaternion.identity, 0, null));
+        PhotonNetwork.InstantiateSceneObject("ObstacleWrapper", targetPosition, Quaternion.identity, 0, null);
     }
     #endregion
 }

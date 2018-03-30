@@ -433,7 +433,6 @@ GameObject:
   - component: {fileID: 73215844}
   - component: {fileID: 73215848}
   - component: {fileID: 73215847}
-  - component: {fileID: 73215845}
   - component: {fileID: 73215849}
   m_Layer: 5
   m_Name: Finish
@@ -449,39 +448,13 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 73215843}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: 12, z: 4800}
+  m_LocalPosition: {x: -1, y: 12, z: 700}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1380967217}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &73215845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 73215843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerId: 0
-  group: 0
-  OwnerShipWasTransfered: 0
-  prefixBackup: -1
-  synchronization: 3
-  onSerializeTransformOption: 3
-  onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
-  ObservedComponentsFoldoutOpen: 1
-  viewIdField: 3
-  instantiationId: 3
-  currentMasterID: -1
-  isRuntimeInstantiated: 0
 --- !u!65 &73215847
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -546,10 +519,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 73215843}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b01860c57900e0e45b9c0195401ac3e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 626a3e0f47e909049b57f4475c415827, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dis: 0
   gameSceneManager: {fileID: 1063411234}
 --- !u!1 &74089482
 GameObject:
@@ -1914,6 +1886,8 @@ MonoBehaviour:
   showHint: {fileID: 1258644305}
   player: {fileID: 0}
   LoadingBar: {fileID: 36178542}
+  playerInit: {fileID: 2100000, guid: f9d5abcedb2a1594b93ce6abf7305066, type: 2}
+  playerMagnet: {fileID: 2100000, guid: 1365780df739eb44cb7fd7419e4e7b7c, type: 2}
   currentAmount: 0
   timeSpeed: 0
 --- !u!1 &577676237
@@ -2234,7 +2208,6 @@ GameObject:
   - component: {fileID: 596822975}
   - component: {fileID: 596822974}
   - component: {fileID: 596822973}
-  - component: {fileID: 596822972}
   m_Layer: 5
   m_Name: BarricadeButton
   m_TagString: Untagged
@@ -2260,32 +2233,6 @@ RectTransform:
   m_AnchoredPosition: {x: 65, y: -575}
   m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &596822972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 596822970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerId: 0
-  group: 0
-  OwnerShipWasTransfered: 0
-  prefixBackup: -1
-  synchronization: 3
-  onSerializeTransformOption: 3
-  onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
-  ObservedComponentsFoldoutOpen: 1
-  viewIdField: 2
-  instantiationId: 2
-  currentMasterID: -1
-  isRuntimeInstantiated: 0
 --- !u!114 &596822973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2297,7 +2244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0665416d11808478c98d8e78c854b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showHint: {fileID: 0}
+  showHint: {fileID: 1258644305}
 --- !u!114 &596822974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5909,7 +5856,6 @@ GameObject:
   - component: {fileID: 1997548427}
   - component: {fileID: 1997548431}
   - component: {fileID: 1997548432}
-  - component: {fileID: 1997548430}
   m_Layer: 5
   m_Name: TransButton
   m_TagString: Untagged
@@ -6020,32 +5966,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1997548425}
---- !u!114 &1997548430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1997548425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerId: 0
-  group: 0
-  OwnerShipWasTransfered: 0
-  prefixBackup: -1
-  synchronization: 3
-  onSerializeTransformOption: 3
-  onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 1997548431}
-  ObservedComponentsFoldoutOpen: 1
-  viewIdField: 1
-  instantiationId: 1
-  currentMasterID: -1
-  isRuntimeInstantiated: 0
 --- !u!114 &1997548431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6058,6 +5978,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showHint: {fileID: 1258644305}
+  rotatorPrefs: {fileID: 1560417100606234, guid: a6cf01c0bbb2fdb46bcb7034b7851bce,
+    type: 2}
 --- !u!82 &1997548432
 AudioSource:
   m_ObjectHideFlags: 0
