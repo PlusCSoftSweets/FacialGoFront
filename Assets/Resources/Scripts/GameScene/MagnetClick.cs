@@ -10,6 +10,8 @@ public class MagnetClick : MonoBehaviour {
     public Text showHint;
     public GameObject player;
     public GameObject LoadingBar;
+    public Material playerInit;
+    public Material playerMagnet;
     #endregion
 
     #region Private Variables
@@ -19,8 +21,7 @@ public class MagnetClick : MonoBehaviour {
     private bool isLoadingBarWorking = false;
     #endregion
 
-    void Start()
-    {
+    void Start() {
         // Loading Bar Init
         timeSpeed = 1 / magnetTime;
         currentAmount = 1;
@@ -28,57 +29,48 @@ public class MagnetClick : MonoBehaviour {
         m_MyAudioSource = GetComponents<AudioSource>();
     }
 
-    void Update()
-    {
-        // 只获得LoaclPlayer
+    void Update() {
         if (player == null) player = HAHAController.GetHaHaInstance().gameObject;
         if(isLoadingBarWorking) LoadingBarWorking();
     }
 
     #region Public Methods
-    public void OnMagnetButtonClick()
-    {
+    public void OnMagnetButtonClick() {
         if (Global.instance.coinNumber < 10)
         {
             showHint.text = "金币不足！";
             return;
         }
-        if (!HAHAController.GetHaHaInstance().isMagnet)
-        {
+        if (!HAHAController.GetHaHaInstance().isMagnet) {
             Global.instance.coinNumber -= 10;
             HAHAController.GetHaHaInstance().magnetTime = magnetTime;
             HAHAController.GetHaHaInstance().isMagnet = true;
             isLoadingBarWorking = true;
-            player.GetComponent<SpriteRenderer>().material = Resources.Load("Materials/haha") as Material;
+            player.GetComponent<SpriteRenderer>().material = playerMagnet;
             m_MyAudioSource[0].Play();
         }
     }
     #endregion
 
     #region Private Methods
-    private void LoadingBarWorking()
-    {
+    private void LoadingBarWorking() {
         currentAmount -= timeSpeed * Time.deltaTime;
         LoadingBar.GetComponent<Image>().fillAmount = currentAmount;
 
         magnetTime -= Time.deltaTime;
-        if (magnetTime <= 0)
-        {
+        if (magnetTime <= 0) {
             RecoverPlayer();
             ResetLoadingBar();
         }
     }
 
-    private void RecoverPlayer()
-    {
+    private void RecoverPlayer() {
         HAHAController.GetHaHaInstance().isMagnet = false;
         magnetTime = 5f;
-        player.GetComponent<SpriteRenderer>().material = Resources.Load("Materials/init_haha") as Material;
-        
+        player.GetComponent<SpriteRenderer>().material = playerInit;
     }
 
-    private void ResetLoadingBar()
-    {
+    private void ResetLoadingBar() {
         isLoadingBarWorking = false;
         currentAmount = 1;
         LoadingBar.GetComponent<Image>().fillAmount = 0;

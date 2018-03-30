@@ -4,35 +4,38 @@ using UnityEngine;
 
 public class FinishLineController : Photon.PunBehaviour {
 
-    [SerializeField]
-    private float dis;
-
-
     #region Public Variables
     public GameObject gameSceneManager;
     #endregion
 
+    void Awake() {
+        PhotonNetwork.OnEventCall += OnEvent;
+    }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.name == "localHAHA")
-        {
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.name == "localHAHA") {
             HAHAController.GetHaHaInstance().isFinish = true;
-            photonView.RPC("SetPlayerResult", PhotonTargets.Others);
-            photonView.RPC("GameOverCalled", PhotonTargets.All);
+            PhotonNetwork.RaiseEvent(11, "FINISH", true, null);
+            GameOverCalled();
         }
     }
 
     #region Private Methods
-    [PunRPC]
-    private void SetPlayerResult()
-    {
+    private void OnEvent(byte eventcode, object content, int senderid) {
+        if (eventcode == 11) {
+            if (((string)content).Equals("FINISH")) {
+                Debug.Log(HAHAController.GetHaHaInstance().gameObject.name);
+                SetPlayerResult();
+                GameOverCalled();
+            }
+        }
+    }
+
+    private void SetPlayerResult() {
         gameSceneManager.GetComponent<NetworkManager>().isFailed = true;
     }
 
-    [PunRPC]
-    private void GameOverCalled()
-    {
+    private void GameOverCalled() {
         gameSceneManager.GetComponent<NetworkManager>().GameOverChangeScene();
     }
     #endregion

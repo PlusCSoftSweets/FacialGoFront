@@ -7,8 +7,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using ExitGames.UtilityScripts;
 
-public class OpenRoomSceneMangerController : Photon.PunBehaviour
-{
+public class OpenRoomSceneMangerController : Photon.PunBehaviour {
 
     #region Public Variables
     public GameObject friendCanvas;
@@ -22,39 +21,32 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour
     #endregion
 
     // 在启动的时候注册监听器
-    void OnEnable()
-    {
+    void OnEnable() {
         PhotonNetwork.OnEventCall += this.OnEventCalled;
     }
 
-    void Start()
-    {
-        if (!PhotonNetwork.inRoom)
-        {
+    void Start() {
+        if (!PhotonNetwork.inRoom) {
             StartCoroutine(LoadLastScene());
         }
-        else
-        {
+        else {
             InitButtonListener();
             GetPlayersList();
         }
     }
 
     // 取消监听器
-    void OnDisable()
-    {
+    void OnDisable() {
         PhotonNetwork.OnEventCall -= this.OnEventCalled;
     }
 
     #region Photon Messages
-    public override void OnPhotonPlayerConnected(PhotonPlayer otherPlayer)
-    {
+    public override void OnPhotonPlayerConnected(PhotonPlayer otherPlayer) {
         Debug.Log("OnPhotonPlayerConnected() " + otherPlayer.NickName);
         GetPlayersList();
     }
 
-    public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
-    {
+    public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer) {
         Debug.Log("OnPhotonPlayerDisconnected() " + otherPlayer.NickName);
         InitButtonListener();
         GetPlayersList();
@@ -62,37 +54,30 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour
     #endregion
 
     #region Public Methods
-    public void LeaveRoom()
-    {
+    public void LeaveRoom() {
         PhotonNetwork.LeaveRoom();
     }
 
-    public void OnInviteButtonClick()
-    {
+    public void OnInviteButtonClick() {
         friendCanvas.SetActive(true);
         StartCoroutine(GetFriendList());
     }
 
-    public void CloseFriendList()
-    {
+    public void CloseFriendList() {
         friendCanvas.SetActive(false);
     }
 
-    public void OnBackButtonClick()
-    {
+    public void OnBackButtonClick() {
         LeaveRoom();
         StartCoroutine(LoadLastScene());
     }
 
-    public void OnStartButtonClick()
-    {
-        if (PhotonNetwork.isMasterClient)
-        {
+    public void OnStartButtonClick() {
+        if (PhotonNetwork.isMasterClient) {
             byte evCode = 0;
             byte content = 0;
             bool reliable = true;
-            if (PhotonNetwork.RaiseEvent(evCode, content, reliable, null))
-            {
+            if (PhotonNetwork.RaiseEvent(evCode, content, reliable, null)) {
                 LoadGameArena();
             }
         }
@@ -101,29 +86,23 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour
 
     #region Private Methods
     // Raise Event响应事件
-    private void OnEventCalled(byte eventCode, object content, int senderid)
-    {
-        if (eventCode == 0)
-        {
-            if ((byte)content == 0)
-            {
+    private void OnEventCalled(byte eventCode, object content, int senderid) {
+        if (eventCode == 0) {
+            if ((byte)content == 0) {
                 LoadGameArena();
             }
         }
     }
 
-    private void LoadGameArena()
-    {
+    private void LoadGameArena() {
         StartCoroutine(LoadSingelModelScene());
     }
 
-    private void GetPlayersList()
-    {
+    private void GetPlayersList() {
         int Index = PhotonNetwork.room.PlayerCount - 1;
         Debug.Log(Index);
         PhotonPlayer player = PhotonNetwork.masterClient;
-        for (int i = 0; i <= Index; i++)
-        {
+        for (int i = 0; i <= Index; i++) {
             string playerName = player.NickName;
             playerNameList.Add(playerName);
             buttonPlayer[i].SetActive(true);
@@ -133,10 +112,8 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour
         }
     }
 
-    private void InitButtonListener()
-    {
-        foreach (GameObject btn in buttonPlayer)
-        {
+    private void InitButtonListener() {
+        foreach (GameObject btn in buttonPlayer) {
             btn.GetComponentInParent<Button>().enabled = true;
             btn.GetComponent<CircleImage>().sprite = null;
         }
@@ -144,39 +121,33 @@ public class OpenRoomSceneMangerController : Photon.PunBehaviour
     #endregion
 
     #region IEnumerator Methods
-    IEnumerator LoadSingelModelScene()
-    {
+    IEnumerator LoadSingelModelScene() {
         float time = GameObject.Find("Fade").GetComponent<FadeScene>().BeginFade(1);
         yield return new WaitForSeconds(time);
         PhotonNetwork.LoadLevel("SingelModelScene");
     }
 
-    IEnumerator LoadLastScene()
-    {
+    IEnumerator LoadLastScene() {
         float time = GameObject.Find("Fade").GetComponent<FadeScene>().BeginFade(1);
         yield return new WaitForSeconds(time);
         SceneManager.LoadScene("MainScene");
     }
 
-    IEnumerator GetFriendList()
-    {
+    IEnumerator GetFriendList() {
         string url = "http://123.207.93.25:9001/user/" + GlobalUserInfo.userInfo.user_id + "/friend"
                         + "?token=" + GlobalUserInfo.tokenInfo.token;
         Debug.Log("Getting " + url);
         UnityWebRequest req = UnityWebRequest.Get(url);
         yield return req.SendWebRequest();
 
-        if (req.isNetworkError || req.isHttpError)
-        {
+        if (req.isNetworkError || req.isHttpError) {
             Debug.LogError(req.error);
             Debug.Log(req.downloadHandler.text);
             // TODO: 弹窗提示
         }
-        else
-        {
+        else {
             // 清理当前的好友
-            foreach (Transform chlid in friendContent.transform)
-            {
+            foreach (Transform chlid in friendContent.transform) {
                 Destroy(chlid.gameObject);
             }
             Debug.Log("Get friend list success!");

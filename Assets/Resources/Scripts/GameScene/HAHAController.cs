@@ -35,6 +35,7 @@ public class HAHAController : Photon.PunBehaviour {
     public float accelerateSpeed = 20f;       // 加速度
     public float forwardSpeed = 30f;          // 前进速度
     public float magnetTime = 0;              // 磁铁生效时间
+    public Material playerInit;
 
     // 魔镜相关
     public Transform mirror;                  // 最近的镜子
@@ -290,15 +291,7 @@ public class HAHAController : Photon.PunBehaviour {
                 isEnterMirror = true;
             } 
         }
-        else if (other.name.Equals("FinishWall")) {
-            if (photonView.isMine) {
-                finishLine = other.transform;
-                finishLine.position += new Vector3(0, 0, 7f);
-                other.gameObject.SetActive(false);
-            }            
-        }
-        else if (other.name.Equals("FinishLine"))
-        {
+        else if (other.name.Equals("FinishLine")) {
             if (photonView.isMine)
             {
                 castle = other.transform;
@@ -350,6 +343,7 @@ public class HAHAController : Photon.PunBehaviour {
         accelerateSpeed = 20f;       // 加速度
         forwardSpeed = 30f;          // 前进速度
         magnetTime = 0;              // 磁铁生效时间
+        LocalPlayerInstance.GetComponent<SpriteRenderer>().material = playerInit;
     }
     #endregion
 }

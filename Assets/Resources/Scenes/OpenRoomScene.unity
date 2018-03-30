@@ -2736,7 +2736,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2100102187}
   - component: {fileID: 2100102188}
-  - component: {fileID: 2100102186}
   - component: {fileID: 2100102189}
   m_Layer: 0
   m_Name: OpenRoomSceneManger
@@ -2745,17 +2744,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2100102186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2100102185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5a097d1ab84b464395a16e9a7bb35b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2100102187
 Transform:
   m_ObjectHideFlags: 0
