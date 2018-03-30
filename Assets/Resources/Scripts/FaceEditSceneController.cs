@@ -98,14 +98,16 @@ public class FaceEditSceneController : MonoBehaviour {
             Image image = child.GetComponent<Image>();
             Sprite sprite = image.sprite;
             image.sprite = emotionMap.emotions[i];
+            int j = i;
             btn.onClick.AddListener(delegate () {
-                this.onItemClick(i);
+                this.onItemClick(j);    
             });
             i++;
         }
     }
     public void onItemClick(int index)
     {
+        Debug.Log(index);
         Image image = Face.GetComponent<Image>();
         image.sprite = emotionMap.emotions[index];
         // locate human face
@@ -113,10 +115,13 @@ public class FaceEditSceneController : MonoBehaviour {
             humanFace.gameObject.SetActive(true);
         }
         humanFace.rectTransform.sizeDelta = emotionMap.emotionSizes[index];
-        humanFace.rectTransform.position = emotionMap.emotionCenters[index];
+        humanFace.rectTransform.localPosition = emotionMap.emotionCenters[index];
     }
 
     public void OnLeftClick() {
+        if (!humanFace.gameObject.activeSelf) {
+            humanFace.gameObject.SetActive(true);
+        }
         int nextIndex = (curIndex - 1 + stageCount) % stageCount;
         if (images.Count < nextIndex) {
             Debug.Log("Photo hasnt loaded");
@@ -127,6 +132,9 @@ public class FaceEditSceneController : MonoBehaviour {
     }
 
     public void OnRightClick() {
+        if (!humanFace.gameObject.activeSelf) {
+            humanFace.gameObject.SetActive(true);
+        }
         int nextIndex = (curIndex + 1) % stageCount;
         if (images.Count < nextIndex) {
             Debug.Log("Photo hasnt loaded");

@@ -104,10 +104,16 @@ public class NetworkManager : PunBehaviour {
         UnityEngine.Object.Destroy(GameObject.Find("HAHA(Clone)"));
         UnityEngine.Object.Destroy(OnSwipeEvent.swipeEvent);        
         UnityEngine.Object.Destroy(Global.instance.gameObject);
+        UnityEngine.Object.Destroy(GameObject.Find("FaceDiscr"));
         Global.instance = null;
         UnityEngine.Object.Destroy(FingerGestures.Instance.gameObject);
         PhotonNetwork.LeaveRoom();
         Debug.Log("Destory Complete");
+        if (HAHAController.GetHaHaInstance().isSinglePlayer)
+        {
+            SceneManager.LoadScene("MainScene");
+            return;
+        }
         if (isFailed) {
             SceneManager.LoadScene("FailScene");
         }
