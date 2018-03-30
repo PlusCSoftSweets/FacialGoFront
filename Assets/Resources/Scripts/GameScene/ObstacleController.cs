@@ -25,7 +25,7 @@ public class ObstacleController : PunBehaviour {
     }
 
 	void OnTriggerEnter(Collider collider) {
-		if (collider.tag == "Player") {
+		if (collider.CompareTag("Player")) {
 			collider.transform.GetComponent<HAHAController> ().PauseForMilliSeconds(1);
 			animator.SetBool ("Fly", true);
             m_MyAudioSource[0].Play();

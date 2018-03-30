@@ -50,11 +50,12 @@ public class FinishLineController : Photon.PunBehaviour {
     }
 
     private void SetPlayerResult() {
-        gameSceneManager.GetComponent<NetworkManager>().isFailed = true;
+        NetworkManager.instance.isFailed = true;
     }
 
     private void GameOverCalled() {
-        gameSceneManager.GetComponent<NetworkManager>().GameOverChangeScene();
+        NetworkManager.instance.GameOverChangeScene();
+        //gameSceneManager.GetComponent<NetworkManager>().GameOverChangeScene();
     }
     #endregion
 }
