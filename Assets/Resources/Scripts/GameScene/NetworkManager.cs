@@ -82,14 +82,20 @@ public class NetworkManager : PunBehaviour {
     public void GameOverChangeScene() {
         int result = 1;
         if (isFailed) result = 0;
-        PhotonNetwork.RaiseEvent(1, new int[] { int.Parse(GlobalUserInfo.userInfo.user_id), result}, true, null);
+        if(PhotonNetwork.RaiseEvent(1, new int[] { int.Parse(GlobalUserInfo.userInfo.user_id), result }, true, null))
+        {
+            Debug.Log("Update True");
+        }
+        else
+        {
+            Debug.Log("Update False");
+        }
         for (int i = 0; i < Global.instance.coinGroup.Count; i++)
             PhotonNetwork.Destroy(Global.instance.coinGroup[i]);
         for (int i = 0; i < Global.instance.obstacleGroup.Count; i++)
             PhotonNetwork.Destroy(Global.instance.obstacleGroup[i]);
         PhotonNetwork.Destroy(HAHAController.LocalPlayerInstance);
-        if (GameObject.Find("HAHA(Clone)") != null)
-            PhotonNetwork.Destroy(GameObject.Find("HAHA(Clone)"));
+        PhotonNetwork.Destroy(GameObject.Find("HAHA(Clone)"));
         UnityEngine.Object.Destroy(OnSwipeEvent.swipeEvent);
         UnityEngine.Object.Destroy(Global.instance.gameObject);
         UnityEngine.Object.Destroy(FingerGestures.Instance.gameObject);
