@@ -11,6 +11,7 @@ public class CoinController : PunBehaviour
 
     void Start() {
         DontDestroyOnLoad(this.gameObject);
+        Global.instance.coinGroup.Add(this.gameObject);
     }
 
     void Update() {

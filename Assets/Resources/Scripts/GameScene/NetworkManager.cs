@@ -82,8 +82,10 @@ public class NetworkManager : PunBehaviour {
     public void GameOverChangeScene() {
         int result = 1;
         if (isFailed) result = 0;
-        var options = new RaiseEventOptions();
-        options.ForwardToWebhook = true;
+        var options = new RaiseEventOptions {
+            ForwardToWebhook = true
+        };
+        Debug.Log("UpLoad Result");
         PhotonNetwork.RaiseEvent(1, new int[] { int.Parse(GlobalUserInfo.userInfo.user_id), result }, true, options);
         for (int i = 0; i < Global.instance.coinGroup.Count; i++)
             PhotonNetwork.Destroy(Global.instance.coinGroup[i]);
@@ -95,6 +97,7 @@ public class NetworkManager : PunBehaviour {
         UnityEngine.Object.Destroy(Global.instance.gameObject);
         UnityEngine.Object.Destroy(FingerGestures.Instance.gameObject);
         PhotonNetwork.LeaveRoom();
+        Debug.Log("Destory Complete");
         if (isFailed) {
             SceneManager.LoadScene("FailScene");
         }
@@ -135,7 +138,7 @@ public class NetworkManager : PunBehaviour {
             float z = UnityEngine.Random.Range(rangeMinZ, rangeMaxZ);
             float x = GetRandom(rangeX);
             float y = rangeMinY;
-            Global.instance.coinGroup.Add(PhotonNetwork.InstantiateSceneObject("Gold", new Vector3(x, y, z), Quaternion.identity, 0, null));
+            PhotonNetwork.InstantiateSceneObject("Gold", new Vector3(x, y, z), Quaternion.identity, 0, null);
         }
     }
 
@@ -144,7 +147,7 @@ public class NetworkManager : PunBehaviour {
             float z = UnityEngine.Random.Range(rangeMinZ, rangeMaxZ);
             float x = GetRandom(rangeX);
             float y = rangeMinY;
-            Global.instance.obstacleGroup.Add(PhotonNetwork.InstantiateSceneObject("ObstacleWrapper", new Vector3(x, y, z), Quaternion.identity, 0, null));
+            PhotonNetwork.InstantiateSceneObject("ObstacleWrapper", new Vector3(x, y, z), Quaternion.identity, 0, null);
         }
     }
     #endregion

@@ -13,6 +13,7 @@ public class ObstacleController : PunBehaviour {
     void Start () {
 		animator = GetComponent<Animator> ();
         DontDestroyOnLoad(this.gameObject.transform.parent.gameObject);
+        Global.instance.obstacleGroup.Add(this.gameObject.transform.parent.gameObject);
         evt = new AnimationEvent() {
             functionName = "FlyEnd",
             objectReferenceParameter = gameObject,
