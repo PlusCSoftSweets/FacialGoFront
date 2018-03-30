@@ -36,3 +36,5 @@ Thumbs.db
 .vs/FacialGoFront/v15/Server/sqlite3/storage.ide
 .vs/FacialGoFront/v15/Server/sqlite3/storage.ide
 .vs/FacialGoFront/v15/sqlite3/storage.ide
+Assets/OpenCVForUnity/
+Assets/OpenCVForUnity.meta
