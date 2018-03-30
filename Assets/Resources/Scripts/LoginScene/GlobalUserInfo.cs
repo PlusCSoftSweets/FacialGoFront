@@ -53,5 +53,7 @@ static public class GlobalUserInfo {
     {
         throw new NotImplementedException();
     }
+
+    static public string roomId = "";
 }
 
