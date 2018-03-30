@@ -12,8 +12,8 @@ public class Global : MonoBehaviour {
     public Vector3 uiCameraPosition;
     public Vector3[] treesPosition;
     public bool isCreateBefore = false;
-    public List<GameObject> coinGroup;
-    public List<GameObject> obstacleGroup;
+    public List<GameObject> coinGroup = new List<GameObject>();
+    public List<GameObject> obstacleGroup = new List<GameObject>();
 
     static Global() {
         GameObject go = new GameObject("Global");
