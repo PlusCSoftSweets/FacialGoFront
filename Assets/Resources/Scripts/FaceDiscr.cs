@@ -93,7 +93,7 @@ public class FaceDiscr : MonoBehaviour
                 
                 Size dsize = new Size(200, 200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
-                Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
+                Imgproc.resize(faceMat.submat(rects[i]), testSampleMat, dsize);
                 testSampleMat = Stressed(testSampleMat);
                 Texture2D t3d = new Texture2D(testSampleMat.width(), testSampleMat.height());
                 Utils.matToTexture2D(testSampleMat, t3d);
@@ -144,7 +144,7 @@ public class FaceDiscr : MonoBehaviour
 
                 Size dsize = new Size(200, 200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
-                Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
+                Imgproc.resize(faceMat.submat(rects[i]), testSampleMat, dsize);
                 testSampleMat = Stressed(testSampleMat);
 
                 Texture2D t3d = new Texture2D(testSampleMat.width(), testSampleMat.height());
@@ -199,7 +199,7 @@ public class FaceDiscr : MonoBehaviour
 
                 Size dsize = new Size(200, 200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
-                Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
+                Imgproc.resize(faceMat.submat(rects[i]), testSampleMat, dsize);
 
                 testSampleMat= Stressed(testSampleMat);
                 Texture2D t3d = new Texture2D(testSampleMat.width(), testSampleMat.height());
@@ -252,7 +252,7 @@ public class FaceDiscr : MonoBehaviour
                 //Upload(bytes,-1*frac);
                 Size dsize = new Size(200,200);
                 Mat testSampleMat = new Mat(dsize, Imgproc.COLOR_RGBA2GRAY); //Imgproc.COLOR_RGBA2GRAY
-                Imgproc.resize(grayMat.submat(rects[i]), testSampleMat, dsize);
+                Imgproc.resize(faceMat.submat(rects[i]), testSampleMat, dsize);
 
                 testSampleMat = Stressed(testSampleMat);
 
@@ -291,8 +291,8 @@ public class FaceDiscr : MonoBehaviour
             {
                 double[] data = new double[1];
                 data = Roifacemat.get(j, k);
-                if (data[0] < 0.5) data[0] -= 0.225;
-                if (data[0] > 0.5) data[0] += 0.225;
+                if (data[0] < 0.3) data[0] -= 0.225;
+                if (data[0] > 0.3) data[0] += 0.225;
                 if (data[0] > 1) data[0] = 1;
                 if (data[0] < 0) data[0] = 0;
                 Roifacemat.put(j, k, data);
