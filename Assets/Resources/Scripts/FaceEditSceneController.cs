@@ -122,7 +122,7 @@ public class FaceEditSceneController : MonoBehaviour {
             Debug.Log("Photo hasnt loaded");
         } else {
             curIndex = nextIndex;
-            Face.GetComponent<Image>().sprite = images[curIndex];
+            humanFace.GetComponent<Image>().sprite = images[curIndex];
         }
     }
 
@@ -132,12 +132,12 @@ public class FaceEditSceneController : MonoBehaviour {
             Debug.Log("Photo hasnt loaded");
         } else {
             curIndex = nextIndex;
-            Face.GetComponent<Image>().sprite = images[curIndex];
+            humanFace.GetComponent<Image>().sprite = images[curIndex];
         }
     }
 
     public void OnDownloadClick() {
         DateTime dateTime = DateTime.Now;
-        ScreenCapture.CaptureScreenshot(dateTime.ToString() + ".png");
+        ScreenCapture.CaptureScreenshot(dateTime.ToString("yyyy-MM-dd HH:mm:ss") + ".png");
     }
 }
