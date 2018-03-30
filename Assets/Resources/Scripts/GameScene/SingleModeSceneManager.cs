@@ -15,12 +15,20 @@ public class SingleModeSceneManager : MonoBehaviour {
     public Transform mainCamera;
     public Transform uiCamera;
     public Transform[] trees;
+
+    public GameObject global;
     #endregion
 
     #region Private Variables
     private bool ifUpdate = false;
     private HAHAController instance;
     #endregion
+
+    void Awake() {
+        if (global != null) {
+            Instantiate(global);
+        }
+    }
 
     void Start () {
         InitScene();
