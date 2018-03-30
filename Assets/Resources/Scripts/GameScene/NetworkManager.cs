@@ -82,14 +82,9 @@ public class NetworkManager : PunBehaviour {
     public void GameOverChangeScene() {
         int result = 1;
         if (isFailed) result = 0;
-        if(PhotonNetwork.RaiseEvent(1, new int[] { int.Parse(GlobalUserInfo.userInfo.user_id), result }, true, null))
-        {
-            Debug.Log("Update True");
-        }
-        else
-        {
-            Debug.Log("Update False");
-        }
+        var options = new RaiseEventOptions();
+        options.ForwardToWebhook = true;
+        PhotonNetwork.RaiseEvent(1, new int[] { int.Parse(GlobalUserInfo.userInfo.user_id), result }, true, options);
         for (int i = 0; i < Global.instance.coinGroup.Count; i++)
             PhotonNetwork.Destroy(Global.instance.coinGroup[i]);
         for (int i = 0; i < Global.instance.obstacleGroup.Count; i++)
