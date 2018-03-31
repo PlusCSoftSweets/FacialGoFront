@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blackTexture: {fileID: 2800000, guid: 06fc7b63bdb0b9645a926dcfe17483f7, type: 3}
-  fadeSpeed: 0.5
+  fadeSpeed: 1.5
 --- !u!4 &966886926
 Transform:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 public class FaceEditSceneController : MonoBehaviour {
 
     private int curIndex = 0;
-    private static readonly int stageCount = 4;
+    private static readonly int stageCount = 9;
 
     List<Sprite> images;
 
