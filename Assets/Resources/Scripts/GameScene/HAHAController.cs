@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class HAHAController : Photon.PunBehaviour {
+
     #region Private Variables
     // 移动相关
     private bool isMove = false;              // 判断正在左右移动
@@ -36,6 +37,7 @@ public class HAHAController : Photon.PunBehaviour {
     public float forwardSpeed = 30f;          // 前进速度
     public float magnetTime = 0;              // 磁铁生效时间
     public Material playerInit;
+    public bool isUserControl = true;
 
     // 魔镜相关
     public Transform mirror;                  // 最近的镜子
@@ -73,11 +75,7 @@ public class HAHAController : Photon.PunBehaviour {
         DontDestroyOnLoad(this.gameObject);
 
         // 注册监听事件
-        PhotonNetwork.OnEventCall += this.OnListenGameOn;
-        byte evCode = 2;
-        byte content = 1;
-        bool reliable = true;
-        PhotonNetwork.RaiseEvent(evCode, content, reliable, null);
+        PhotonNetwork.OnEventCall += this.OnListenGameOn;        
     }
 
     // 1. 初始化控制器
@@ -90,6 +88,8 @@ public class HAHAController : Photon.PunBehaviour {
             isSinglePlayer = true;
         } else {
             isSinglePlayer = false;
+            byte a = 2, b = 1;
+            PhotonNetwork.RaiseEvent(a, b, true, null);
         }
     }
 
@@ -156,7 +156,8 @@ public class HAHAController : Photon.PunBehaviour {
             byte content = 1;
             bool reliable = true;
             isGameOn = true;
-            PhotonNetwork.RaiseEvent(evCode, content, reliable, null);
+            if (!isSinglePlayer)
+                PhotonNetwork.RaiseEvent(evCode, content, reliable, null);
         }
     }
 
@@ -293,8 +294,7 @@ public class HAHAController : Photon.PunBehaviour {
             } 
         }
         else if (other.name.Equals("FinishLine")) {
-            if (photonView.isMine)
-            {
+            if (photonView.isMine) {
                 castle = other.transform;
                 castle.position += new Vector3(0f, 0f, 7f);
                 isEnterCastle = true;
@@ -308,6 +308,7 @@ public class HAHAController : Photon.PunBehaviour {
     // 收到手势脚本控制，只有LocalPlayer才受脚本控制
     public void Move(string direction) {
         if (photonView.isMine == false && PhotonNetwork.connected == true) return;
+        if (!isUserControl) return;
         if (direction.Equals("Left")) {
             if (!isReverse)
                 LeftMoving();
@@ -341,6 +342,7 @@ public class HAHAController : Photon.PunBehaviour {
         isPausing = false;            // 判断是否被暂停
         isReverse = false;            // 判断是否转置
         isMagnet = false;             // 判断是否正在磁铁状态
+        isUserControl = true;
         accelerateSpeed = 20f;       // 加速度
         forwardSpeed = 30f;          // 前进速度
         magnetTime = 0;              // 磁铁生效时间

@@ -20,8 +20,12 @@ public class MirroController : MonoBehaviour {
         if (other.gameObject.name == "localHAHA") {
             other.gameObject.GetComponent<HAHAController>().isEnterMirror = false;
             other.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            other.gameObject.transform.position = new Vector3(-20, other.gameObject.transform.position.y, other.gameObject.transform.position.z);
+            other.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
+            other.gameObject.GetComponent<HAHAController>().forwardSpeed = 0;
+            other.gameObject.GetComponent<HAHAController>().accelerateSpeed = 0;
+            other.gameObject.GetComponent<HAHAController>().isUserControl = false;
             Debug.Log("In MirrorController:" + other.gameObject.name + HAHAController.GetHaHaInstance().isEnterMirror);
-            HAHAController.GetHaHaInstance().InitData();
             AudioCallBack callbackTest = new AudioCallBack(ChangeScene);
             PlayClipData(callbackTest);
         }

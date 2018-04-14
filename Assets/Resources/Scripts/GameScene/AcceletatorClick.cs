@@ -8,7 +8,7 @@ public class AcceletatorClick : MonoBehaviour {
     #region Public Variables
     public GameObject player;
     public float forwardSpeed = 30f;  // 前进速度
-    public float targetSpeed = 200f;  //加速器能够到达的最大速度
+    public float targetSpeed = 100f;  //加速器能够到达的最大速度
     public GameObject LoadingBar;
     public Text showHint;
     #endregion

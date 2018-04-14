@@ -25,6 +25,8 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     public GameObject randomDialog;
     public GameObject dialogCanvas;
     public GameObject matchingDialog;
+    public GameObject openingDialog;
+    public GameObject networkDialog;
 
     public bool isNameChange = false;
     public bool isAvatorChange = false;
@@ -137,6 +139,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     }
 
     public void OnOpenRoomButtonClick() {
+        openingDialog.SetActive(true);
         RoomOptions options = new RoomOptions() {
             MaxPlayers = 2
         };
@@ -188,6 +191,15 @@ public class MainSceneMangerController : Photon.PunBehaviour {
 
     public void UpdateIsChangeName(DetailManagerController detail) {
         isNameChange = detail.isNicknameChange;
+    }
+
+    public void NetworkDialogClick() {
+        PhotonNetwork.LeaveLobby();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
     #endregion
 
@@ -325,6 +337,7 @@ public class MainSceneMangerController : Photon.PunBehaviour {
     // Join or Create room will call this method
     public override void OnJoinedRoom() {
         GlobalUserInfo.roomInfo.roomIndex = PhotonNetwork.room.Name;
+        openingDialog.SetActive(false);
         StartCoroutine(FadeScene("OpenRoomScene"));
     }
 
@@ -332,6 +345,16 @@ public class MainSceneMangerController : Photon.PunBehaviour {
         matchingDialog.SetActive(false);
         randomDialog.SetActive(true);
         base.OnPhotonRandomJoinFailed(codeAndMsg);
+    }
+
+    public override void OnPhotonCreateRoomFailed(object[] codeAndMsg) {
+        openingDialog.SetActive(false);
+        base.OnPhotonCreateRoomFailed(codeAndMsg);
+    }
+
+    public override void OnDisconnectedFromPhoton() {
+        networkDialog.SetActive(true);
+        base.OnDisconnectedFromPhoton();
     }
     #endregion
 

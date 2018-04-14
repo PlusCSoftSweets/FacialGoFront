@@ -22,12 +22,4 @@ public class SavePhotoManagerController : MonoBehaviour {
         //Sprite temp = myImage.sprite;
         //Texture2D ttex = temp.texture;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-
-
 }

@@ -27,7 +27,7 @@ static public class GlobalUserInfo {
     static public UserItem userInfo = new UserItem();
     static public TokenItem tokenInfo = new TokenItem();
     static public RoomItem roomInfo = new RoomItem();
-    
+    static public bool isSinglePlayer = false;
 
     static public void SetUserItemInstance(LoginSceneManagerController.UserItem user) {
         if (user.avatar == null) user.avatar = "";

@@ -21,6 +21,7 @@ public class NetworkManager : PunBehaviour {
     public GameObject bar;
     public GameObject mark;
     public CircleImage avator;
+    public GameObject networkDialog;
 
     // 初始化数量
     public int goldNumber;
@@ -87,6 +88,7 @@ public class NetworkManager : PunBehaviour {
         };
         Debug.Log("UpLoad Result");
         PhotonNetwork.RaiseEvent(1, new int[] { int.Parse(GlobalUserInfo.userInfo.user_id), result }, true, options);
+        
         if (PhotonNetwork.isMasterClient) {
             for (int i = 0; i < Global.instance.coinGroup.Count; i++)
                 PhotonNetwork.Destroy(Global.instance.coinGroup[i]);
@@ -109,17 +111,29 @@ public class NetworkManager : PunBehaviour {
         UnityEngine.Object.Destroy(FingerGestures.Instance.gameObject);
         PhotonNetwork.LeaveRoom();
         Debug.Log("Destory Complete");
-        if (HAHAController.GetHaHaInstance().isSinglePlayer)
-        {
-            SceneManager.LoadScene("MainScene");
-            return;
+
+        if (HAHAController.GetHaHaInstance().isSinglePlayer) GlobalUserInfo.isSinglePlayer = true;
+        else GlobalUserInfo.isSinglePlayer = false;
+
+        if (HAHAController.GetHaHaInstance().isSinglePlayer) {
+            SceneManager.LoadScene("FaceEditScene");
         }
+
         if (isFailed) {
             SceneManager.LoadScene("FailScene");
         }
         else {
             SceneManager.LoadScene("SuccessScene");
         }
+    }
+
+    public void NetworkDialogClick() {
+        PhotonNetwork.LeaveLobby();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
     #endregion
 
@@ -139,7 +153,8 @@ public class NetworkManager : PunBehaviour {
     private void RecoverPosition() {
         HAHAController.LocalPlayerInstance.transform.position = Global.instance.playerPosition;
         HAHAController.LocalPlayerInstance.GetComponent<Rigidbody>().useGravity = true;
-        HAHAController.LocalPlayerInstance.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+        HAHAController.LocalPlayerInstance.GetComponent<Rigidbody>().velocity = new Vector3(-20, 0, 0);
+        HAHAController.GetHaHaInstance().InitData();
         for (int i = 0; i < 10; i++) {
             trees[i].position = Global.instance.treesPosition[i];
         }
@@ -182,4 +197,9 @@ public class NetworkManager : PunBehaviour {
         }
     }
     #endregion
+
+    public override void OnDisconnectedFromPhoton() {
+        networkDialog.SetActive(true);
+        base.OnDisconnectedFromPhoton();
+    }
 }

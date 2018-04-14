@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 public class FaceEditSceneController : MonoBehaviour {
 
     private int curIndex = 0;
-    private static readonly int stageCount = 9;
+    private static readonly int stageCount = 4;
 
     List<Sprite> images;
 
@@ -47,6 +47,7 @@ public class FaceEditSceneController : MonoBehaviour {
             yield return req.SendWebRequest();
             if (req.isNetworkError || req.isHttpError) {
                 Debug.LogError("Get Photos failed");
+                Debug.LogError(req.downloadHandler.text);
             } else {
                 var bytes = req.downloadHandler.data;
                 var texture = new Texture2D(2, 2);

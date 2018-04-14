@@ -44,6 +44,6 @@ public class Global : MonoBehaviour {
     }
 
     public float CalculateBarPosition(float x) {
-        return ((x + 200) / 5000) * 600 - 300;
+        return ((x + 200) / 1300) * 600 - 300;
     }
 }
