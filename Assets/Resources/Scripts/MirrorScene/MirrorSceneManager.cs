@@ -125,7 +125,7 @@ public class MirrorSceneManager : MonoBehaviour
             {
                 PassedOrFailedLabel.GetComponent<UnityEngine.UI.Text>().text = "FAILED!";
                 PassedOrFailedLabel.SetActive(true);
-                m_MyAudioSource[2].Play();
+                //m_MyAudioSource[2].Play();
             }
         }
         else if (PassedOrFailedLabel.activeSelf == true)
@@ -141,6 +141,7 @@ public class MirrorSceneManager : MonoBehaviour
     IEnumerator CheckMatch()
     {
         Texture2D texture = WebcamCtl.Snapshot();
+        m_MyAudioSource[2].Play();
         int face_number = random_face_index;
 
         // TODO: EncodeTo can be only called in main thread, consider a way to make it in other thread

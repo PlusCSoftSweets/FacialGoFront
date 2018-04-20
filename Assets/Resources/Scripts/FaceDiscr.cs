@@ -54,7 +54,6 @@ public class FaceDiscr : MonoBehaviour
         Upload(bytes2,vac);
         vac++;
         List<Mat> images = new List<Mat>();
-        List<int> labelsList = new List<int>();
         Debug.Log(frac);
         //MatOfInt labels = new MatOfInt();
         /*
@@ -83,7 +82,7 @@ public class FaceDiscr : MonoBehaviour
             else return 0.5;
             OpenCVForUnity.Rect[] rects = faces.toArray();
             Debug.Log(rects.Length);
-            if (rects.Length == 0) return 0.5;
+            if (rects.Length == 0) return 0.45;
             for (int i = 0; i < rects.Length; i++)
             {
                 Mat Roifacemat = grayMat.submat(rects[i]);
@@ -135,7 +134,7 @@ public class FaceDiscr : MonoBehaviour
             else return 0.5;
             OpenCVForUnity.Rect[] rects = faces.toArray();
             Debug.Log(rects.Length);
-            if (rects.Length == 0) return 0.5;
+            if (rects.Length == 0) return 0.56;
             for (int i = 0; i < rects.Length; i++)
             {
                 Mat Roifacemat = grayMat.submat(rects[i]);
