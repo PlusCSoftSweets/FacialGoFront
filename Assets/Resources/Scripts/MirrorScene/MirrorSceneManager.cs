@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using OpenCVForUnity;
 
 public class MirrorSceneManager : MonoBehaviour
@@ -61,6 +59,7 @@ public class MirrorSceneManager : MonoBehaviour
         SampleTime = Time.fixedTime;
         StartFaceMove();
         m_MyAudioSource = GetComponents<AudioSource>();
+        
     }
 
     // Update is called once per frame
