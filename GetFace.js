@@ -26,9 +26,10 @@ request.post({url:'https://api-cn.faceplusplus.com/facepp/v3/detect',formData : 
       var one_face = res.faces[0].face_rectangle;
       console.log(one_face);
       console.log(one_face.width);
-      sharp("face00.png")
-      .extract({ left: one_face.left, top: one_face.top, width: one_face.widht, height: one_face.height })
+      sharp("face.jpg")
+      .extract({ left: one_face.left, top: one_face.top, width: one_face.width, height: one_face.height })
       .toFile("face11.png", function(err) {
+        console.log(err);
       });
 
     }
