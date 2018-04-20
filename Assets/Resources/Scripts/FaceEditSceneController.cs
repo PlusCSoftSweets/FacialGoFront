@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using System;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using OpenCVForUnity;
 
 public class FaceEditSceneController : MonoBehaviour {
 
@@ -38,6 +39,7 @@ public class FaceEditSceneController : MonoBehaviour {
 
     IEnumerator GetPhotos() {
         string roomId = GlobalUserInfo.roomInfo.roomIndex;
+        Debug.Log(GlobalUserInfo.roomInfo.roomIndex);
         string baseUrl = "http://123.207.93.25:9001/game/getPhoto?";
         baseUrl += "token=" + GlobalUserInfo.tokenInfo.token;
         baseUrl += "&room_id=" + roomId;
@@ -52,7 +54,13 @@ public class FaceEditSceneController : MonoBehaviour {
                 var bytes = req.downloadHandler.data;
                 var texture = new Texture2D(2, 2);
                 texture.LoadImage(bytes);
-                images.Add(Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f)));
+
+                // 素描化
+                Mat mat = new Mat(texture.height, texture.width, CvType.CV_8UC1);
+                Utils.texture2DToMat(texture, mat);
+                Mat newMat = SuMiaoFilter(mat);
+                Utils.matToTexture2D(newMat, texture);
+                images.Add(Sprite.Create(texture, new UnityEngine.Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f)));
             }
         }
 
@@ -148,5 +156,45 @@ public class FaceEditSceneController : MonoBehaviour {
     public void OnDownloadClick() {
         DateTime dateTime = DateTime.Now;
         ScreenCapture.CaptureScreenshot(dateTime.ToString("yyyy-MM-dd HH-mm-ss") + ".png");
+    }
+
+    Mat SuMiaoFilter(Mat srcImage) {
+        Mat gray0 = new Mat();
+        Mat gray1 = new Mat();
+
+        // 传过来的图已经是灰度图
+        gray0 = srcImage.clone();
+        
+        Scalar maxScalar = new Scalar(255);
+        gray1 = gray0.clone();
+
+        for (int y = 0; y < srcImage.height(); y++) {
+            for (int x = 0; x < srcImage.width(); x++) {
+                byte[] temp0 = new byte[1];
+                gray0.get(y, x, temp0);
+                
+                byte[] input = new byte[1];
+                input[0] = (byte)((byte)255 - temp0[0]);
+                gray1.put(y, x, input);
+            }
+        }
+
+        // 高斯模糊
+        Imgproc.GaussianBlur(gray1, gray1, new Size(13, 13), 0);
+
+        Mat dstImage = new Mat(gray1.size(), CvType.CV_8UC1);
+        for (int y = 0; y < srcImage.height(); y++) {
+            for (int x = 0; x < srcImage.width(); x++) {
+                byte[] temp0 = new byte[1], temp1 = new byte[1];
+                gray0.get(y, x, temp0);
+                gray1.get(y, x, temp1);
+                byte[] input = new byte[1];
+                input[0] = (byte)Math.Min((temp0[0] + (temp0[0] * temp1[0]) / (256 - temp1[0])), (byte)255);
+                if (input[0] < (byte)240) input[0] -= (byte)40;
+                dstImage.put(y, x, input);
+            }
+        }
+
+        return dstImage;
     }
 }
