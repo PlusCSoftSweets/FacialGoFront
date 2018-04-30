@@ -1,0 +1,41 @@
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+Library/
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+obj/
+*.svd
+*.userprefs
+/*.csproj
+*.pidb
+*.suo
+/*.sln
+*.user
+*.unityproj
+*.booproj
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+*.apk
+.vs/FacialGoFront/v15/sqlite3/db.lock
+.vs/
+.vs/FacialGoFront/v15/Server/sqlite3/storage.ide
+.vs/FacialGoFront/v15/Server/sqlite3/storage.ide
+.vs/FacialGoFront/v15/sqlite3/storage.ide
+Assets/OpenCVForUnity/
+Assets/OpenCVForUnity.meta
+Sprites.meta
